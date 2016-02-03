@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:orientation="vertical"
+  android:layout_height="wrap_content"
+  android:background="@color/current_day">
+  
+  <TextView android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:id="@+id/tvName"
+  android:textSize="20sp"
+  android:textColor="@color/font"
+  android:text=""/>
+  
+  <TextView android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:id="@+id/tvDate"
+  android:text=""/>
+
+</LinearLayout>

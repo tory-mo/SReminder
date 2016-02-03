@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "SeriesReminder": {
+            "applicationId": "wHca73lJ1bvcQLSuAG3Lr7vV04BsDrQcVrkgrZRj", 
+            "masterKey": "aUTn95JLPUjDTqzUcPQps5z6tXVdZm7kGaT1M70V"
+        }, 
+        "_default": {
+            "link": "SeriesReminder"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.1"
+    }
+}
