@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\dropbox\SReminder\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="D:\dropbox\SReminder\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.1.1_586501f7a1a7f8b3b033ed53d037b3fedc82a621.jar" />
+    </item>
+    <item
+        jar="D:\dropbox\SReminder\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="D:\dropbox\SReminder\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.1.1_ad74b52444be48308939de37779609222462f0fc.jar" />
+    </item>
+    <item
+        jar="D:\dropbox\SReminder\app\libs\bolts-android-1.1.3.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e61e3dfc57eaa5c97f9e7061db5608fc7d02d39e">
+        <dex dex="D:\dropbox\SReminder\app\build\intermediates\pre-dexed\debug\bolts-android-1.1.3_8bcd318462be4cc822f108a04cca10f8cf28bc63.jar" />
+    </item>
+    <item
+        jar="D:\dropbox\SReminder\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\libs\internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="D:\dropbox\SReminder\app\build\intermediates\pre-dexed\debug\internal_impl-23.1.1_c369930e51c8453d290888b0450c56f8de6d6829.jar" />
+    </item>
+    <item
+        jar="D:\dropbox\SReminder\app\libs\Parse-1.7.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="87c45f9f66da531a65f065ee32f603c7e6db1528">
+        <dex dex="D:\dropbox\SReminder\app\build\intermediates\pre-dexed\debug\Parse-1.7.1_a387c200fe36d7eb073916b2fe191beb980b62c9.jar" />
+    </item>
+    <item
+        jar="D:\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.1.1\support-annotations-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="D:\dropbox\SReminder\app\build\intermediates\pre-dexed\debug\support-annotations-23.1.1_160e21806fe4fcbe2b20c34d1bbde421f69a17ae.jar" />
+    </item>
+
+</items>
