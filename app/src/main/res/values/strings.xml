@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Series Reminder</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_add">Manage Watchlist</string>
+    <string name="watchlist">Watchlist</string>
+	<string name="calendar">Calendar</string>
+	<string name="series">Series</string>
+
+	<string name="action_make_backup">Make backup</string>
+	<string name="action_restore">Restore</string>
     <string name="action_update_series">Update Series List</string>
     <string name="action_update_episodes">Update Episodes</string>
     <string name="action_only_seen">Unseen Episodes</string>
     <string name="action_all">All Episodes</string>
-    <string name="action_series">Series</string>
+
     <string name="action_search">Search</string>
+	<string name="slist_updated">Series list is updated</string>
+
+	<string name="DELETE">Delete</string>
+	<string name="OK">Ok</string>
+	<string name="NAME">Name</string>
+	<string name="ADD">Add</string>
+	<string name="add_series_title">Add series</string>
+	<string name="add_episode_title">Add episode</string>
+
 	<color name="current_day">#f3f3f3</color>
 	<color name="ordinary_day">#ffffff</color>
-	<color name="film_day">#6bac34</color>
 	<color name="font">#2e2e2e</color>
+	<color name="primary">#4CAF50</color>
+	<color name="primary_dark">#388E3C</color>
+	<color name="accent">#00E676</color>
 	
 	<string-array name="weekDays">
 	    <item>Mo</item>

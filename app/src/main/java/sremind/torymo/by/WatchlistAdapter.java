@@ -12,13 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class SRSeriesForChoosingAdapter extends ArrayAdapter<SRSeries> {
+public class WatchlistAdapter extends ArrayAdapter<SRSeries> {
 	
 	private List<SRSeries> seriesList;
 	private List<SRSeries> listlist;
 	private Activity context;
 
-	public SRSeriesForChoosingAdapter(Activity context, int textViewResourceId, List<SRSeries> seriesList) {
+	public WatchlistAdapter(Activity context, int textViewResourceId, List<SRSeries> seriesList) {
 		super(context, textViewResourceId, seriesList);
 		this.seriesList = new ArrayList<SRSeries>();
 		this.seriesList.addAll(seriesList);

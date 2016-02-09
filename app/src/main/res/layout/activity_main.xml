@@ -4,65 +4,28 @@
     android:layout_height="fill_parent"
     android:background="@color/current_day"
     >
-
-	<RelativeLayout
-	    android:id="@+id/header"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:paddingBottom="5dp" >
-
-		<LinearLayout
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:gravity="left"
-		    >
-
-			<TextView
-			    android:id="@+id/previous"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:clickable="true"
-			    android:text="&lt;&lt;"
-			    style="@style/header_style" />
-
-		</LinearLayout>
-
-		<TextView
-		    android:id="@+id/title"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_centerHorizontal="true"
-		    style="@style/header_style" />
-
-		<LinearLayout
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:gravity="right"
-		    android:layout_toRightOf="@+id/title"
-		    >
-
-			<TextView
-			    android:id="@+id/next"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:clickable="true"
-			    android:text=">>"
-			    style="@style/header_style" />
-
-		</LinearLayout>
-
-	</RelativeLayout>
-    <GridView
-        android:id="@+id/gvDays"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style="@style/grid_style">"
-    </GridView>
-    <GridView
-        android:id="@+id/gvCalendar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style = "@style/grid_style" >	
-    </GridView>
+	<TabHost
+		android:id="@android:id/tabhost"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		>
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
+			<FrameLayout
+				android:id="@android:id/tabcontent"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+			</FrameLayout>
+			<TabWidget
+				android:id="@android:id/tabs"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:background="@color/primary"
+				>
+			</TabWidget>
+		</RelativeLayout>
+	</TabHost>
 </LinearLayout>

@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/current_day"
+    android:id="@+id/layoutCalendar"
+    >
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            >
+
+            <TextView
+                android:id="@+id/previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="&lt;&lt;"
+                style="@style/header_style"
+                android:textStyle="bold"
+                android:padding="10dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            style="@style/header_style" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_toRightOf="@+id/title"
+            >
+
+            <TextView
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text=">>"
+                android:textStyle="bold"
+                style="@style/header_style"
+                android:padding="10dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <GridView
+        android:id="@+id/gvDays"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@style/grid_style">"
+    </GridView>
+    <GridView
+        android:id="@+id/gvCalendar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style = "@style/grid_style" >
+    </GridView>
+</LinearLayout>

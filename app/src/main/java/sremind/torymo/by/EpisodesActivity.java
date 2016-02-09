@@ -147,7 +147,7 @@ public class EpisodesActivity extends Activity {
     public void onCreateContextMenu(ContextMenu menu, View v,
         ContextMenuInfo menuInfo) {
       super.onCreateContextMenu(menu, v, menuInfo);
-      menu.add(0, CM_DELETE_EPISODE, 0, "Delete");
+      menu.add(0, CM_DELETE_EPISODE, 0, R.string.DELETE);
     }
 	
 	@Override

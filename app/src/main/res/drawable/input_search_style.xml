@@ -4,7 +4,7 @@
         android:state_focused="true">
     <shape android:shape="rectangle">
         <solid android:color="#FFFFFF" />
-        <stroke android:width="2dp" android:color="@color/film_day" />
+        <stroke android:width="2dp" android:color="@color/primary" />
 
     </shape>
 </item>

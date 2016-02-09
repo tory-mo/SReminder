@@ -52,7 +52,7 @@ public class SeriesActivity extends Activity {
     public void onCreateContextMenu(ContextMenu menu, View v,
         ContextMenuInfo menuInfo) {
       super.onCreateContextMenu(menu, v, menuInfo);
-      menu.add(0, CM_DELETE_SERIES, 0, "Delete");
+      menu.add(0, CM_DELETE_SERIES, 0, R.string.DELETE);
     }
 	
 	@Override
@@ -76,9 +76,9 @@ public class SeriesActivity extends Activity {
 				}
 			};
 			
-		    adb.setTitle("Add series")
-		    .setMessage("Name")
-			.setPositiveButton("Add", onClickListener)
+		    adb.setTitle(R.string.add_series_title)
+		    .setMessage(R.string.NAME)
+			.setPositiveButton(R.string.ADD, onClickListener)
 			.setView(editText);
 		    
 		    return adb.create();
@@ -115,9 +115,9 @@ public class SeriesActivity extends Activity {
 				}
 			};
 			
-		    adb.setTitle("Add episode")
-		    .setMessage("Name")
-			.setPositiveButton("Add", onClickListener)
+		    adb.setTitle(R.string.add_episode_title)
+		    .setMessage(R.string.NAME)
+			.setPositiveButton(R.string.ADD, onClickListener)
 			.setView(view);
 			return adb.create();
 		}
@@ -172,11 +172,6 @@ public class SeriesActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()){
-			case R.id.action_add:
-				//showDialog(ADD_SERIES_DLG);
-				Intent intent = new Intent(getBaseContext(), SeriesForChoosing.class);
-	    		startActivityForResult(intent, this.THIS_ACTIVITY_CODE);
-				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -184,8 +179,7 @@ public class SeriesActivity extends Activity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.series_menu, menu);
+
 		return true;
 	}
 	

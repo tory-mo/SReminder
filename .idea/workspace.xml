@@ -1,238 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+    <layouts>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/menu/main.xml">
+        <config>
+          <theme>@android:style/Theme.Material</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/menu/series_for_choosing_menu.xml">
+        <config>
+          <theme>@android:style/Theme.Material</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/menu/series_menu.xml">
+        <config>
+          <theme>@android:style/Theme.Material</theme>
+        </config>
+      </layout>
+    </layouts>
+  </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="66510e4d-d5fb-4452-a93e-4d2a291a295c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/cache.properties.lock" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileHashes.bin" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileSnapshots.bin" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugAndroidTestJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/outputFileStates.bin" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/taskArtifacts.bin" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/cache.properties" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\.classpath" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\.project" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\AndroidManifest.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\SReminder_parse_export\Series.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\SReminder_parse_export\_Installation.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\SReminder_parse_export\_Join_roles__Role.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\SReminder_parse_export\_Join_users__Role.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\SReminder_parse_export\_Product.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\SReminder_parse_export\_Role.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\SReminder_parse_export\_User.json" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\AndroidManifest.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\SeriesReminder.apk" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes.dex" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\BuildConfig.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\CalendarAdapter$CalDay.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\CalendarAdapter.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\EpisodesActivity$1.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\EpisodesActivity.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\EpisodesAdapter$ViewHolder.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\EpisodesAdapter.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\MainActivity$1.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\MainActivity$2.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\MainActivity$3.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\MainActivity$4.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\MainActivity$5.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\MainActivity.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\Manifest$permission.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\Manifest.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R$array.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R$attr.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R$color.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R$dimen.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R$drawable.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R$id.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R$layout.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R$menu.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R$string.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R$style.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\R.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SRSeries.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SRSeriesForChoosingAdapter$ViewHolder.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SRSeriesForChoosingAdapter.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SReminderDatabase$Episode.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SReminderDatabase.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesActivity$1.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesActivity$2.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesActivity$3.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesActivity.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesForChoosing$1.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesForChoosing$2.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesForChoosing$3.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesForChoosing$4.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesForChoosing.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesReciever.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesReminderApp$1.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\classes\sremind\torymo\by\SeriesReminderApp.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\dexedLibs\Parse-1.7.1-7fdb8f6e4356ceb05a3eddec6d0c9154.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\dexedLibs\Parse-1.7.1-9d0c2d9912765db388570d7c2d77b4c9.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\dexedLibs\android-support-v4-8c7bf2ad225f2369689927925a994dce.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\dexedLibs\android-support-v4-d52112d0d0e2aac5232e00b9be217698.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\dexedLibs\annotations-2f2483cf2cf962cad3dfc7cee42faea6.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\dexedLibs\annotations-62bab95d6948a2db17bbc7976160b014.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\dexedLibs\bolts-android-1.1.3-7d94ab9460589e30c1903d8f903d75fe.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\dexedLibs\bolts-android-1.1.3-ffc625991921ab3f1dba55d9b00d00ba.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\res\crunch\drawable-hdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\res\crunch\drawable-mdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\res\crunch\drawable-xhdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\res\crunch\drawable-xxhdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\bin\resources.ap_" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\gen\sremind\torymo\by\BuildConfig.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\gen\sremind\torymo\by\Manifest.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\gen\sremind\torymo\by\R.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\ic_launcher-web.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\allclasses-frame.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\allclasses-noframe.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ConfigCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\CountCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\DeleteCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\FindCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\FunctionCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\GetCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\GetDataCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\LocationCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\LogInCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\Parse.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseACL.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseAnalytics.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseAnonymousUtils.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseClassName.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseCloud.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseConfig.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseException.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseFacebookUtils.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseFile.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseGeoPoint.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseImageView.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseInstallation.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseObject.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParsePush.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParsePushBroadcastReceiver.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseQuery.CachePolicy.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseQuery.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseQueryAdapter.OnQueryLoadListener.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseQueryAdapter.QueryFactory.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseQueryAdapter.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseRelation.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseRole.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseTwitterUtils.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ParseUser.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\ProgressCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\PushService.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\RefreshCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\RequestPasswordResetCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\SaveCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\SendCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\SignUpCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ConfigCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\CountCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\DeleteCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\FindCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\FunctionCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\GetCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\GetDataCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\LocationCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\LogInCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\Parse.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseACL.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseAnalytics.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseAnonymousUtils.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseClassName.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseCloud.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseConfig.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseException.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseFacebookUtils.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseFile.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseGeoPoint.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseImageView.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseInstallation.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseObject.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParsePush.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParsePushBroadcastReceiver.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseQuery.CachePolicy.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseQuery.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseQueryAdapter.OnQueryLoadListener.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseQueryAdapter.QueryFactory.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseQueryAdapter.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseRelation.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseRole.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseTwitterUtils.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ParseUser.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\ProgressCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\PushService.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\RefreshCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\RequestPasswordResetCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\SaveCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\SendCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\class-use\SignUpCallback.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\package-frame.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\package-summary.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\package-tree.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\com\parse\package-use.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\constant-values.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\deprecated-list.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\help-doc.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\index-all.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\index.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\overview-tree.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\package-list" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\resources\inherit.gif" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\serialized-form.html" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1-javadoc\style.css" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\Parse-1.7.1.jar.properties" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\android-support-v4.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\bolts-android-1.1.3.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\bolts-android-1.1.3.jar.properties" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\libs\third_party_licenses.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\proguard-project.txt" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\project.properties" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\drawable-hdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\drawable-mdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\drawable-xhdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\drawable-xxhdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\drawable\input_search_style.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\activity_episodes.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\activity_main.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\activity_series.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\activity_series_for_choosing.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\add_episode_dlg1.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\day.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\day_name.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\dialog.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\episode_elem.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\episodes.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\episodes_seen.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\item_for_choosing.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\layout\series_elem.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\menu\main.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\menu\series_for_choosing_menu.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\menu\series_menu.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\values-sw600dp\dimens.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\values-sw720dp-land\dimens.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\values\dimens.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\values\strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\res\values\styles.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\CalendarAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\EpisodesActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\EpisodesAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\MainActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\SRSeries.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\SRSeriesForChoosingAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\SReminderDatabase.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\SeriesActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\SeriesForChoosing.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\SeriesReciever.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\dropbox\SReminder\src\sremind\torymo\by\SeriesReminderApp.java" afterPath="" />
-    </list>
+    <list default="true" id="dae3abf9-3766-4bb6-ba57-c6223c719707" name="Default" comment="" />
     <ignored path="SReminder.iws" />
     <ignored path=".idea/workspace.xml" />
-    <ignored path="$PROJECT_DIR$/.gradle/" />
-    <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -248,9 +44,7 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
-        <projects_view>
-          <tree_state />
-        </projects_view>
+        <projects_view />
       </state>
     </system>
   </component>
@@ -259,11 +53,74 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SeriesForChoosing.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SeriesForChoosing.java">
+      <file leaf-file-name="activity_main.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.14529915">
-              <caret line="82" column="33" selection-start-line="82" selection-start-column="33" selection-end-line="82" selection-end-column="33" />
+            <state vertical-scroll-proportion="-6.071429">
+              <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="calendar.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/calendar.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-9.714286">
+              <caret line="27" column="42" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+              <folding>
+                <element signature="e#783#826#0" expanded="true" />
+                <element signature="e#984#1025#0" expanded="true" />
+                <element signature="e#1181#1225#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="episodes_seen.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/episodes_seen.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.642857">
+              <caret line="6" column="36" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="input_search_style.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/input_search_style.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.18478261">
+              <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CalendarActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/CalendarActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="255" column="5" selection-start-line="164" selection-start-column="4" selection-end-line="255" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -271,10 +128,25 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="CalendarAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/CalendarAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="81" column="85" selection-start-line="81" selection-start-column="85" selection-end-line="81" selection-end-column="85" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="layoutResourceFile_vertical" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="GradleLocalSettings">
     <option name="availableProjects">
@@ -1505,7 +1377,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="D:\dropbox\SReminder" value="4363991528240" />
+        <entry key="D:\dropbox\SReminder" value="4364324903831" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -1538,10 +1410,9 @@
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/5.0.3/a7111830132c7f87d08fe48cb0ca07630f8cb91c/asm-commons-5.0.3.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/net/sf/proguard/proguard-gradle/5.2.1/proguard-gradle-5.2.1-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/net/sf/proguard/proguard-gradle/5.2.1/proguard-gradle-5.2.1.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jacoco/org.jacoco.core/0.7.4.201502262128/b6356a696e396a348a673237eee1f496ef75b4b1/org.jacoco.core-0.7.4.201502262128-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jacoco/org.jacoco.core/0.7.4.201502262128/31482f50411a3a5769b6c78fa9b97ba731c205e7/org.jacoco.core-0.7.4.201502262128.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/antlr/3.5.2/92c9bde32f0b1092507701b2b302af84534eb9b8/antlr-3.5.2-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/antlr/3.5.2/c4a65c950bfc3e7d04309c515b2177c00baf7764/antlr-3.5.2.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/jacoco/org.jacoco.core/0.7.4.201502262128/org.jacoco.core-0.7.4.201502262128-sources.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/jacoco/org.jacoco.core/0.7.4.201502262128/org.jacoco.core-0.7.4.201502262128.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/antlr/antlr/3.5.2/antlr-3.5.2.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.build/builder-model/2.0.0-alpha7/c78fbda7e0688cb6d94a6888ba3e801e21998dce/builder-model-2.0.0-alpha7-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.build/builder-model/2.0.0-alpha7/b11c500b57312fdc61b1adbe11a9cde0a68ffb80/builder-model-2.0.0-alpha7.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.build/builder-test-api/2.0.0-alpha7/6c1426af8235241e6e92b87e1db0cb608bd717d6/builder-test-api-2.0.0-alpha7-sources.jar" />
@@ -1578,22 +1449,17 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/google/guava/guava/17.0/guava-17.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.databinding/baseLibrary/1.1/d191c38874782fc89c668ad8c0f0f30068dd69c9/baseLibrary-1.1-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.databinding/baseLibrary/1.1/d0235ebdb4e0ebf3f41d332fadba60419de07864/baseLibrary-1.1.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.3.2/d2a489573c0ed2c4942b3660decad5d65087b406/commons-lang3-3.3.2-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.3.2/90a3822c38ec8c996e84c16a3477ef632cbc87a3/commons-lang3-3.3.2.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4/4.5/d61f0b719751a2823a1d4e2d206406488d52276d/antlr4-4.5-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4/4.5/a0e860e317147848e69ac145bc5196901a9993bf/antlr4-4.5.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/f2d8698c46d1167ff24b06a840a87d91a02db891/commons-io-2.4-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/b1b6ea3b7e4aa4f492509a4952029cd8e48019ad/commons-io-2.4.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.juniversalchardet/juniversalchardet/1.0.3/77979eaa98f90806f984155f44f63cc1fb60ac25/juniversalchardet-1.0.3-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.juniversalchardet/juniversalchardet/1.0.3/cd49678784c46aa8789c060538e0154013bb421b/juniversalchardet-1.0.3.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/tunnelvisionlabs/antlr4/4.5/antlr4-4.5.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-io/commons-io/2.4/commons-io-2.4-sources.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-io/commons-io/2.4/commons-io-2.4.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/net/sf/proguard/proguard-base/5.2.1/proguard-base-5.2.1-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/net/sf/proguard/proguard-base/5.2.1/proguard-base-5.2.1.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.0.1/78ebb2694324283f3120aa3ed52465b22fab8a4a/asm-debug-all-5.0.1-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.0.1/f69b5f7d96cec0d448acf1c1a266584170c9643b/asm-debug-all-5.0.1.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5.2/5214ea45dd20d3a2e4caa6f1ad2248ad107e0daf/antlr-runtime-3.5.2-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5.2/cd9cd41361c155f3af0f653009dcecb08d8b4afd/antlr-runtime-3.5.2.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.0.8/6f23134f1c98dfce77f85defda31bfbce3e2a4ac/ST4-4.0.8-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.0.8/a1c55e974f8a94d78e2348fa6ff63f4fa1fae64/ST4-4.0.8.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/ow2/asm/asm-debug-all/5.0.1/asm-debug-all-5.0.1-sources.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/ow2/asm/asm-debug-all/5.0.1/asm-debug-all-5.0.1.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/antlr/ST4/4.0.8/ST4-4.0.8.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.layoutlib/layoutlib-api/25.0.0-alpha7/af6da70ce330388826605601b8fd414a420317f/layoutlib-api-25.0.0-alpha7-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.layoutlib/layoutlib-api/25.0.0-alpha7/b5ec0ce099ebad1f4b9b20f0a5b54c01bc835e09/layoutlib-api-25.0.0-alpha7.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools/dvlib/25.0.0-alpha7/5d1a52e05c9ab0d454593e76f63744483834540a/dvlib-25.0.0-alpha7-sources.jar" />
@@ -1614,10 +1480,8 @@
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.lint/lint-api/25.0.0-alpha7/a76bf53f91cd8c651aeff5f983a6b35cee660e4a/lint-api-25.0.0-alpha7.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/ow2/asm/asm-analysis/5.0.3/asm-analysis-5.0.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/ow2/asm/asm-analysis/5.0.3/asm-analysis-5.0.3.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4-runtime/4.5/61495cea98c9c63b16b87ae4e79b7e478405e40b/antlr4-runtime-4.5-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4-runtime/4.5/5067478827a98f5ab77d9fc577903edc57af3da4/antlr4-runtime-4.5.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4-annotations/4.5/8d24c9255a970c3c85fc5c88dfe9d4e8627d56e2/antlr4-annotations-4.5-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4-annotations/4.5/2c5996120a0ac690de575bd8ac36250e6720a6b8/antlr4-annotations-4.5.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/tunnelvisionlabs/antlr4-runtime/4.5/antlr4-runtime-4.5.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/tunnelvisionlabs/antlr4-annotations/4.5/antlr4-annotations-4.5.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/intellij/annotations/12.0/annotations-12.0-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/intellij/annotations/12.0/annotations-12.0.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/apache/httpcomponents/httpcore/4.1/httpcore-4.1-sources.jar" />
@@ -1628,8 +1492,7 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.abego.treelayout/org.abego.treelayout.core/1.0.1/6e1dd6f6efdb453c7b8ba35726c63fbf50cd7142/org.abego.treelayout.core-1.0.1-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.abego.treelayout/org.abego.treelayout.core/1.0.1/e31e79cba7a5414cf18fa69f3f0a2cf9ee997b61/org.abego.treelayout.core-1.0.1.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/abego/treelayout/org.abego.treelayout.core/1.0.1/org.abego.treelayout.core-1.0.1.jar" />
                           </list>
                         </option>
                         <option name="path" value="$PROJECT_DIR$" />
@@ -1659,10 +1522,9 @@
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/5.0.3/a7111830132c7f87d08fe48cb0ca07630f8cb91c/asm-commons-5.0.3.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/net/sf/proguard/proguard-gradle/5.2.1/proguard-gradle-5.2.1-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/net/sf/proguard/proguard-gradle/5.2.1/proguard-gradle-5.2.1.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jacoco/org.jacoco.core/0.7.4.201502262128/b6356a696e396a348a673237eee1f496ef75b4b1/org.jacoco.core-0.7.4.201502262128-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jacoco/org.jacoco.core/0.7.4.201502262128/31482f50411a3a5769b6c78fa9b97ba731c205e7/org.jacoco.core-0.7.4.201502262128.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/antlr/3.5.2/92c9bde32f0b1092507701b2b302af84534eb9b8/antlr-3.5.2-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/antlr/3.5.2/c4a65c950bfc3e7d04309c515b2177c00baf7764/antlr-3.5.2.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/jacoco/org.jacoco.core/0.7.4.201502262128/org.jacoco.core-0.7.4.201502262128-sources.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/jacoco/org.jacoco.core/0.7.4.201502262128/org.jacoco.core-0.7.4.201502262128.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/antlr/antlr/3.5.2/antlr-3.5.2.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.build/builder-model/2.0.0-alpha7/c78fbda7e0688cb6d94a6888ba3e801e21998dce/builder-model-2.0.0-alpha7-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.build/builder-model/2.0.0-alpha7/b11c500b57312fdc61b1adbe11a9cde0a68ffb80/builder-model-2.0.0-alpha7.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.build/builder-test-api/2.0.0-alpha7/6c1426af8235241e6e92b87e1db0cb608bd717d6/builder-test-api-2.0.0-alpha7-sources.jar" />
@@ -1699,22 +1561,17 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/google/guava/guava/17.0/guava-17.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.databinding/baseLibrary/1.1/d191c38874782fc89c668ad8c0f0f30068dd69c9/baseLibrary-1.1-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.databinding/baseLibrary/1.1/d0235ebdb4e0ebf3f41d332fadba60419de07864/baseLibrary-1.1.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.3.2/d2a489573c0ed2c4942b3660decad5d65087b406/commons-lang3-3.3.2-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.3.2/90a3822c38ec8c996e84c16a3477ef632cbc87a3/commons-lang3-3.3.2.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4/4.5/d61f0b719751a2823a1d4e2d206406488d52276d/antlr4-4.5-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4/4.5/a0e860e317147848e69ac145bc5196901a9993bf/antlr4-4.5.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/f2d8698c46d1167ff24b06a840a87d91a02db891/commons-io-2.4-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/b1b6ea3b7e4aa4f492509a4952029cd8e48019ad/commons-io-2.4.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.juniversalchardet/juniversalchardet/1.0.3/77979eaa98f90806f984155f44f63cc1fb60ac25/juniversalchardet-1.0.3-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.juniversalchardet/juniversalchardet/1.0.3/cd49678784c46aa8789c060538e0154013bb421b/juniversalchardet-1.0.3.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/tunnelvisionlabs/antlr4/4.5/antlr4-4.5.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-io/commons-io/2.4/commons-io-2.4-sources.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-io/commons-io/2.4/commons-io-2.4.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/net/sf/proguard/proguard-base/5.2.1/proguard-base-5.2.1-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/net/sf/proguard/proguard-base/5.2.1/proguard-base-5.2.1.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.0.1/78ebb2694324283f3120aa3ed52465b22fab8a4a/asm-debug-all-5.0.1-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.0.1/f69b5f7d96cec0d448acf1c1a266584170c9643b/asm-debug-all-5.0.1.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5.2/5214ea45dd20d3a2e4caa6f1ad2248ad107e0daf/antlr-runtime-3.5.2-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5.2/cd9cd41361c155f3af0f653009dcecb08d8b4afd/antlr-runtime-3.5.2.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.0.8/6f23134f1c98dfce77f85defda31bfbce3e2a4ac/ST4-4.0.8-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.0.8/a1c55e974f8a94d78e2348fa6ff63f4fa1fae64/ST4-4.0.8.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/ow2/asm/asm-debug-all/5.0.1/asm-debug-all-5.0.1-sources.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/ow2/asm/asm-debug-all/5.0.1/asm-debug-all-5.0.1.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/antlr/ST4/4.0.8/ST4-4.0.8.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.layoutlib/layoutlib-api/25.0.0-alpha7/af6da70ce330388826605601b8fd414a420317f/layoutlib-api-25.0.0-alpha7-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.layoutlib/layoutlib-api/25.0.0-alpha7/b5ec0ce099ebad1f4b9b20f0a5b54c01bc835e09/layoutlib-api-25.0.0-alpha7.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools/dvlib/25.0.0-alpha7/5d1a52e05c9ab0d454593e76f63744483834540a/dvlib-25.0.0-alpha7-sources.jar" />
@@ -1735,10 +1592,8 @@
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.lint/lint-api/25.0.0-alpha7/a76bf53f91cd8c651aeff5f983a6b35cee660e4a/lint-api-25.0.0-alpha7.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/ow2/asm/asm-analysis/5.0.3/asm-analysis-5.0.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/ow2/asm/asm-analysis/5.0.3/asm-analysis-5.0.3.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4-runtime/4.5/61495cea98c9c63b16b87ae4e79b7e478405e40b/antlr4-runtime-4.5-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4-runtime/4.5/5067478827a98f5ab77d9fc577903edc57af3da4/antlr4-runtime-4.5.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4-annotations/4.5/8d24c9255a970c3c85fc5c88dfe9d4e8627d56e2/antlr4-annotations-4.5-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tunnelvisionlabs/antlr4-annotations/4.5/2c5996120a0ac690de575bd8ac36250e6720a6b8/antlr4-annotations-4.5.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/tunnelvisionlabs/antlr4-runtime/4.5/antlr4-runtime-4.5.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/tunnelvisionlabs/antlr4-annotations/4.5/antlr4-annotations-4.5.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/intellij/annotations/12.0/annotations-12.0-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/intellij/annotations/12.0/annotations-12.0.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/apache/httpcomponents/httpcore/4.1/httpcore-4.1-sources.jar" />
@@ -1749,8 +1604,7 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.abego.treelayout/org.abego.treelayout.core/1.0.1/6e1dd6f6efdb453c7b8ba35726c63fbf50cd7142/org.abego.treelayout.core-1.0.1-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.abego.treelayout/org.abego.treelayout.core/1.0.1/e31e79cba7a5414cf18fa69f3f0a2cf9ee997b61/org.abego.treelayout.core-1.0.1.jar" />
+                            <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/abego/treelayout/org.abego.treelayout.core/1.0.1/org.abego.treelayout.core-1.0.1.jar" />
                             <option value="D:/Android/sdk/extras/android/m2repository/com/android/support/appcompat-v7/23.1.1/appcompat-v7-23.1.1.aar" />
                             <option value="D:/Android/sdk/extras/android/m2repository/com/android/support/support-v4/23.1.1/support-v4-23.1.1.aar" />
                             <option value="D:/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.1/support-annotations-23.1.1.jar" />
@@ -1896,10 +1750,19 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
-        <option value="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
-        <option value="$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SeriesForChoosing.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/calendar.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SeriesActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/menu/main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/CalendarAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/CalendarActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/episodes_seen.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/input_search_style.xml" />
       </list>
     </option>
   </component>
@@ -1907,9 +1770,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="631" />
-    <option name="width" value="741" />
-    <option name="height" value="742" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="754" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -1934,9 +1798,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -1944,9 +1807,15 @@
               <option name="myItemId" value="SReminder" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Gradle Scripts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidBuildScriptsGroupNode" />
+              <option name="myItemId" value="SReminder" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -1954,51 +1823,54 @@
               <option name="myItemId" value="SReminder" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="by" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/sdk" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="FullScreen" value="false" />
-    <property name="android.project.structure.last.selected" value="app" />
-    <property name="android.project.structure.proportion" value="0.15" />
     <property name="recentsLimit" value="5" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="emulator-5554" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="af00d0c5" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="4_7" />
+    <property name="FullScreen" value="false" />
+    <property name="UI_DESIGNER_EDITOR_MODE.PaletteToolWindowManager.WIDTH" value="255" />
   </component>
   <component name="RunManager" selected="Android Application.app">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
       <option name="ARTIFACT_NAME" value="" />
-      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
       <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="0" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
       <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="SELECTED_CLOUD_DEVICE_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_DEVICE_PROJECT_ID" value="" />
-      <option name="IS_VALID_CLOUD_MATRIX_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_MATRIX_SELECTION_ERROR" value="" />
-      <option name="IS_VALID_CLOUD_DEVICE_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_DEVICE_SELECTION_ERROR" value="" />
-      <option name="CLOUD_DEVICE_SERIAL_NUMBER" value="" />
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
       <method />
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -2008,27 +1880,17 @@
       <option name="METHOD_NAME" value="" />
       <option name="CLASS_NAME" value="" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="EXTRA_OPTIONS" value="" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
       <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="0" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
       <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="SELECTED_CLOUD_DEVICE_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_DEVICE_PROJECT_ID" value="" />
-      <option name="IS_VALID_CLOUD_MATRIX_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_MATRIX_SELECTION_ERROR" value="" />
-      <option name="IS_VALID_CLOUD_DEVICE_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_DEVICE_SELECTION_ERROR" value="" />
-      <option name="CLOUD_DEVICE_SERIAL_NUMBER" value="" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2065,7 +1927,10 @@
       </option>
       <envs />
       <patterns />
-      <method />
+      <method>
+        <option name="Make" enabled="false" />
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="JarApplication" factoryName="JAR Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -2110,31 +1975,23 @@
     </configuration>
     <configuration default="false" name="app" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="app" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
       <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
       <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="0" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
       <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="SELECTED_CLOUD_DEVICE_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_DEVICE_PROJECT_ID" value="" />
-      <option name="IS_VALID_CLOUD_MATRIX_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_MATRIX_SELECTION_ERROR" value="" />
-      <option name="IS_VALID_CLOUD_DEVICE_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_DEVICE_SELECTION_ERROR" value="" />
-      <option name="CLOUD_DEVICE_SERIAL_NUMBER" value="" />
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
       <method />
     </configuration>
     <list size="1">
@@ -2159,41 +2016,54 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="66510e4d-d5fb-4452-a93e-4d2a291a295c" name="Default" comment="" />
-      <created>1454697425105</created>
+      <changelist id="dae3abf9-3766-4bb6-ba57-c6223c719707" name="Default" comment="" />
+      <created>1454846704204</created>
       <option name="number" value="Default" />
-      <updated>1454697425105</updated>
+      <updated>1454846704204</updated>
     </task>
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="631" y="0" width="741" height="742" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963988" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32980332" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290441" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18333334" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34166667" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29166666" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26287743" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3285968" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963988" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24930748" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32833335" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29833335" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2716593" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3285968" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1860817" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -2210,69 +2080,298 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
-    <watches-manager />
+    <breakpoint-manager>
+      <option name="time" value="6" />
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="app">
+        <watch expression="line" language="JAVA" custom="" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SeriesForChoosing.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#783#826#0" expanded="true" />
+            <element signature="e#984#1025#0" expanded="true" />
+            <element signature="e#1181#1225#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SReminderDatabase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="247" column="74" selection-start-line="247" selection-start-column="70" selection-end-line="247" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="80" selection-start-line="15" selection-start-column="80" selection-end-line="15" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#783#826#0" expanded="true" />
+            <element signature="e#984#1025#0" expanded="true" />
+            <element signature="e#1181#1225#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SReminderDatabase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="247" column="74" selection-start-line="247" selection-start-column="70" selection-end-line="247" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="80" selection-start-line="15" selection-start-column="80" selection-end-line="15" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#783#826#0" expanded="true" />
+            <element signature="e#984#1025#0" expanded="true" />
+            <element signature="e#1181#1225#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SReminderDatabase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="247" column="74" selection-start-line="247" selection-start-column="70" selection-end-line="247" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="80" selection-start-line="15" selection-start-column="80" selection-end-line="15" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#783#826#0" expanded="true" />
+            <element signature="e#984#1025#0" expanded="true" />
+            <element signature="e#1181#1225#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SReminderDatabase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="247" column="74" selection-start-line="247" selection-start-column="70" selection-end-line="247" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="80" selection-start-line="15" selection-start-column="80" selection-end-line="15" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SReminderDatabase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="247" column="74" selection-start-line="247" selection-start-column="70" selection-end-line="247" selection-end-column="74" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/local.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.51657456">
+        <state vertical-scroll-proportion="0.41280353">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7044199">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SReminder.iml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_series_for_choosing.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23480663">
-          <caret line="5" column="70" selection-start-line="5" selection-start-column="70" selection-end-line="5" selection-end-column="70" />
-        </state>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/settings.gradle">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_episodes.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SeriesActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.6177106">
+          <caret line="39" column="21" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/SeriesForChoosing.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/series_for_choosing_menu.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.14529915">
-          <caret line="82" column="33" selection-start-line="82" selection-start-column="33" selection-end-line="82" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36717063">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding>
+            <element signature="e#181#207#0" expanded="true" />
+            <element signature="e#329#361#0" expanded="true" />
+            <element signature="e#479#507#0" expanded="true" />
+            <element signature="e#621#645#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.587473">
+          <caret line="49" column="42" selection-start-line="49" selection-start-column="42" selection-end-line="49" selection-end-column="42" />
+          <folding>
+            <element signature="e#1223#1241#0" expanded="true" />
+            <element signature="e#1386#1404#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.071429">
+          <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/calendar.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.714286">
+          <caret line="27" column="42" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/CalendarAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="81" column="85" selection-start-line="81" selection-start-column="85" selection-end-line="81" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24853802">
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4502924">
+          <caret line="27" column="58" selection-start-line="27" selection-start-column="58" selection-end-line="27" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/CalendarActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="255" column="5" selection-start-line="164" selection-start-column="4" selection-end-line="255" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/sremind/torymo/by/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+          <folding>
+            <element signature="e#783#826#0" expanded="true" />
+            <element signature="e#984#1025#0" expanded="true" />
+            <element signature="e#1181#1225#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/episodes_seen.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.642857">
+          <caret line="6" column="36" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/input_search_style.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18478261">
+          <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>

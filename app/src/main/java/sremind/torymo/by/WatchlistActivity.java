@@ -31,13 +31,13 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-public class SeriesForChoosing extends Activity {
+public class WatchlistActivity extends Activity {
 	
 	// List view
     private ListView lv;
      
     // Listview Adapter
-    SRSeriesForChoosingAdapter adapter;
+    WatchlistAdapter adapter;
     SReminderDatabase db;
      
     // Search EditText
@@ -60,7 +60,7 @@ public class SeriesForChoosing extends Activity {
         inputSearch = (EditText) findViewById(R.id.inputSearch);
         seriesL = db.getAllSeriesInfo(); 
         // Adding items to listview
-        adapter = new SRSeriesForChoosingAdapter(this, R.layout.item_for_choosing, seriesL);
+        adapter = new WatchlistAdapter(this, R.layout.item_for_choosing, seriesL);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new OnItemClickListener() {
         	@Override
@@ -92,7 +92,7 @@ public class SeriesForChoosing extends Activity {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
-                SeriesForChoosing.this.adapter.filter(cs.toString());   
+                WatchlistActivity.this.adapter.filter(cs.toString());
             }
              
             @Override
@@ -167,13 +167,13 @@ public class SeriesForChoosing extends Activity {
 							int cnt = objects.size();
 							for(int i = 0; i<cnt; i++){
 								
-								db.addSeries(objects.get(i).getString("Name"), objects.get(i).getString("imdbId"));
+								db.addSeries(objects.get(i).getString(getResources().getString(R.string.NAME)), objects.get(i).getString("imdbId"));
 							}
 							seriesL.clear();
 							seriesL.addAll(db.getAllSeriesInfo());
 							adapter.setListData(seriesL);
 							adapter.notifyDataSetChanged();
-							Toast.makeText(getBaseContext(), "Series list is updated", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getBaseContext(), R.string.slist_updated, Toast.LENGTH_SHORT).show();
 							Log.d("com.parse.push", cnt + "objects founded");
 						}else{
 							Log.e("com.parse.push", "failed to get series", e);

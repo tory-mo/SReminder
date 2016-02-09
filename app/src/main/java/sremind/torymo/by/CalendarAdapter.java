@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,7 +79,7 @@ static final int FIRST_DAY_OF_WEEK =1; // Sunday = 0, Monday = 1
         else {
         	// mark current day as focused
         	if(days[position].event){
-        		v.setBackgroundColor(mContext.getResources().getColor(R.color.film_day));
+        		v.setBackgroundColor(mContext.getResources().getColor(R.color.primary));
         		dayView.setTextColor(mContext.getResources().getColor(R.color.ordinary_day));
         		/*dayView.setOnClickListener(new OnClickListener() {  
         	        public void onClick(View v)
@@ -88,7 +89,11 @@ static final int FIRST_DAY_OF_WEEK =1; // Sunday = 0, Monday = 1
         	         });*/
         	}
         	else if(month.get(Calendar.YEAR)== selectedDate.get(Calendar.YEAR) && month.get(Calendar.MONTH)== selectedDate.get(Calendar.MONTH) && days[position].day.equals(""+selectedDate.get(Calendar.DAY_OF_MONTH))) {
-        		v.setBackgroundColor(mContext.getResources().getColor(R.color.current_day));
+        		//v.setBackgroundColor(mContext.getResources().getColor(R.color.current_day));
+				GradientDrawable gd = new GradientDrawable();
+				gd.setColor(mContext.getResources().getColor(R.color.ordinary_day)); // Changes this drawbale to use a single color instead of a gradient
+				gd.setStroke(3, mContext.getResources().getColor(R.color.accent));
+				v.setBackgroundDrawable(gd);
         		//v.setBackgroundResource(R.drawable.item_background_focused);
         	}
         	else {
@@ -120,7 +125,7 @@ static final int FIRST_DAY_OF_WEEK =1; // Sunday = 0, Monday = 1
         int firstDay = (int)month.get(Calendar.DAY_OF_WEEK);
         int year = month.get(Calendar.YEAR)-1900;
         int curr_month = month.get(Calendar.MONTH);
-        datesOfEpisodes = database.getDatesInPeriod(new Date(year, curr_month,1), new Date(year, curr_month,lastDay), MainActivity.onlySeen);
+        datesOfEpisodes = database.getDatesInPeriod(new Date(year, curr_month,1), new Date(year, curr_month,lastDay), CalendarActivity.onlySeen);
         int cnt = datesOfEpisodes.size();
         // figure size of the array
         if(firstDay==1){
