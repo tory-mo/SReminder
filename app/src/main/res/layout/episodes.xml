@@ -4,13 +4,14 @@
   android:layout_width="fill_parent"
   android:orientation="vertical"
   android:layout_height="wrap_content"
-  android:background="@color/current_day">
+  android:background="@color/text_primary"
+    android:padding="5dp">
   
   <TextView android:layout_width="fill_parent"
   android:layout_height="wrap_content"
   android:id="@+id/tvName"
   android:textSize="20sp"
-  android:textColor="@color/font"
+  android:textColor="@color/text_secondary"
   android:text=""/>
   
   <TextView android:layout_width="fill_parent"

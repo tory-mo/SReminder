@@ -5,6 +5,6 @@
   android:padding="15dp"
   android:id="@+id/tvName"
   android:textSize="20sp"
-  android:textColor="@color/font"
-  android:background="@color/current_day"
+  android:textColor="@color/text_secondary"
+  android:background="@color/text_primary"
   android:text=""/>

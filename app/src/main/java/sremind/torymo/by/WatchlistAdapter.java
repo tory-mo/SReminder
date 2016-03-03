@@ -42,7 +42,7 @@ public class WatchlistAdapter extends ArrayAdapter<SRSeries> {
 		ViewHolder holder = null;
 		if (convertView == null) {
 			LayoutInflater vi = context.getLayoutInflater();
-			convertView = vi.inflate(R.layout.item_for_choosing, null);
+			convertView = vi.inflate(R.layout.watchlist_item, null);
 			 
 			holder = new ViewHolder();
 			holder.name = (TextView) convertView.findViewById(R.id.product_name);

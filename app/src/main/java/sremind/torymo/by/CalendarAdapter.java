@@ -69,7 +69,7 @@ static final int FIRST_DAY_OF_WEEK =1; // Sunday = 0, Monday = 1
         	
         }
         dayView = (TextView)v.findViewById(R.id.date);
-        dayView.setTextColor(mContext.getResources().getColor(R.color.font));
+        dayView.setTextColor(mContext.getResources().getColor(R.color.text_secondary));
         
         // disable empty days from the beginning
         if(days[position].equals("")) {
@@ -78,7 +78,20 @@ static final int FIRST_DAY_OF_WEEK =1; // Sunday = 0, Monday = 1
         }
         else {
         	// mark current day as focused
-        	if(days[position].event){
+        	if(month.get(Calendar.YEAR)== selectedDate.get(Calendar.YEAR) && month.get(Calendar.MONTH)== selectedDate.get(Calendar.MONTH) && days[position].day.equals(""+selectedDate.get(Calendar.DAY_OF_MONTH))) {
+        		//v.setBackgroundColor(mContext.getResources().getColor(R.color.current_day));
+				GradientDrawable gd = new GradientDrawable();
+				if(days[position].event){
+					gd.setColor(mContext.getResources().getColor(R.color.primary));
+					dayView.setTextColor(mContext.getResources().getColor(R.color.ordinary_day));
+				}
+				else
+					gd.setColor(mContext.getResources().getColor(R.color.ordinary_day)); // Changes this drawbale to use a single color instead of a gradient
+				gd.setStroke(3, mContext.getResources().getColor(R.color.accent));
+				v.setBackgroundDrawable(gd);
+        		//v.setBackgroundResource(R.drawable.item_background_focused);
+        	}
+			else if(days[position].event){
         		v.setBackgroundColor(mContext.getResources().getColor(R.color.primary));
         		dayView.setTextColor(mContext.getResources().getColor(R.color.ordinary_day));
         		/*dayView.setOnClickListener(new OnClickListener() {  
@@ -87,14 +100,6 @@ static final int FIRST_DAY_OF_WEEK =1; // Sunday = 0, Monday = 1
         	                //perform action
         	            }
         	         });*/
-        	}
-        	else if(month.get(Calendar.YEAR)== selectedDate.get(Calendar.YEAR) && month.get(Calendar.MONTH)== selectedDate.get(Calendar.MONTH) && days[position].day.equals(""+selectedDate.get(Calendar.DAY_OF_MONTH))) {
-        		//v.setBackgroundColor(mContext.getResources().getColor(R.color.current_day));
-				GradientDrawable gd = new GradientDrawable();
-				gd.setColor(mContext.getResources().getColor(R.color.ordinary_day)); // Changes this drawbale to use a single color instead of a gradient
-				gd.setStroke(3, mContext.getResources().getColor(R.color.accent));
-				v.setBackgroundDrawable(gd);
-        		//v.setBackgroundResource(R.drawable.item_background_focused);
         	}
         	else {
         		v.setBackgroundColor(mContext.getResources().getColor(R.color.ordinary_day));
@@ -125,7 +130,7 @@ static final int FIRST_DAY_OF_WEEK =1; // Sunday = 0, Monday = 1
         int firstDay = (int)month.get(Calendar.DAY_OF_WEEK);
         int year = month.get(Calendar.YEAR)-1900;
         int curr_month = month.get(Calendar.MONTH);
-        datesOfEpisodes = database.getDatesInPeriod(new Date(year, curr_month,1), new Date(year, curr_month,lastDay), CalendarActivity.onlySeen);
+        datesOfEpisodes = database.getDatesInPeriod(new Date(year, curr_month,1), new Date(year, curr_month,lastDay), CalendarFragment.onlySeen);
         int cnt = datesOfEpisodes.size();
         // figure size of the array
         if(firstDay==1){

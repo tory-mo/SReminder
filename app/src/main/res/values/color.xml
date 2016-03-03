@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="current_day">#f3f3f3</color>
+    <color name="ordinary_day">#ffffff</color>
+    <color name="text_secondary">#2e2e2e</color>
+    <color name="primary">#4CAF50</color>
+    <color name="primary_dark">#388E3C</color>
+    <color name="accent">#00E676</color>
+
+    <color name="text_primary">#ffffff</color>
+    <color name="window_bg">#f3f3f3</color>
+    <color name="navigation_bar">#000000</color>
+</resources>

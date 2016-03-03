@@ -21,13 +21,6 @@
 	<string name="ADD">Add</string>
 	<string name="add_series_title">Add series</string>
 	<string name="add_episode_title">Add episode</string>
-
-	<color name="current_day">#f3f3f3</color>
-	<color name="ordinary_day">#ffffff</color>
-	<color name="font">#2e2e2e</color>
-	<color name="primary">#4CAF50</color>
-	<color name="primary_dark">#388E3C</color>
-	<color name="accent">#00E676</color>
 	
 	<string-array name="weekDays">
 	    <item>Mo</item>

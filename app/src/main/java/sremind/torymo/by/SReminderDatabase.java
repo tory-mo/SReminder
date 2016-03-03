@@ -126,7 +126,7 @@ public class SReminderDatabase extends SQLiteOpenHelper {
 		ContentValues cv = new ContentValues();
 		cv.put(eSeen, value);
 		db = this.getWritableDatabase();
-		db.update(tabEpisodes, cv, "id="+episode, null);
+		db.update(tabEpisodes, cv, "id=" + episode, null);
 		db.close();		
 	}
 	
@@ -475,9 +475,11 @@ public class SReminderDatabase extends SQLiteOpenHelper {
 		boolean watchlist;
 		if(cursor.moveToFirst()){
 			do{
-				watchlist = false;
-				if(cursor.getInt(2)==1)watchlist = true;
-				arr.add(new SRSeries(cursor.getString(1), cursor.getString(3), watchlist));
+				if(!cursor.getString(1).equals("")) {
+					watchlist = false;
+					if(cursor.getInt(2)==1)watchlist = true;
+					arr.add(new SRSeries(cursor.getString(1), cursor.getString(3), watchlist));
+				}
 			}while(cursor.moveToNext());
 		}
 		cursor.close();
