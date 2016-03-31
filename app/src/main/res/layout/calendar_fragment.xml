@@ -1,11 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/current_day"
     android:id="@+id/layoutCalendar"
-    android:padding="5dp"
-    >
+    android:padding="5dp">
 
     <RelativeLayout
         android:id="@+id/header"
@@ -21,7 +21,7 @@
             >
 
             <TextView
-                android:id="@+id/previous"
+                android:id="@+id/previousMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
@@ -33,7 +33,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/monthTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -43,7 +43,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:layout_toRightOf="@+id/title"
+            android:layout_toRightOf="@+id/monthTitle"
             >
 
             <TextView

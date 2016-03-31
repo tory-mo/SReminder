@@ -5,7 +5,7 @@ public class SRSeries {
 	private String name;
 	private boolean watchlist;
 	
-	SRSeries(String imdbId, String name, boolean watchlist){
+	public SRSeries(String imdbId, String name, boolean watchlist){
 		this.imdbId = imdbId;
 		this.name = name;
 		this.watchlist = watchlist;

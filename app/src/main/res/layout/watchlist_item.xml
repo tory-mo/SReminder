@@ -4,23 +4,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="15dp"
-    android:background="@color/text_primary" >
+    android:background="@drawable/touch_selector" >
      
-    <TextView android:id="@+id/product_name"
+    <TextView android:id="@+id/seriesNameWatchlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/cb1"
-        android:layout_alignBottom="@+id/cb1"
+        android:layout_alignBaseline="@+id/watchlistCheckBox"
+        android:layout_alignBottom="@+id/watchlistCheckBox"
         android:layout_alignParentLeft="true"
         android:textSize="20sp"
         android:textColor="@color/text_secondary"/>
         
     <CheckBox 
-        android:id="@+id/cb1"
+        android:id="@+id/watchlistCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"        
         android:focusable="false"
+        android:clickable="false"
         android:focusableInTouchMode="false"
         android:button="@xml/check_box"
 

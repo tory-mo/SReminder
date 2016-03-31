@@ -12,7 +12,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="45dp"
         android:background="@color/primary"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         />
@@ -23,6 +22,19 @@
         android:background="@color/primary"
         app:mtSameWeightTabs="true"
         app:mtPaddingMiddle="false"
+        app:mtIndicatorColor="@color/accent"
+        app:mtIndicatorHeight="3dp"
+        app:mtTextAllCaps="true"
+        app:mtMrlRippleColor="@color/text_secondary"
+        app:mtMrlRippleHighlightColor="@color/text_primary"
+        app:mtMrlRippleAlpha="0.2"
+        app:mtMrlRippleDuration="250"
+        app:mtMrlRippleDelayClick="false"
+        app:mtMrlRippleDiameter="20dp"
+        app:mtMrlRippleFadeDuration="100"
+        app:mtMrlRippleOverlay="false"
+        app:mtMrlRipplePersistent="false"
+        app:mtMrlRippleRoundedCorners="0dp"
         />
 
     <android.support.v4.view.ViewPager

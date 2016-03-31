@@ -5,9 +5,10 @@
     android:orientation="vertical"
     android:background="@color/current_day"
     android:padding="5dp">
+
     <ListView
-        android:id="@+id/lvEpisodes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:id="@+id/watchlistListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

@@ -28,58 +28,56 @@ Parse.Cloud.job("userMigration", function(request, status) {
 });
 
 Parse.Cloud.define("getEpisodes",function(request,response){
-	var series = Parse.Object.extend("Series");
-	var query = new Parse.Query(series);
-	query.equalTo("imdbId", request.params.imdbId);
-	query.find({
-		success: function(results) {
-			
-			if(results.length == 1){
-				var url = "http://www.imdb.com/title/"+request.params.imdbId+"/episodes?season="+results[0].get("seasonsCnt");
-				Parse.Cloud.httpRequest({
-					url: url,
-					success:function(httpResponse){
-						var res_str = "";
-						if(httpResponse.text.length>0){
-							var beginChar = httpResponse.text.indexOf("list_item");
-							var endChar = httpResponse.text.indexOf("<hr>");
-							var episodes = httpResponse.text.slice(beginChar,endChar);
-							var series_number, series_date, series_name;
-							while(beginChar!=-1){
-								beginChar = episodes.indexOf("<div")+4;
-								episodes = episodes.slice(beginChar);
-								beginChar = episodes.indexOf("<div")+4;
-								episodes = episodes.slice(beginChar);
-								beginChar = episodes.indexOf("<div")+5;
-								endChar = episodes.indexOf("</div");
-								
-								series_number = episodes.slice(beginChar, endChar).trim();
-								beginChar = episodes.indexOf("airdate")+9;
-								endChar = episodes.indexOf("</div", beginChar);
-								series_date = episodes.slice(beginChar, endChar).trim();
-								beginChar = episodes.indexOf("title=")+7;
-								endChar = episodes.indexOf("itemprop", beginChar)-2;
-								series_name = episodes.slice(beginChar, endChar).trim();
-								beginChar = episodes.indexOf("list_item");
-								if(beginChar !=-1) episodes = episodes.slice(beginChar);
-								console.log(series_number+"; "+series_date+"; "+series_name);
-								res_str += series_number+"+;+"+series_date+"+;+"+series_name+":::";
-							}
-							response.success(res_str);
-						}
-						else console.log("we've got empty response")
-					},
-					error: function(httpResponse){
-						console.error("response code: "+httpResponse.status);
-					}
-				});
-			}		
-		},
-
-		error: function(error) {
-			// error is an instance of Parse.Error.
-		}
-	});
+    var series = Parse.Object.extend("Series");
+    var query = new Parse.Query(series);
+    query.equalTo("imdbId", request.params.imdbId);
+    query.find({
+        success: function(results) {             
+            if(results.length == 1){
+                var url = "https://api.themoviedb.org/3/find/"+request.params.imdbId+"?external_source=imdb_id&api_key=6ad01c833dba757c5132002b79e99751";
+				console.log(url);
+                Parse.Cloud.httpRequest({
+                    url: url,
+                    success:function(httpResponse){
+                        if(httpResponse!=null && typeof(httpResponse)!='undefined'){
+							var id = httpResponse.tv_results[0].id;
+							url = "https://api.themoviedb.org/3/tv/"+id+"/season/1?api_key=6ad01c833dba757c5132002b79e99751";
+							Parse.Cloud.httpRequest({
+								url: url,
+								success:function(httpResponse1){
+									var res_str = "";
+									if(httpResponse1!=null && typeof(httpResponse1)!='undefined'){
+										var series_number, series_date, series_name;
+										for(var i = 0; i<httpResponse1.episodes.length; i++){
+											series_name = httpResponse1.episodes[i].name;
+											series_date = httpResponse1.episodes[i].air_date;
+											series_number = httpResponse1.episodes[i].episode_number;
+											
+											console.log(series_number+"; "+series_date+"; "+series_name);
+											res_str += series_number+"+;+"+series_date+"+;+"+series_name+":::";
+										}
+										response.success(res_str);
+										
+									} else console.log("we've got empty response");
+								},
+								error: function(httpResponse1){
+									console.error("response code: "+httpResponse1.status);
+								}
+							});
+							
+						} else console.log("we've got empty response");
+                    },
+                    error: function(httpResponse){
+                        console.error("response code: "+httpResponse.status);
+                    }
+                });
+            }       
+        },
+ 
+        error: function(error) {
+            // error is an instance of Parse.Error.
+        }
+    });
 });
 
 

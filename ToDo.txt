@@ -1,0 +1,10 @@
+Settings:
+	the first day of a week
+	
+Series
+	user adds, deletes series, no parse.com at all
+	backup
+	restore
+	
+ContentProvider
+	for update, delete where statements

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+	xmlns:xliff="http://schemas.android.com/tools/auto-res">
+    <string name="watchlist">Список</string>
+	<string name="app_caption">Календарь сериалов</string>
+	<string name="calendar">Календарь</string>
+	<string name="series">Сериалы</string>
+
+	<string name="action_make_backup">Сделать резервную копию</string>
+	<string name="action_restore">Восстановить</string>
+    <string name="action_update_series">Обновить список сериалов</string>
+    <string name="action_update_episodes">Обновить серии</string>
+    <string name="action_only_seen">Несмотренные серии</string>
+    <string name="action_all">Все серии</string>
+
+    <string name="action_search">Поиск</string>
+	<string name="slist_updated">Список сериалов обновлен</string>
+	<string name="episodes_deleted">Серии удалены</string>
+	<string name="are_updated">\u0020обновлено</string>
+
+	<string name="DELETE">Удалить</string>
+	<string name="OK">Ok</string>
+	<string name="ADD">Добавить</string>
+	<string name="add_series_title">Добавить сериал</string>
+	<string name="add_episode_title">Добавить серию</string>
+
+	<string-array name="weekDays">
+	    <item>Пн</item>
+	    <item>Вт</item>
+	    <item>Ср</item>
+	    <item>Чт</item>
+	    <item>Пт</item>
+	    <item>Сб</item>
+	    <item>Вс</item>
+	</string-array>
+
+</resources>

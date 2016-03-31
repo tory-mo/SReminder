@@ -1,54 +1,71 @@
 package sremind.torymo.by;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.database.Cursor;
+import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
-import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
+import sremind.torymo.by.data.SReminderContract;
+import sremind.torymo.by.data.SReminderContract.EpisodeEntry;
+import sremind.torymo.by.data.SReminderContract.SeriesEntry;
 
 public class CalendarAdapter extends BaseAdapter {
 
-static final int FIRST_DAY_OF_WEEK =1; // Sunday = 0, Monday = 1
-	
-	
-	private Context mContext;
+	public static final String[] EPISODES_COLUMNS = {
+			EpisodeEntry.TABLE_NAME + "." + EpisodeEntry._ID,
+			EpisodeEntry.COLUMN_DATE,
+			EpisodeEntry.TABLE_NAME + "." +EpisodeEntry.COLUMN_NAME,
+			EpisodeEntry.COLUMN_NUMBER,
+			SeriesEntry.TABLE_NAME + "." + SeriesEntry.COLUMN_NAME
+	};
+	public static final int COL_EPISODE_ID = 0;
+	public static final int COL_EPISODE_DATE = 1;
+	public static final int COL_EPISODE_NAME = 2;
+	public static final int COL_EPISODE_NUMBER = 3;
+	public static final int COL_EPISODE_SERIES_ID = 4;
 
-    private java.util.Calendar month;
-    private Calendar selectedDate;
-    private ArrayList<String> items;
-    private SReminderDatabase database;
-    ArrayList<Date> datesOfEpisodes;
+	static final int FIRST_DAY_OF_WEEK = 1; // Sunday = 0, Monday = 1
+	private static final String EP_NAME = "epname";
+	private static final String EP_SER = "epser";
+
+	private Context mContext;
+    private Calendar mChosenMonth;
+
+	// references to our items
+	public CalDay[] mDaysOfMonth;
+
+	class CalDay{
+		String day;
+		boolean event;
+	}
     
-    public CalendarAdapter(Context c, Calendar monthCalendar) {
-    	database = new SReminderDatabase(c);
-    	datesOfEpisodes = new ArrayList<Date>();
-    	month = monthCalendar;
-    	selectedDate = (Calendar)monthCalendar.clone();
-    	mContext = c;
-        month.set(Calendar.DAY_OF_MONTH, 1);
-        this.items = new ArrayList<String>();
-        refreshDays();
+    public CalendarAdapter(Context context, Calendar monthCalendar) {
+		mContext = context;
+
+		mChosenMonth = monthCalendar;
+		mChosenMonth.set(Calendar.HOUR_OF_DAY, 0);
+		mChosenMonth.set(Calendar.MINUTE, 0);
+		mChosenMonth.set(Calendar.SECOND, 0);
+		mChosenMonth.set(Calendar.MILLISECOND, 0);
+		mDaysOfMonth = new CalDay[0];
+
+		//refreshDays should be invoked manually after constructor
     }
-    
-    public void setItems(ArrayList<String> items) {
-    	for(int i = 0;i != items.size();i++){
-    		if(items.get(i).length()==1) {
-    		items.set(i, "0" + items.get(i));
-    		}
-    	}
-    	this.items = items;
-    }
-    
 
     public int getCount() {
-        return days.length;
+        return mDaysOfMonth.length;
     }
 
     public Object getItem(int position) {
@@ -60,128 +77,157 @@ static final int FIRST_DAY_OF_WEEK =1; // Sunday = 0, Monday = 1
     }
 
     // create a new view for each item referenced by the Adapter
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View v = convertView;
+    public View getView(int position, View convertView, ViewGroup viewGroup) {
     	TextView dayView;
-        if (convertView == null) {  // if it's not recycled, initialize some attributes
-        	LayoutInflater vi = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.day, null);
-        	
-        }
-        dayView = (TextView)v.findViewById(R.id.date);
-        dayView.setTextColor(mContext.getResources().getColor(R.color.text_secondary));
+		CalDay currDay = mDaysOfMonth[position];
+
+		convertView = LayoutInflater.from(mContext).inflate(R.layout.day, viewGroup, false);
+        dayView = (TextView)convertView.findViewById(R.id.date);
         
         // disable empty days from the beginning
-        if(days[position].equals("")) {
+        if(currDay.day.equals("")) {
         	dayView.setClickable(false);
         	dayView.setFocusable(false);
         }
         else {
         	// mark current day as focused
-        	if(month.get(Calendar.YEAR)== selectedDate.get(Calendar.YEAR) && month.get(Calendar.MONTH)== selectedDate.get(Calendar.MONTH) && days[position].day.equals(""+selectedDate.get(Calendar.DAY_OF_MONTH))) {
-        		//v.setBackgroundColor(mContext.getResources().getColor(R.color.current_day));
-				GradientDrawable gd = new GradientDrawable();
-				if(days[position].event){
-					gd.setColor(mContext.getResources().getColor(R.color.primary));
-					dayView.setTextColor(mContext.getResources().getColor(R.color.ordinary_day));
-				}
-				else
-					gd.setColor(mContext.getResources().getColor(R.color.ordinary_day)); // Changes this drawbale to use a single color instead of a gradient
+			Calendar today = Calendar.getInstance();
+			today.set(Calendar.HOUR_OF_DAY, 0);
+			today.set(Calendar.MINUTE, 0);
+			today.set(Calendar.SECOND, 0);
+			today.set(Calendar.MILLISECOND, 0);
+			mChosenMonth.set(Calendar.DATE, Integer.valueOf(currDay.day));
+			GradientDrawable gd = new GradientDrawable();
+        	if(mChosenMonth.compareTo(today)==0) {
 				gd.setStroke(3, mContext.getResources().getColor(R.color.accent));
-				v.setBackgroundDrawable(gd);
-        		//v.setBackgroundResource(R.drawable.item_background_focused);
         	}
-			else if(days[position].event){
-        		v.setBackgroundColor(mContext.getResources().getColor(R.color.primary));
+			if(currDay.event){
+				gd.setColor(mContext.getResources().getColor(R.color.primary));
         		dayView.setTextColor(mContext.getResources().getColor(R.color.ordinary_day));
-        		/*dayView.setOnClickListener(new OnClickListener() {  
+
+				convertView.setOnClickListener(new View.OnClickListener() {
         	        public void onClick(View v)
-        	            {
-        	                //perform action
-        	            }
-        	         });*/
+					{
+						TextView date = (TextView)v.findViewById(R.id.date);
+						if(date != null) {
+							String day = date.getText().toString();
+							mChosenMonth.set(Calendar.DATE,Integer.valueOf(day));
+							showEpisodesForDay(mChosenMonth.getTime());
+						}
+					}
+				});
         	}
         	else {
-        		v.setBackgroundColor(mContext.getResources().getColor(R.color.ordinary_day));
-        		//v.setBackgroundResource(R.drawable.list_item_background);
+				gd.setColor(mContext.getResources().getColor(R.color.ordinary_day));
         	}
+			convertView.setBackgroundDrawable(gd);
         	
         }
-        dayView.setText(days[position].day);
-        
-        // create date string for comparison
-        String date = days[position].day;
-    	
-        if(date.length()==1) {
-    		date = "0"+date;
-    	}
-    	String monthStr = ""+(month.get(Calendar.MONTH)+1);
-    	if(monthStr.length()==1) {
-    		monthStr = "0"+monthStr;
-    	}
-        return v;
+        dayView.setText(currDay.day);
+
+        return convertView;
     }
     
     public void refreshDays()
     {
-    	// clear items
-    	items.clear();
-    	int lastDay = month.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int firstDay = (int)month.get(Calendar.DAY_OF_WEEK);
-        int year = month.get(Calendar.YEAR)-1900;
-        int curr_month = month.get(Calendar.MONTH);
-        datesOfEpisodes = database.getDatesInPeriod(new Date(year, curr_month,1), new Date(year, curr_month,lastDay), CalendarFragment.onlySeen);
-        int cnt = datesOfEpisodes.size();
-        // figure size of the array
-        if(firstDay==1){
-        	days = new CalDay[lastDay+(FIRST_DAY_OF_WEEK*6)];
-        }
-        else {
-        	days = new CalDay[lastDay+firstDay-(FIRST_DAY_OF_WEEK+1)];
-        }
-        
-        int j=FIRST_DAY_OF_WEEK;
-        for(int i=j-1;i<days.length;i++) {
-        	days[i] = new CalDay();
-        }
-        // populate empty days before first real day
-        if(firstDay>1) {
-	        for(j=0;j<firstDay-FIRST_DAY_OF_WEEK;j++) {
-	        	days[j].day = "";
-	        }
-        }
-	    else {
-	    	for(j=0;j<FIRST_DAY_OF_WEEK*6;j++) {
-	        	days[j].day = "";
-	        }
-	    	j=FIRST_DAY_OF_WEEK*6+1; // sunday => 1, monday => 7
-	    }
-        
-        // populate days
+		mChosenMonth.set(Calendar.DATE,1);
+		Date startDate = mChosenMonth.getTime();
+		int lastDay = mChosenMonth.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int firstDay = mChosenMonth.get(Calendar.DAY_OF_WEEK)-1-FIRST_DAY_OF_WEEK;//convert to start with zero
+		if(firstDay<0)firstDay = 6;
+		int lastWeekNum = mChosenMonth.getActualMaximum(Calendar.WEEK_OF_MONTH);
+
+
+		mChosenMonth.set(Calendar.DATE,lastDay);
+		Date endDate = mChosenMonth.getTime();
+
+
+
+		mDaysOfMonth = new CalDay[lastWeekNum*7];
+		for(int i = 0; i < mDaysOfMonth.length; i++) {
+			mDaysOfMonth[i] = new CalDay();
+			mDaysOfMonth[i].day = "";
+		}
+
+		Uri uri;
+		if(Utility.getSeenParam(mContext)){
+			uri = EpisodeEntry.buildEpisodesBetweenDatesUnseenUri(startDate, endDate);
+		}else {
+			uri = SReminderContract.EpisodeEntry.buildEpisodesBetweenDatesUri(startDate, endDate);
+		}
+		Cursor cursor = mContext.getContentResolver().query(
+				uri,
+				EPISODES_COLUMNS,
+				null,
+				null,
+				null
+		);
+
+		ArrayList<Date> datesOfEpisodes = new ArrayList<>();
+		if(cursor!=null) {
+			while (cursor.moveToNext()) {
+				long date = cursor.getLong(COL_EPISODE_DATE);
+				datesOfEpisodes.add(Utility.getCalendarFromFormattedLong(date));
+			}
+			cursor.close();
+		}
+
+
         int dayNumber = 1;
-        for(int i=j-1;i<days.length;i++) {
-        	days[i].day = ""+dayNumber;
-        	days[i].event = false;
-        	if(datesOfEpisodes.size()>0){
-        		cnt = datesOfEpisodes.size();
-        		for(int k = 0; k<cnt; k++){
-        			if(datesOfEpisodes.get(k).getDate()==dayNumber){
-        				days[i].event = true;
-        				datesOfEpisodes.remove(k);
-        				break;
-        			}
-        		}
-        	}
+        for(int i = firstDay; i < (lastDay+firstDay); i++) {
+			mDaysOfMonth[i].day = "" + dayNumber;
+			mDaysOfMonth[i].event = false;
+			for(int k = 0; k < datesOfEpisodes.size(); k++){
+				if(datesOfEpisodes.get(k).getDate() == dayNumber){
+					mDaysOfMonth[i].event = true;
+					datesOfEpisodes.remove(k);
+					break;
+				}
+			}
         	dayNumber++;
         }
     }
 
-    // references to our items
-    public CalDay[] days;
-    
-    class CalDay{
-    	String day;
-    	boolean event;
-    }
+	private void showEpisodesForDay(Date touchedDate){
+		ArrayList<HashMap<String, Object>> episodesForDateList = new ArrayList<>();
+		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		builder.setCancelable(true);
+		SimpleAdapter episodesForDayAdapter = new SimpleAdapter(mContext,
+				episodesForDateList,
+				R.layout.episodes,
+				new String[]{EP_NAME,EP_SER	},
+				new int[]{R.id.tvName, R.id.tvDate}
+		);
 
+		builder.setAdapter(episodesForDayAdapter, null);
+		AlertDialog dialog = builder.create();
+		dialog.show();
+
+		HashMap<String, Object> hm;
+
+		Uri uri;
+
+		if(Utility.getSeenParam(mContext)){
+			uri = EpisodeEntry.buildEpisodesForDateUnseenUri(touchedDate);
+		}else {
+			uri = EpisodeEntry.buildEpisodesForDateUri(touchedDate);
+		}
+
+		Cursor cursor = mContext.getContentResolver().query(
+				uri,
+				EPISODES_COLUMNS,
+				null,
+				null,
+				null);
+		episodesForDateList.clear();
+		if(cursor!=null) {
+			while (cursor.moveToNext()) {
+				hm = new HashMap<>();
+				hm.put(EP_NAME, cursor.getString(COL_EPISODE_NAME));
+				hm.put(EP_SER, cursor.getString(COL_EPISODE_NUMBER) + "; " + cursor.getString(COL_EPISODE_SERIES_ID));
+				episodesForDateList.add(hm);
+			}
+			cursor.close();
+		}
+	}
 }

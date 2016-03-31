@@ -4,9 +4,6 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="23" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -35,13 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="sremind.torymo.by.EpisodesActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-             >
-        </activity>
-        
+
         <service android:name="com.parse.PushService" />
 		<receiver android:name="com.parse.ParseBroadcastReceiver">
 		  <intent-filter>
@@ -49,15 +40,15 @@
 		    <action android:name="android.intent.action.USER_PRESENT" />
 		  </intent-filter>
 		</receiver>
-		<receiver android:name="sremind.torymo.by.SeriesReciever"
-		    android:exported="false">
-		  <intent-filter>
-		    <action android:name="com.parse.push.intent.RECEIVE" />
-		    <action android:name="com.parse.push.intent.DELETE" />
-		    <action android:name="com.parse.push.intent.OPEN" />
-		    </intent-filter>
-		</receiver>
-		<receiver android:name="com.parse.GcmBroadcastReceiver"
+        <receiver android:name="sremind.torymo.by.SeriesReciever"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.parse.GcmBroadcastReceiver"
 		    android:permission="com.google.android.c2dm.permission.SEND">
 		  <intent-filter>
 		    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -66,6 +57,14 @@
 		  </intent-filter>
 		</receiver>
 		<meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/parse_icon"/>
+		<provider
+			android:authorities="by.torymo.sremind.app"
+			android:name=".data.SReminderProvider"/>
+		<activity android:name=".EpisodeListActivity"
+            android:theme="@style/AppTheme"
+			android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+        <service android:name=".service.EpisodesService"/>
     </application>
 
 </manifest>

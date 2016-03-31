@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">Series Reminder</string>
+<resources
+	xmlns:xliff="http://schemas.android.com/tools/auto-res">
+    <string name="app_name">Series Calendar</string>
+    <string name="app_caption">Series Calendar</string>
     <string name="watchlist">Watchlist</string>
 	<string name="calendar">Calendar</string>
 	<string name="series">Series</string>
@@ -14,14 +16,20 @@
 
     <string name="action_search">Search</string>
 	<string name="slist_updated">Series list is updated</string>
+	<string name="episodes_deleted">Episodes are deleted</string>
+	<string name="are_updated">\u0020are updated</string>
 
 	<string name="DELETE">Delete</string>
 	<string name="OK">Ok</string>
-	<string name="NAME">Name</string>
+	<string name="NAME" translatable="false">Name</string>
 	<string name="ADD">Add</string>
 	<string name="add_series_title">Add series</string>
 	<string name="add_episode_title">Add episode</string>
-	
+
+	<string name="format_episode_info">%1$s; %2$f.%3$f.%4$f</string>
+	<string name="format_episode_info1">%1$s; %2$s</string>
+	<string name="format_episode_number" translatable="false">S%1$s, E%2$s</string>
+
 	<string-array name="weekDays">
 	    <item>Mo</item>
 	    <item>Tu</item>
@@ -31,4 +39,5 @@
 	    <item>Sa</item>
 	    <item>Su</item>
 	</string-array>
+
 </resources>

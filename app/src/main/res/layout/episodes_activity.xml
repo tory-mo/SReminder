@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/episodesToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        />
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment_episodes"
+        android:name="sremind.torymo.by.EpisodeListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="sremind.torymo.by.EpisodeListFragment"
+        tools:layout="@android:layout/list_content" />
+</LinearLayout>
+
