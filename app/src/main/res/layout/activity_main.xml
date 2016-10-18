@@ -2,19 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/current_day"
-    android:fitsSystemWindows="true"
     >
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        />
     <io.karim.MaterialTabs
         android:id="@+id/material_tabs"
         android:layout_width="match_parent"
@@ -25,16 +16,16 @@
         app:mtIndicatorColor="@color/accent"
         app:mtIndicatorHeight="3dp"
         app:mtTextAllCaps="true"
-        app:mtMrlRippleColor="@color/text_secondary"
-        app:mtMrlRippleHighlightColor="@color/text_primary"
-        app:mtMrlRippleAlpha="0.2"
-        app:mtMrlRippleDuration="250"
+        app:mtMrlRippleColor="@color/accent"
+        app:mtMrlRippleHighlightColor="@color/accent"
+        app:mtMrlRippleAlpha="0.1"
+        app:mtMrlRippleDuration="5"
         app:mtMrlRippleDelayClick="false"
-        app:mtMrlRippleDiameter="20dp"
-        app:mtMrlRippleFadeDuration="100"
-        app:mtMrlRippleOverlay="false"
+        app:mtMrlRippleDiameter="50dp"
+        app:mtMrlRippleFadeDuration="10"
+        app:mtMrlRippleOverlay="true"
         app:mtMrlRipplePersistent="false"
-        app:mtMrlRippleRoundedCorners="0dp"
+        app:mtMrlRippleRoundedCorners="11dp"
         />
 
     <android.support.v4.view.ViewPager

@@ -5,6 +5,8 @@
 	<string name="app_caption">Календарь сериалов</string>
 	<string name="calendar">Календарь</string>
 	<string name="series">Сериалы</string>
+	<string name="episodes">Серии</string>
+	<string name="overview">Инфо</string>
 
 	<string name="action_make_backup">Сделать резервную копию</string>
 	<string name="action_restore">Восстановить</string>
@@ -12,6 +14,7 @@
     <string name="action_update_episodes">Обновить серии</string>
     <string name="action_only_seen">Несмотренные серии</string>
     <string name="action_all">Все серии</string>
+	<string name="today">Сегодня</string>
 
     <string name="action_search">Поиск</string>
 	<string name="slist_updated">Список сериалов обновлен</string>
@@ -22,7 +25,19 @@
 	<string name="OK">Ok</string>
 	<string name="ADD">Добавить</string>
 	<string name="add_series_title">Добавить сериал</string>
+	<string name="delete_series_title">Удалить сериал</string>
 	<string name="add_episode_title">Добавить серию</string>
+
+	<string name="format_first_date" translatable="true"><b>Первый выпуск:</b> %1$s</string>
+	<string name="format_seasons" translatable="true"><b>Cезонов:</b> %1$s</string>
+	<string name="format_episode_time" translatable="true"><b>Длительность серии:</b> %1$s мин.</string>
+	<string name="format_homepage" translatable="true"><b>Домашняя страница:</b> %1$s</string>
+	<string name="format_overview" translatable="true"><b>Описание:</b>  %1$s</string>
+	<string name="format_ongoing" translatable="true"><b>Статус:</b> %1$s</string>
+	<string name="format_genres" translatable="true"><b>Жанр:</b> %1$s</string>
+
+	<string name="format_ongoing_true" translatable="true">Выходит</string>
+	<string name="format_ongoing_false" translatable="true">Завершен</string>
 
 	<string-array name="weekDays">
 	    <item>Пн</item>

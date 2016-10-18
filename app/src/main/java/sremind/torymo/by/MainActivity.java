@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import sremind.torymo.by.service.EpisodesService;
 
 public class MainActivity extends AppCompatActivity implements SeriesFragment.Callback{
 
-	Toolbar mToolbar;
 	MaterialTabs mMaterialTabs;
 	ViewPager mViewPager;
 
@@ -34,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements SeriesFragment.Ca
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mToolbar = (Toolbar)findViewById(R.id.toolbar);
 		mMaterialTabs = (MaterialTabs)findViewById(R.id.material_tabs);
 		mViewPager = (ViewPager)findViewById(R.id.view_pager);
 
@@ -42,9 +39,9 @@ public class MainActivity extends AppCompatActivity implements SeriesFragment.Ca
 		mViewPager.setAdapter(adapter);
 
 		mMaterialTabs.setViewPager(mViewPager);
-		mToolbar.setTitle(getString(R.string.app_caption));
 
-		setSupportActionBar(mToolbar);
+		getSupportActionBar().setTitle(getString(R.string.app_caption));
+		getSupportActionBar().setElevation(0f);
 
 		mBroadcastReceiver = new SReminderServicesBroadcastReceiver();
 	}

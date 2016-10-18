@@ -18,20 +18,28 @@ public class SReminderProvider extends ContentProvider {
     static final int EPISODES_BETWEEN_DATES_UNSEEN = 105;
     static final int EPISODES_WITH_DATE = 104;
     static final int EPISODES_WITH_DATE_UNSEEN = 106;
+
     static final int SERIES = 300;
     static final int SERIES_WITH_IMDB = 301;
     static final int SERIES_WATCHLIST = 302;
+    static final int SERIES_WITH_MDBID = 303;
+
+    static final int SEARCH_RESULT = 200;
+    static final int SEARCH_RESULT_ID = 201;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private SReminderDbHelper mOpenHelper;
 
     private static final SQLiteQueryBuilder sEpisodesBySeriesQueryBuilder;
     private static final SQLiteQueryBuilder sSeries;
+    private static final SQLiteQueryBuilder sSearchResult;
 
     static{
         sEpisodesBySeriesQueryBuilder = new SQLiteQueryBuilder();
         sSeries = new SQLiteQueryBuilder();
+        sSearchResult = new SQLiteQueryBuilder();
         sSeries.setTables(SReminderContract.SeriesEntry.TABLE_NAME);
+        sSearchResult.setTables(SReminderContract.SearchResultEntry.TABLE_NAME);
 
         //This is an inner join which looks like
         //weather INNER JOIN location ON weather.location_id = location._id
@@ -63,22 +71,22 @@ public class SReminderProvider extends ContentProvider {
 //                retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
 //                break;
 //            }
-                // "episodes/series/*"
+                // "episode_list_item/series/*"
                 case EPISODE_WITH_SERIES: {
                     retCursor = getEpisodesForSeries(uri, projection, sortOrder);
                     break;
                 }
-                // "episodes/date/*/*"
+                // "episode_list_item/date/*/*"
                 case EPISODES_BETWEEN_DATES: {
                     retCursor = getEpisodesBetweenDates(uri, projection, sortOrder);
                     break;
                 }
-                // "episodes/date/*"
+                // "episode_list_item/date/*"
                 case EPISODES_WITH_DATE: {
                     retCursor = getEpisodesForDate(uri, projection, sortOrder);
                     break;
                 }
-                // "episodes"
+                // "episode_list_item"
                 case EPISODES: {
                     retCursor = mOpenHelper.getReadableDatabase().query(
                             SReminderContract.EpisodeEntry.TABLE_NAME,
@@ -114,7 +122,29 @@ public class SReminderProvider extends ContentProvider {
                     retCursor = getSeriesImdbId(uri, projection, sortOrder);
                     break;
                 }
-
+                // "series/mbdbid/*"
+                case SERIES_WITH_MDBID: {
+                    retCursor = getSeriesMBDBId(uri, projection, sortOrder);
+                    break;
+                }
+                // "searchResult"
+                case SEARCH_RESULT: {
+                    retCursor = mOpenHelper.getReadableDatabase().query(
+                            SReminderContract.SearchResultEntry.TABLE_NAME,
+                            projection,
+                            selection,
+                            selectionArgs,
+                            null,
+                            null,
+                            sortOrder
+                    );
+                    break;
+                }
+                // "searchResult/*"
+                case SEARCH_RESULT_ID: {
+                    retCursor = getSearchResultId(uri, projection, sortOrder);
+                    break;
+                }
                 default:
                     throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
@@ -253,6 +283,48 @@ public class SReminderProvider extends ContentProvider {
                 sortOrder
         );
     }
+    private Cursor getSeriesMBDBId(Uri uri, String[] projection, String sortOrder) {
+        String[] selectionArgs;
+        String selection;
+
+        String sLocationSettingSelection =
+                SReminderContract.SeriesEntry.TABLE_NAME+
+                        "." + SReminderContract.SeriesEntry.COLUMN_MDBID + " = ? ";
+        String mdbid = SReminderContract.SeriesEntry.getImdbIdFromUri(uri);
+
+        selection = sLocationSettingSelection;
+        selectionArgs = new String[]{mdbid};
+
+        return sSeries.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+    }
+    private Cursor getSearchResultId(Uri uri, String[] projection, String sortOrder) {
+        String[] selectionArgs;
+        String selection;
+
+        String sLocationSettingSelection =
+                SReminderContract.SearchResultEntry.TABLE_NAME+
+                        "." + SReminderContract.SearchResultEntry.COLUMN_ID + " = ? ";
+        String id = SReminderContract.SearchResultEntry.getIdfromUri(uri);
+
+        selection = sLocationSettingSelection;
+        selectionArgs = new String[]{id};
+
+        return sSearchResult.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+    }
 
     @Nullable
     @Override
@@ -268,7 +340,11 @@ public class SReminderProvider extends ContentProvider {
                 return SReminderContract.EpisodeEntry.CONTENT_TYPE;
             case SERIES:
             case SERIES_WITH_IMDB:
+            case SERIES_WITH_MDBID:
                 return SReminderContract.SeriesEntry.CONTENT_TYPE;
+            case SEARCH_RESULT:
+            case SEARCH_RESULT_ID:
+                return  SReminderContract.SearchResultEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -299,6 +375,14 @@ public class SReminderProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
+            case SEARCH_RESULT: {
+                long _id = db.insert(SReminderContract.SearchResultEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = SReminderContract.SearchResultEntry.buildSearchResultUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -319,6 +403,10 @@ public class SReminderProvider extends ContentProvider {
             }
             case SERIES: {
                 rowsDeleted = db.delete(SReminderContract.SeriesEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            }
+            case SEARCH_RESULT: {
+                rowsDeleted = db.delete(SReminderContract.SearchResultEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             }
             default:
@@ -345,6 +433,11 @@ public class SReminderProvider extends ContentProvider {
             }
             case SERIES: {
                 rowsUpdated = db.update(SReminderContract.SeriesEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            }
+            case SEARCH_RESULT:
+            case SEARCH_RESULT_ID:{
+                rowsUpdated = db.update(SReminderContract.SearchResultEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             }
             default:
@@ -394,6 +487,21 @@ public class SReminderProvider extends ContentProvider {
                 }
                 getContext().getContentResolver().notifyChange(uri, null);
                 return returnCount;
+            case SEARCH_RESULT:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(SReminderContract.SearchResultEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
             default:
                 return super.bulkInsert(uri, values);
         }
@@ -419,7 +527,11 @@ public class SReminderProvider extends ContentProvider {
 
         matcher.addURI(authority,SReminderContract.PATH_SERIES,SERIES);
         matcher.addURI(authority,SReminderContract.PATH_SERIES+"/"+ SReminderContract.SeriesEntry.COLUMN_IMDB_ID+"/*",SERIES_WITH_IMDB);
+        matcher.addURI(authority,SReminderContract.PATH_SERIES+"/"+ SReminderContract.SeriesEntry.COLUMN_MDBID+"/*",SERIES_WITH_MDBID);
         matcher.addURI(authority,SReminderContract.PATH_SERIES+"/"+ SReminderContract.SeriesEntry.COLUMN_WATCHLIST+"",SERIES_WATCHLIST);
+
+        matcher.addURI(authority,SReminderContract.PATH_SEARCH_RESULT, SEARCH_RESULT);
+        matcher.addURI(authority,SReminderContract.PATH_SEARCH_RESULT+"/*", SEARCH_RESULT_ID);
         return matcher;
     }
 }

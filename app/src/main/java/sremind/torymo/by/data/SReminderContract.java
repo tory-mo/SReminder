@@ -17,17 +17,22 @@ public class SReminderContract {
 
     public static final String PATH_SERIES = "Series";
     public static final String PATH_EPISODES = "Episodes";
+    public static final String PATH_SEARCH_RESULT = "SearchResult";
 
     public static final String[] SERIES_COLUMNS = {
             SeriesEntry.TABLE_NAME + "." + SeriesEntry._ID,
             SeriesEntry.TABLE_NAME + "." + SeriesEntry.COLUMN_NAME,
             SeriesEntry.COLUMN_IMDB_ID,
-            SeriesEntry.COLUMN_WATCHLIST
+            SeriesEntry.COLUMN_WATCHLIST,
+            SeriesEntry.COLUMN_MDBID,
+            SeriesEntry.COLUMN_POSTER
     };
     public static final int COL_SERIES_ID = 0;
     public static final int COL_SERIES_NAME = 1;
     public static final int COL_SERIES_IMDB_ID = 2;
     public static final int COL_SERIES_WATCHLIST = 3;
+    public static final int COL_SERIES_MDBID = 4;
+    public static final int COL_SERIES_POSTER = 5;
 
     public static final String[] EPISODES_COLUMNS = {
             EpisodeEntry.TABLE_NAME + "." + EpisodeEntry._ID,
@@ -44,21 +49,43 @@ public class SReminderContract {
     public static final int COL_EPISODE_SEEN = 4;
     public static final int COL_EPISODE_SERIES_ID = 5;
 
+    public static final String[] SEARCH_RESULT_COLUMNS = {
+            SearchResultEntry.TABLE_NAME + "." + SearchResultEntry._ID,
+            SearchResultEntry.TABLE_NAME + "." +SearchResultEntry.COLUMN_NAME,
+            SearchResultEntry.COLUMN_ID,
+            SearchResultEntry.COLUMN_OVERVIEW,
+            SearchResultEntry.COLUMN_POSTER,
+            SearchResultEntry.COLUMN_FIRST_DATE,
+            SearchResultEntry.COLUMN_HOMEPAGE,
+            SearchResultEntry.COLUMN_ONGOING,
+            SearchResultEntry.COLUMN_SEASONS,
+            SearchResultEntry.COLUMN_EPISODE_TIME,
+            SearchResultEntry.COLUMN_GENRES,
+            SearchResultEntry.COLUMN_IMDB,
+            SearchResultEntry.COLUMN_POPULARITY
+    };
+    public static final int COL_SEARCH_RESULT_ID = 0;
+    public static final int COL_SEARCH_RESULT_NAME = 1;
+    public static final int COL_SEARCH_RESULT_MDBID = 2;
+    public static final int COL_SEARCH_RESULT_OVERVIEW = 3;
+    public static final int COL_SEARCH_RESULT_POSTER = 4;
+    public static final int COL_SEARCH_RESULT_FIRST_DATE = 5;
+    public static final int COL_SEARCH_RESULT_HOMEPAGE = 6;
+    public static final int COL_SEARCH_RESULT_ONGOING = 7;
+    public static final int COL_SEARCH_RESULT_SEASONS = 8;
+    public static final int COL_SEARCH_RESULT_EPISODETIME = 9;
+    public static final int COL_SEARCH_RESULT_GENRES = 10;
+    public static final int COL_SEARCH_RESULT_IMDB = 11;
+    public static final int COL_SEARCH_RESULT_POPULARITY = 12;
+
     public static final class SeriesEntry implements BaseColumns {
         public static final String TABLE_NAME = PATH_SERIES;
 
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_IMDB_ID = "imdbid";
         public static final String COLUMN_WATCHLIST = "watchlist";
-
-//        static {
-//            TABLE_NAME = PATH_SERIES;
-//
-//            COLUMN_NAME = "name";
-//            COLUMN_IMDB_ID = "imdbid";
-//            COLUMN_WATCHLIST = "watchlist";
-//        }
-
+        public static final String COLUMN_MDBID = "mdbid";
+        public static final String COLUMN_POSTER = "poster";
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_SERIES).build();
@@ -78,6 +105,9 @@ public class SReminderContract {
         public static Uri buildSeriesByImdbId(String imdbId){
             return CONTENT_URI.buildUpon().appendPath(COLUMN_IMDB_ID).appendPath(imdbId).build();
         }
+        public static Uri buildSeriesBymdbId(String mdbId){
+            return CONTENT_URI.buildUpon().appendPath(COLUMN_MDBID).appendPath(mdbId).build();
+        }
 
         public static String getImdbIdFromUri(Uri uri){
             return uri.getPathSegments().get(2);
@@ -85,7 +115,6 @@ public class SReminderContract {
 
     }
 
-    /* Inner class that defines the table contents of the weather table */
     public static final class EpisodeEntry implements BaseColumns {
         public static final String TABLE_NAME = PATH_EPISODES;
         public static final String COLUMN_NAME = "name";
@@ -93,14 +122,6 @@ public class SReminderContract {
         public static final String COLUMN_SERIES_ID = "series";
         public static final String COLUMN_NUMBER = "ep_number";
         public static final String COLUMN_SEEN = "seen";
-//        static{
-//            TABLE_NAME = PATH_EPISODES;
-//            COLUMN_NAME = "name";
-//            COLUMN_DATE = "date";
-//            COLUMN_SERIES_ID = "series";
-//            COLUMN_NUMBER = "ep_number";
-//            COLUMN_SEEN = "seen";
-//        }
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_EPISODES).build();
@@ -199,5 +220,43 @@ public class SReminderContract {
             else
                 return 0;
         }*/
+    }
+
+    public static final class SearchResultEntry implements BaseColumns {
+        public static final String TABLE_NAME = PATH_SEARCH_RESULT;
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_IMDB = "imdbid";
+        public static final String COLUMN_POSTER = "poster";
+        public static final String COLUMN_OVERVIEW = "overview";
+        public static final String COLUMN_FIRST_DATE = "firstdate";
+        public static final String COLUMN_HOMEPAGE = "homepage";
+        public static final String COLUMN_SEASONS = "seasons";
+        public static final String COLUMN_EPISODE_TIME = "episodetime";
+        public static final String COLUMN_ONGOING = "ongoing";
+        public static final String COLUMN_GENRES = "genres";
+        public static final String COLUMN_POPULARITY = "popularity";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SEARCH_RESULT).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_EPISODES;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_EPISODES;
+
+
+        public static Uri buildSearchResultUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildSearchResultId(String id) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(id).build();
+        }
+
+        public static String getIdfromUri(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
     }
 }

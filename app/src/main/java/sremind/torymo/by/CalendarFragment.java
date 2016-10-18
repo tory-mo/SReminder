@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import sremind.torymo.by.data.SReminderContract;
 import sremind.torymo.by.service.EpisodesService;
@@ -30,10 +30,10 @@ public class CalendarFragment extends Fragment{
 
 
     private static final String BACKUP_FILE = "sreminder.backup";
-    private static final String BACKUP_EPISODE = "-|-episodes-|-";
+    private static final String BACKUP_EPISODE = "-|-episode_list_item-|-";
     private static final String BACKUP_SEPAR = "-|-";
 
-    private static final SimpleDateFormat mMonthTitleFormat = new SimpleDateFormat("MMM yyyy");
+    private static final SimpleDateFormat mMonthTitleFormat = new SimpleDateFormat("MMMM yyyy");
 
     Calendar month;
 
@@ -42,7 +42,6 @@ public class CalendarFragment extends Fragment{
     GridView daysTitlesGridView;
     TextView mMonthTitle;
     ArrayAdapter<String> daysAdapter;
-    ArrayList<SReminderDatabase.Episode> episodesList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +83,7 @@ public class CalendarFragment extends Fragment{
         nextMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(month.get(Calendar.MONTH)== month.getActualMaximum(Calendar.MONTH)) {
+                if(month.get(Calendar.MONTH) == month.getActualMaximum(Calendar.MONTH)) {
                     month.set((month.get(Calendar.YEAR)+1),month.getActualMinimum(Calendar.MONTH),1);
                 } else {
                     month.set(Calendar.MONTH,month.get(Calendar.MONTH)+1);
@@ -92,6 +91,7 @@ public class CalendarFragment extends Fragment{
                 refreshCalendar();
             }
         });
+
         return rootView;
     }
 
@@ -121,7 +121,6 @@ public class CalendarFragment extends Fragment{
                         null);
                 if(cursor!=null) {
                     while (cursor.moveToNext()) {
-                        //new EpisodesUpdater(getActivity()).execute(cursor.getString(SReminderContract.COL_SERIES_IMDB_ID));
                         Intent intent = new Intent(getActivity(), EpisodesService.class);
                         intent.putExtra(EpisodesService.EPISODES_QUERY_EXTRA, cursor.getString(SReminderContract.COL_SERIES_IMDB_ID));
                         getActivity().startService(intent);
@@ -137,7 +136,7 @@ public class CalendarFragment extends Fragment{
                 return true;
 //          case R.id.action_make_backup:
 //                String separator = System.getProperty("line.separator");
-//                ArrayList<SRSeries> seriesList = database.getAllSeriesInfo();
+//                    getActivity().getContentResolver().query(all)
 //                ArrayList<SReminderDatabase.Episode> episodesList = database.getAllEpisodes();
 //                File backupFile = new File(Environment.getExternalStorageDirectory()+File.separator+BACKUP_FILE);
 //                try{
@@ -166,7 +165,7 @@ public class CalendarFragment extends Fragment{
 //                }catch(Exception e){
 //                    e.printStackTrace();
 //                }
-
+//
 //                return true;
 //            case R.id.action_restore:
 //                File backupFile1 = new File(Environment.getExternalStorageDirectory()+File.separator+BACKUP_FILE);
@@ -201,6 +200,13 @@ public class CalendarFragment extends Fragment{
         mCalendarAdapter.refreshDays();
         mCalendarAdapter.notifyDataSetChanged();
         mMonthTitle.setText(mMonthTitleFormat.format(month.getTime()));
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
+
+        mCalendarAdapter.showEpisodesForDay(today.getTime(), getActivity());
     }
 
     @Override

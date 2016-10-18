@@ -8,11 +8,11 @@
         android:id="@+id/action_update_episodes"
         android:orderInCategory="100"
         android:title="@string/action_update_episodes"/>
- <!--   <item
+   <item
         android:id="@+id/action_make_backup"
         android:orderInCategory="100"
         android:title="@string/action_make_backup"/>
-    <item
+   <!-- <item
         android:id="@+id/action_restore"
         android:orderInCategory="100"
         android:title="@string/action_restore"/>

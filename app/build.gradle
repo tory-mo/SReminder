@@ -17,7 +17,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'MOVIE_DB_API_KEY', ''
+        it.buildConfigField 'String', 'MOVIE_DB_API_KEY', '"6ad01c833dba757c5132002b79e99751"'
     }
 }
 
@@ -26,4 +26,5 @@ dependencies {
     compile files('libs/bolts-android-1.1.3.jar')
     compile files('libs/Parse-1.7.1.jar')
     compile project(':library')
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:padding="@dimen/fragment_padding"
+
+    >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/fragment_padding"
+        android:background="@color/ordinary_day"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/posterImageView"
+                android:layout_gravity="center"
+                android:padding="@dimen/fragment_padding"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_gravity="top"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/firstDateTextView"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    android:text="First Date: 06.04.2016"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/seasonsTextView"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    android:text="Seasons: 10"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/episodeTimeTextView"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    android:text="Episode time: 45"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ongoingTextView"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    android:text="Ongoing: true"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/homepageTextView"
+            android:textColor="@color/text_secondary"
+            android:textSize="20sp"
+            android:text="Home page: 06.04.2016"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/genresTextView"
+            android:textColor="@color/text_secondary"
+            android:textSize="20sp"
+            android:text="Genres: "/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/overviewTextView"
+            android:textColor="@color/text_secondary"
+            android:textSize="20sp"
+            android:text="bla bla bla bla bla"/>
+    </LinearLayout>
+</ScrollView>

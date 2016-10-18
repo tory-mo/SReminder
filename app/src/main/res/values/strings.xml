@@ -6,6 +6,8 @@
     <string name="watchlist">Watchlist</string>
 	<string name="calendar">Calendar</string>
 	<string name="series">Series</string>
+	<string name="episodes">Episodes</string>
+	<string name="overview">Overview</string>
 
 	<string name="action_make_backup">Make backup</string>
 	<string name="action_restore">Restore</string>
@@ -13,6 +15,7 @@
     <string name="action_update_episodes">Update Episodes</string>
     <string name="action_only_seen">Unseen Episodes</string>
     <string name="action_all">All Episodes</string>
+	<string name="today">Today</string>
 
     <string name="action_search">Search</string>
 	<string name="slist_updated">Series list is updated</string>
@@ -24,20 +27,32 @@
 	<string name="NAME" translatable="false">Name</string>
 	<string name="ADD">Add</string>
 	<string name="add_series_title">Add series</string>
+	<string name="delete_series_title">Delete series</string>
 	<string name="add_episode_title">Add episode</string>
 
 	<string name="format_episode_info">%1$s; %2$f.%3$f.%4$f</string>
 	<string name="format_episode_info1">%1$s; %2$s</string>
 	<string name="format_episode_number" translatable="false">S%1$s, E%2$s</string>
 
+	<string name="format_first_date" translatable="true">First date: %1$s</string>
+	<string name="format_seasons" translatable="true"><b>Seasons:</b> %1$s</string>
+	<string name="format_episode_time" translatable="true"><b>Episode time:</b> %1$s min.</string>
+	<string name="format_homepage" translatable="true"><b>Homepage:</b> %1$s</string>
+	<string name="format_overview" translatable="true"><b>Overview:</b> %1$s</string>
+	<string name="format_ongoing" translatable="true"><b>Show status:</b> %1$s</string>
+	<string name="format_genres" translatable="true"><b>Genres:</b> %1$s</string>
+
+	<string name="format_ongoing_true" translatable="true">Ongoing</string>
+	<string name="format_ongoing_false" translatable="true">Finished</string>
+
 	<string-array name="weekDays">
-	    <item>Mo</item>
-	    <item>Tu</item>
-	    <item>We</item>
-	    <item>Th</item>
-	    <item>Fr</item>
-	    <item>Sa</item>
-	    <item>Su</item>
+	    <item>M</item>
+	    <item>T</item>
+	    <item>W</item>
+	    <item>T</item>
+	    <item>F</item>
+	    <item>S</item>
+	    <item>S</item>
 	</string-array>
 
 </resources>

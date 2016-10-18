@@ -8,13 +8,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by torymo on 27.03.2016.
- */
 public class Utility {
     public static final String PACKAGE_NAME = "by.torymo.sremind";
     public static final String BROADCAST_ACTION = PACKAGE_NAME+".BROADCAST_ACTION";
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+    public static final SimpleDateFormat dateToStrFormat = new SimpleDateFormat("dd.MM.yyyy");
+
     private static final String PREF_SEEN = "pref_seen";
 
     public static Date getCalendarFromFormattedLong(long l){

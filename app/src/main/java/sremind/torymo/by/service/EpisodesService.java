@@ -32,7 +32,7 @@ public class EpisodesService extends IntentService{
     private static final String APP_NAME = "SReminder";
     final String MOVIE_DB_URL = "https://api.themoviedb.org/3/";
     public static final String EPISODES_QUERY_EXTRA = "eqe";
-    public static final String EPISODES_RESULT_EXTRA = "eqe";
+    public static final String EPISODES_RESULT_EXTRA = "ere";
 
 
     public EpisodesService() {
@@ -45,7 +45,7 @@ public class EpisodesService extends IntentService{
             return;
         }
         String imdbId = intent.getStringExtra(EPISODES_QUERY_EXTRA);
-        if(imdbId.length() == 0){
+        if(imdbId == null || imdbId.length() == 0){
             return;
         }
         try {

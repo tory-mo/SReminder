@@ -1,74 +1,99 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/current_day"
-    android:id="@+id/layoutCalendar"
-    android:padding="5dp">
-
-    <RelativeLayout
-        android:id="@+id/header"
-        android:layout_width="fill_parent"
+    android:id="@+id/layoutCalendar">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp" >
-
+        android:background="@color/ordinary_day"
+        android:orientation="vertical"
+        android:padding="@dimen/fragment_padding"
+        android:elevation="5dp">
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            >
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/fragment_padding"
+            android:paddingLeft="@dimen/fragment_padding"
+            android:paddingRight="@dimen/fragment_padding">
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left">
+                <TextView
+                    android:id="@+id/previousMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:text="&lt;"
+                    style="@style/header_style"
+                    android:textStyle="bold"
+                    android:padding="@dimen/month_controls_padding"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5">
             <TextView
-                android:id="@+id/previousMonth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:text="&lt;&lt;"
-                style="@style/header_style"
-                android:textStyle="bold"
-                android:padding="10dp"/>
+                android:id="@+id/monthTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                style="@style/header_style" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right"
+                >
+                <TextView
+                    android:id="@+id/next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:text=">"
+                    android:textStyle="bold"
+                    style="@style/header_style"
+                    android:padding="@dimen/month_controls_padding"/>
 
+            </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/monthTitle"
+        <GridView
+            android:id="@+id/gvDays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            style="@style/header_style" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
+            style="@style/grid_style"
+            android:layout_marginBottom="@dimen/fragment_padding"/>
+        <GridView
+            android:id="@+id/gvCalendar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_toRightOf="@+id/monthTitle"
-            >
-
-            <TextView
-                android:id="@+id/next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:text=">>"
-                android:textStyle="bold"
-                style="@style/header_style"
-                android:padding="10dp"/>
-
-        </LinearLayout>
-
-    </RelativeLayout>
-    <GridView
-        android:id="@+id/gvDays"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style="@style/grid_style">"
-    </GridView>
-    <GridView
-        android:id="@+id/gvCalendar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style = "@style/grid_style" >
-    </GridView>
+            style="@style/grid_style" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/tvToday"
+        android:gravity="center_vertical"
+        android:padding="@dimen/fragment_padding"
+        android:text="@string/today"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/ordinary_day"
+        android:orientation="vertical"
+        android:padding="@dimen/fragment_padding">
+        <ListView
+            android:id="@+id/lvEpisodesForDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
+    </LinearLayout>
 </LinearLayout>

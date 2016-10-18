@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:orientation="vertical"
-  android:layout_height="wrap_content"
-  android:background="@color/primary"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:background="@color/primary"
     android:padding="5dp">
   
   <TextView android:layout_width="fill_parent"
-  android:layout_height="wrap_content"
-  android:id="@+id/tvName"
-  android:textSize="20sp"
-  android:textColor="@color/ordinary_day"
-  android:text=""/>
+    android:layout_height="wrap_content"
+    android:id="@+id/tvName"
+    android:textSize="20sp"
+    android:textColor="@color/ordinary_day"
+    android:text=""/>
   
   <TextView android:layout_width="fill_parent"
-  android:layout_height="wrap_content"
-  android:id="@+id/tvDate"
-  android:textColor="@color/current_day"
-  android:text=""/>
-
+    android:layout_height="wrap_content"
+    android:id="@+id/tvDate"
+    android:textColor="@color/current_day"
+    android:text=""/>
 </LinearLayout>

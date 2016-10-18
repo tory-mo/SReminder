@@ -6,23 +6,15 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <permission android:protectionLevel="signature"
-        android:name="sremind.torymo.by.permission.C2D_MESSAGE" />
-    <uses-permission android:name="sremind.torymo.by.permission.C2D_MESSAGE" />
+
     <application
-        android:name="sremind.torymo.by.SeriesReminderApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="sremind.torymo.by.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -32,39 +24,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service android:name="com.parse.PushService" />
-		<receiver android:name="com.parse.ParseBroadcastReceiver">
-		  <intent-filter>
-		    <action android:name="android.intent.action.BOOT_COMPLETED" />
-		    <action android:name="android.intent.action.USER_PRESENT" />
-		  </intent-filter>
-		</receiver>
-        <receiver android:name="sremind.torymo.by.SeriesReciever"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.parse.push.intent.RECEIVE" />
-                <action android:name="com.parse.push.intent.DELETE" />
-                <action android:name="com.parse.push.intent.OPEN" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
-		    android:permission="com.google.android.c2dm.permission.SEND">
-		  <intent-filter>
-		    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-		    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-		    <category android:name="sremind.torymo.by" />
-		  </intent-filter>
-		</receiver>
-		<meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/parse_icon"/>
-		<provider
-			android:authorities="by.torymo.sremind.app"
-			android:name=".data.SReminderProvider"/>
 		<activity android:name=".EpisodeListActivity"
-            android:theme="@style/AppTheme"
 			android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.TranslucentActionBar.ActionBar.Overlay"/>
+        <activity android:name=".SearchActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+        <activity android:name=".SearchDetailActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".SearchActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SearchActivity" />
+        </activity>
         <service android:name=".service.EpisodesService"/>
+        <service android:name=".service.SearchService"/>
+        <service android:name=".service.SeriesService"/>
+        <service android:name=".service.EpisodeDetailsService"/>
+        <provider
+            android:authorities="by.torymo.sremind.app"
+            android:name=".data.SReminderProvider"/>
     </application>
 
 </manifest>

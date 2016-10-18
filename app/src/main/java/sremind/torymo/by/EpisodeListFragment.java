@@ -27,7 +27,7 @@ public class EpisodeListFragment extends Fragment implements LoaderManager.Loade
     private int mPosition = ListView.INVALID_POSITION;
     private static final int EPISODE_LOADER = 0;
 
-    static final String EPISODE_LIST_URI = "URI";
+    static final String EPISODE_LIST_URI = "EPISODES_URI";
 
 
     @Nullable
@@ -91,6 +91,8 @@ public class EpisodeListFragment extends Fragment implements LoaderManager.Loade
         if(mPosition!=ListView.INVALID_POSITION) {
             mListView.smoothScrollToPosition(mPosition);
         }
+
+
     }
 
     @Override

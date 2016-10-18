@@ -1,6 +1,6 @@
 package sremind.torymo.by;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.GradientDrawable;
@@ -9,13 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.SimpleAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 import sremind.torymo.by.data.SReminderContract;
 import sremind.torymo.by.data.SReminderContract.EpisodeEntry;
@@ -28,13 +27,15 @@ public class CalendarAdapter extends BaseAdapter {
 			EpisodeEntry.COLUMN_DATE,
 			EpisodeEntry.TABLE_NAME + "." +EpisodeEntry.COLUMN_NAME,
 			EpisodeEntry.COLUMN_NUMBER,
-			SeriesEntry.TABLE_NAME + "." + SeriesEntry.COLUMN_NAME
+			SeriesEntry.TABLE_NAME + "." + SeriesEntry.COLUMN_NAME,
+			EpisodeEntry.TABLE_NAME + "." + EpisodeEntry.COLUMN_SEEN
 	};
 	public static final int COL_EPISODE_ID = 0;
 	public static final int COL_EPISODE_DATE = 1;
 	public static final int COL_EPISODE_NAME = 2;
 	public static final int COL_EPISODE_NUMBER = 3;
 	public static final int COL_EPISODE_SERIES_ID = 4;
+	public static final int COL_EPISODE_SEEN = 5;
 
 	static final int FIRST_DAY_OF_WEEK = 1; // Sunday = 0, Monday = 1
 	private static final String EP_NAME = "epname";
@@ -98,13 +99,19 @@ public class CalendarAdapter extends BaseAdapter {
 			today.set(Calendar.MILLISECOND, 0);
 			mChosenMonth.set(Calendar.DATE, Integer.valueOf(currDay.day));
 			GradientDrawable gd = new GradientDrawable();
-        	if(mChosenMonth.compareTo(today)==0) {
-				gd.setStroke(3, mContext.getResources().getColor(R.color.accent));
-        	}
+        	if(mChosenMonth.compareTo(today) == 0 && currDay.event) {
+				//gd.setStroke(3, mContext.getResources().getColor(R.color.accent));
+				//gd.setColor(mContext.getResources().getColor(R.color.accent));
+				dayView.setTextColor(mContext.getResources().getColor(R.color.light_bg));
+				dayView.setBackgroundResource(R.drawable.today_episode_day);
+        	}else if(mChosenMonth.compareTo(today) == 0) {
+				//gd.setStroke(3, mContext.getResources().getColor(R.color.text_secondary));
+				dayView.setBackgroundResource(R.drawable.today_day);
+			}else if(currDay.event){
+				//gd.setStroke(3, mContext.getResources().getColor(R.color.accent));
+				dayView.setBackgroundResource(R.drawable.episode_day);
+			}
 			if(currDay.event){
-				gd.setColor(mContext.getResources().getColor(R.color.primary));
-        		dayView.setTextColor(mContext.getResources().getColor(R.color.ordinary_day));
-
 				convertView.setOnClickListener(new View.OnClickListener() {
         	        public void onClick(View v)
 					{
@@ -112,14 +119,12 @@ public class CalendarAdapter extends BaseAdapter {
 						if(date != null) {
 							String day = date.getText().toString();
 							mChosenMonth.set(Calendar.DATE,Integer.valueOf(day));
-							showEpisodesForDay(mChosenMonth.getTime());
+							showEpisodesForDay(mChosenMonth.getTime(), ((Activity)mContext));
 						}
 					}
 				});
         	}
-        	else {
-				gd.setColor(mContext.getResources().getColor(R.color.ordinary_day));
-        	}
+
 			convertView.setBackgroundDrawable(gd);
         	
         }
@@ -137,11 +142,8 @@ public class CalendarAdapter extends BaseAdapter {
 		if(firstDay<0)firstDay = 6;
 		int lastWeekNum = mChosenMonth.getActualMaximum(Calendar.WEEK_OF_MONTH);
 
-
 		mChosenMonth.set(Calendar.DATE,lastDay);
 		Date endDate = mChosenMonth.getTime();
-
-
 
 		mDaysOfMonth = new CalDay[lastWeekNum*7];
 		for(int i = 0; i < mDaysOfMonth.length; i++) {
@@ -188,23 +190,35 @@ public class CalendarAdapter extends BaseAdapter {
         }
     }
 
-	private void showEpisodesForDay(Date touchedDate){
-		ArrayList<HashMap<String, Object>> episodesForDateList = new ArrayList<>();
-		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-		builder.setCancelable(true);
-		SimpleAdapter episodesForDayAdapter = new SimpleAdapter(mContext,
-				episodesForDateList,
-				R.layout.episodes,
-				new String[]{EP_NAME,EP_SER	},
-				new int[]{R.id.tvName, R.id.tvDate}
-		);
+	public void showEpisodesForDay(Date touchedDate, Activity activity){
+		ArrayList<String[]> episodesForDateList = new ArrayList<>();
+		EpisodesForDateAdapter episodesForDateAdapter = new EpisodesForDateAdapter(mContext, episodesForDateList);
+//		SimpleAdapter episodesForDayAdapter = new SimpleAdapter(mContext,
+//				episodesForDateList,
+//				R.layout.episode_list_item,
+//				new String[]{EP_NAME,EP_SER	},
+//				new int[]{R.id.tvName, R.id.tvDate}
+//		);
 
-		builder.setAdapter(episodesForDayAdapter, null);
-		AlertDialog dialog = builder.create();
-		dialog.show();
+		ListView lv = (ListView)activity.findViewById(R.id.lvEpisodesForDay);
+		if (lv == null) return;
 
-		HashMap<String, Object> hm;
-
+		TextView tvChosenDate = (TextView)activity.findViewById(R.id.tvToday);
+		if(tvChosenDate != null) {
+			Calendar today = Calendar.getInstance();
+			today.set(Calendar.HOUR_OF_DAY, 0);
+			today.set(Calendar.MINUTE, 0);
+			today.set(Calendar.SECOND, 0);
+			today.set(Calendar.MILLISECOND, 0);
+			if(today.getTime().compareTo(touchedDate) == 0){
+				tvChosenDate.setText(R.string.today);
+			}else{
+				tvChosenDate.setText(Utility.dateToStrFormat.format(touchedDate));
+			}
+		}
+		lv.setAdapter(episodesForDateAdapter);
+		//HashMap<String, Object> hm;
+		String[] hm;
 		Uri uri;
 
 		if(Utility.getSeenParam(mContext)){
@@ -222,12 +236,17 @@ public class CalendarAdapter extends BaseAdapter {
 		episodesForDateList.clear();
 		if(cursor!=null) {
 			while (cursor.moveToNext()) {
-				hm = new HashMap<>();
-				hm.put(EP_NAME, cursor.getString(COL_EPISODE_NAME));
-				hm.put(EP_SER, cursor.getString(COL_EPISODE_NUMBER) + "; " + cursor.getString(COL_EPISODE_SERIES_ID));
+				hm = new String[3];
+				hm[0] = cursor.getString(COL_EPISODE_NUMBER) + "; " + cursor.getString(COL_EPISODE_SERIES_ID);
+				hm[1] = cursor.getString(COL_EPISODE_NAME);
+				hm[2] = cursor.getString(COL_EPISODE_SEEN);
+				//hm.put(EP_NAME, cursor.getString(COL_EPISODE_NAME));
+				//hm.put(EP_SER, cursor.getString(COL_EPISODE_NUMBER) + "; " + cursor.getString(COL_EPISODE_SERIES_ID));
 				episodesForDateList.add(hm);
 			}
 			cursor.close();
 		}
 	}
+
+
 }

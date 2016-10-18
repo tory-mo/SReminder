@@ -1,6 +1,5 @@
 package sremind.torymo.by;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,13 +24,6 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
-import java.util.List;
-
 import sremind.torymo.by.data.SReminderContract;
 import sremind.torymo.by.data.SReminderContract.SeriesEntry;
 import sremind.torymo.by.service.EpisodesService;
@@ -40,6 +32,7 @@ public class WatchlistFragment extends Fragment implements LoaderManager.LoaderC
 
 	private static final int WATCHLIST_LOADER = 1;
     WatchlistAdapter mWatchlistAdapter;
+	private static final int CM_DELETE_SERIES = 2;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +48,7 @@ public class WatchlistFragment extends Fragment implements LoaderManager.LoaderC
 
 		mWatchlistAdapter = new WatchlistAdapter(getActivity(), null, 0);
 		watchlistListView.setAdapter(mWatchlistAdapter);
+		registerForContextMenu(watchlistListView);
 
 		watchlistListView.setOnItemClickListener(new OnItemClickListener() {
         	@Override
@@ -73,7 +67,6 @@ public class WatchlistFragment extends Fragment implements LoaderManager.LoaderC
 	}
 	
 	public static void addEpisodes(final Context context, final String imdbId){
-		//new EpisodesUpdater(context).execute(imdbId);
 		Intent intent = new Intent(context, EpisodesService.class);
 		intent.putExtra(EpisodesService.EPISODES_QUERY_EXTRA, imdbId);
 		context.startService(intent);
@@ -89,10 +82,9 @@ public class WatchlistFragment extends Fragment implements LoaderManager.LoaderC
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
-			case R.id.action_update_series:
-			    updateSeriesList();
-				return true;
 			case R.id.action_search:
+				Intent intent = new Intent(getActivity(), SearchActivity.class);
+				startActivity(intent);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -148,45 +140,27 @@ public class WatchlistFragment extends Fragment implements LoaderManager.LoaderC
 		}
 	}
 
-	private void updateSeriesList(){
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("Series");
-		query.findInBackground(new FindCallback<ParseObject>() {
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+									ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(0, CM_DELETE_SERIES, 0, R.string.DELETE);
+	}
 
-			@Override
-			public void done(List<ParseObject> objects, ParseException e) {
-				if(e==null){
-					int cnt = objects.size();
-					String imdbId;
-					ContentResolver contentResolver = getActivity().getContentResolver();
-					for(int i = 0; i<cnt; i++){
-						imdbId = objects.get(i).getString("imdbId");
-						ContentValues cv = new ContentValues();
-						cv.put(SeriesEntry.COLUMN_NAME, objects.get(i).getString(getResources().getString(R.string.NAME)));
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch(item.getItemId()){
+			case CM_DELETE_SERIES://удаляем  запись
+				AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-
-						Cursor cursor = contentResolver.query(SeriesEntry.buildSeriesByImdbId(imdbId),
-								SReminderContract.SERIES_COLUMNS,
-								null,
-								null,
-								null);
-						if(cursor != null && cursor.moveToFirst()){
-							contentResolver.update(SeriesEntry.CONTENT_URI,
-									cv,
-									SeriesEntry.COLUMN_IMDB_ID + " = ?",
-									new String[]{imdbId});
-						}else {
-							cv.put(SeriesEntry.COLUMN_IMDB_ID, imdbId);
-							contentResolver.insert(SeriesEntry.CONTENT_URI,
-									cv);
-						}
-						if(cursor != null) cursor.close();
-					}
-					Toast.makeText(getActivity(), R.string.slist_updated, Toast.LENGTH_SHORT).show();
-					Log.d("com.parse.push", cnt + "objects founded");
-				}else{
-					Log.e("com.parse.push", "failed to get series", e);
-				}
-			}
-		});
+				Cursor cursor = (Cursor) mWatchlistAdapter.getItem(info.position);
+				final String imdbId = cursor.getString(SReminderContract.COL_SERIES_IMDB_ID);
+				getActivity().getContentResolver().delete(SeriesEntry.CONTENT_URI,
+						SeriesEntry.COLUMN_IMDB_ID + " = ?",
+						new String[]{imdbId});
+				return true;
+			default:
+				return super.onContextItemSelected(item);
+		}
 	}
 }

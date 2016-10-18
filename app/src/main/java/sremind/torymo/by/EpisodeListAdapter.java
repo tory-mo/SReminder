@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -20,10 +21,12 @@ public class EpisodeListAdapter extends CursorAdapter {
     public class ViewHolder{
         TextView name;
         TextView info;
+        ImageView icon;
 
         public ViewHolder(View view){
             name = (TextView)view.findViewById(R.id.tvName);
             info = (TextView)view.findViewById(R.id.tvDate);
+            icon = (ImageView)view.findViewById(R.id.ivSeenIcon);
         }
     }
 
@@ -33,10 +36,7 @@ public class EpisodeListAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        View view = LayoutInflater.from(context).inflate(R.layout.episodes, viewGroup, false);
-        if(Utility.getBooleanFromDB(cursor.getInt(SReminderContract.COL_EPISODE_SEEN))){
-            view.setBackground(context.getDrawable(R.drawable.episode));
-        }
+        View view = LayoutInflater.from(context).inflate(R.layout.episode_list_item, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
 
@@ -52,11 +52,9 @@ public class EpisodeListAdapter extends CursorAdapter {
         String epNum = cursor.getString(SReminderContract.COL_EPISODE_NUMBER);
 
         if(Utility.getBooleanFromDB(cursor.getInt(SReminderContract.COL_EPISODE_SEEN))){
-            view.setBackground(context.getDrawable(R.drawable.seen_episode));
-            viewHolder.name.setTextColor(context.getResources().getColor(R.color.text_primary));
+            viewHolder.icon.setImageResource(R.drawable.eye);
         }else{
-            view.setBackground(context.getDrawable(R.drawable.episode));
-            viewHolder.name.setTextColor(context.getResources().getColor(R.color.text_secondary));
+            viewHolder.icon.setImageResource(R.drawable.eye_off);
         }
 
         if(date==null){

@@ -8,16 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import sremind.torymo.by.data.SReminderContract;
 
@@ -28,7 +24,7 @@ public class SeriesFragment extends Fragment implements LoaderManager.LoaderCall
 	private int mPosition = ListView.INVALID_POSITION;
 	SeriesAdapter mSeriesAdapter;
 
-	private static final int CM_DELETE_SERIES = 2;
+
 
 	ListView mListView;
 
@@ -49,7 +45,6 @@ public class SeriesFragment extends Fragment implements LoaderManager.LoaderCall
 		mSeriesAdapter = new SeriesAdapter(getActivity(), null, 0);
 		mListView = (ListView)rootView.findViewById(R.id.lvSeries);
 		mListView.setAdapter(mSeriesAdapter);
-		registerForContextMenu(mListView);
 
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 			@Override
@@ -75,32 +70,6 @@ public class SeriesFragment extends Fragment implements LoaderManager.LoaderCall
 		super.onResume();
 	}
 
-	@Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-        ContextMenuInfo menuInfo) {
-      super.onCreateContextMenu(menu, v, menuInfo);
-      menu.add(0, CM_DELETE_SERIES, 0, R.string.DELETE);
-    }
-	
-	@Override
-    public boolean onContextItemSelected(MenuItem item) {
-    	// получаем инфу о пункте списка вызвавшем это меню
-		AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item.getMenuInfo();
-    	TextView vv = (TextView)acmi.targetView;
-    	String str = vv.getText().toString();
-    	switch(item.getItemId()){
-	    	case CM_DELETE_SERIES://удаляем  запись
-
-//	    		String imdbId = database.seriesNameByImdbid(str);
-//	    		database.changeWatchlistStatus(imdbId, false);
-//	    		database.deleteEpisodesForSeries(imdbId);
-	    		mSeriesAdapter.notifyDataSetChanged();
-	    		return true;
-	    	default:
-	    		return super.onContextItemSelected(item);
-    	}      
-    }
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()){

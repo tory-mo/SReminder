@@ -1,23 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="match_parent"
-    android:layout_width="match_parent"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical">
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/episodesToolbar"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/light_bg">
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:id="@+id/llEpisodesHeader"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:id="@+id/ivEpisodesHeader"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@drawable/gradient_filter"
+            android:alpha="0.9"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvSeriesName"
+            android:layout_gravity="bottom"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/light_bg"/>
+
+    </FrameLayout>
+    <io.karim.MaterialTabs
+        android:id="@+id/ep_material_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
         android:background="@color/primary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:mtSameWeightTabs="true"
+        app:mtPaddingMiddle="false"
+        app:mtIndicatorColor="@color/accent"
+        app:mtIndicatorHeight="3dp"
+        app:mtTextAllCaps="true"
+        app:mtMrlRippleColor="@color/accent"
+        app:mtMrlRippleHighlightColor="@color/accent"
+        app:mtMrlRippleAlpha="0.1"
+        app:mtMrlRippleDuration="5"
+        app:mtMrlRippleDelayClick="false"
+        app:mtMrlRippleDiameter="50dp"
+        app:mtMrlRippleFadeDuration="10"
+        app:mtMrlRippleOverlay="true"
+        app:mtMrlRipplePersistent="false"
+        app:mtMrlRippleRoundedCorners="11dp"
+        android:elevation="5dp"
         />
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/ep_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        tools:context=".EpisodeListActivity" />
+<!--    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/fragment_episodes"
         android:name="sremind.torymo.by.EpisodeListFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
         tools:context="sremind.torymo.by.EpisodeListFragment"
-        tools:layout="@android:layout/list_content" />
+        tools:layout="@android:layout/list_content" /> -->
 </LinearLayout>
 
