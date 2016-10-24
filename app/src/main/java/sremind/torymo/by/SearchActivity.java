@@ -32,6 +32,8 @@ public class SearchActivity extends ActionBarActivity implements SearchFragment.
         getSupportActionBar().setElevation(0f);
         handleIntent(getIntent());
 
+        getContentResolver().delete(SReminderContract.SearchResultEntry.CONTENT_URI,null,null);
+
 
     }
 
