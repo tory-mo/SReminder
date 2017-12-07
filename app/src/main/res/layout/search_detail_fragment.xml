@@ -2,16 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:padding="@dimen/fragment_padding"
-
-    >
+    android:padding="@dimen/fragment_padding">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/fragment_padding"
-        android:background="@color/ordinary_day"
-        >
+        android:background="@color/ordinary_day">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,30 +31,25 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/firstDateTextView"
                     android:textColor="@color/text_secondary"
-                    android:textSize="20sp"
-                    android:text="First Date: 06.04.2016"/>
+                    android:textSize="20sp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/seasonsTextView"
                     android:textColor="@color/text_secondary"
-                    android:textSize="20sp"
-                    android:text="Seasons: 10"/>
+                    android:textSize="20sp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/episodeTimeTextView"
                     android:textColor="@color/text_secondary"
-                    android:textSize="20sp"
-                    android:text="Episode time: 45"/>
+                    android:textSize="20sp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/ongoingTextView"
                     android:textColor="@color/text_secondary"
-                    android:textSize="20sp"
-                    android:text="Ongoing: true"
-                    />
+                    android:textSize="20sp"/>
             </LinearLayout>
         </LinearLayout>
         <TextView
@@ -65,21 +57,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/homepageTextView"
             android:textColor="@color/text_secondary"
-            android:textSize="20sp"
-            android:text="Home page: 06.04.2016"/>
+            android:textSize="20sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/genresTextView"
             android:textColor="@color/text_secondary"
-            android:textSize="20sp"
-            android:text="Genres: "/>
+            android:textSize="20sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/overviewTextView"
             android:textColor="@color/text_secondary"
-            android:textSize="20sp"
-            android:text="bla bla bla bla bla"/>
+            android:textSize="20sp"/>
     </LinearLayout>
 </ScrollView>

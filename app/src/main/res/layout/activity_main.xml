@@ -4,35 +4,20 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/current_day"
-    >
-    <io.karim.MaterialTabs
-        android:id="@+id/material_tabs"
+    android:background="@color/current_day">
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
         android:background="@color/primary"
-        app:mtSameWeightTabs="true"
-        app:mtPaddingMiddle="false"
-        app:mtIndicatorColor="@color/accent"
-        app:mtIndicatorHeight="3dp"
-        app:mtTextAllCaps="true"
-        app:mtMrlRippleColor="@color/accent"
-        app:mtMrlRippleHighlightColor="@color/accent"
-        app:mtMrlRippleAlpha="0.1"
-        app:mtMrlRippleDuration="5"
-        app:mtMrlRippleDelayClick="false"
-        app:mtMrlRippleDiameter="50dp"
-        app:mtMrlRippleFadeDuration="10"
-        app:mtMrlRippleOverlay="true"
-        app:mtMrlRipplePersistent="false"
-        app:mtMrlRippleRoundedCorners="11dp"
-        />
-
+        app:tabTextColor="#fff"
+        app:tabSelectedTextColor="#fff"
+        app:tabIndicatorColor="@color/accent"/>
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         tools:context=".MainActivity" />
-
 </LinearLayout>

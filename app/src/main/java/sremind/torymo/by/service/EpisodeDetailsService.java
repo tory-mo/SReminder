@@ -2,7 +2,6 @@ package sremind.torymo.by.service;
 
 
 import android.app.IntentService;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -23,7 +22,8 @@ import java.util.Locale;
 
 import sremind.torymo.by.BuildConfig;
 import sremind.torymo.by.Utility;
-import sremind.torymo.by.data.SReminderContract;
+import sremind.torymo.by.data.SReminderDatabase;
+import sremind.torymo.by.data.SearchResult;
 
 
 public class EpisodeDetailsService extends IntentService{
@@ -31,7 +31,6 @@ public class EpisodeDetailsService extends IntentService{
     final String MOVIE_DB_URL = "http://api.themoviedb.org/3/tv";
     final String POSTER_PATH = "http://image.tmdb.org/t/p/w300/";
     public static final String ED_QUERY_EXTRA = "edqe";
-    public static final String ED_RESULT_EXTRA = "edre";
 
     public EpisodeDetailsService() {
         super(APP_NAME);
@@ -42,8 +41,7 @@ public class EpisodeDetailsService extends IntentService{
         if(intent == null || !intent.hasExtra(ED_QUERY_EXTRA)){
             return;
         }
-        Uri uri = Uri.parse(intent.getStringExtra(ED_QUERY_EXTRA));
-        String id = SReminderContract.SearchResultEntry.getIdfromUri(uri);
+        String id = intent.getStringExtra(ED_QUERY_EXTRA);
         if(id.length() == 0){
             return;
         }
@@ -57,8 +55,7 @@ public class EpisodeDetailsService extends IntentService{
         JSONObject infoJson = getData(builtUri);
         if(infoJson != null){
             try {
-                getElements(infoJson);
-                getImdbId(uri, id);
+                getElements(infoJson, getImdbId(id));
             }catch (JSONException e) {
                 Log.e("", e.getMessage(), e);
                 e.printStackTrace();
@@ -67,34 +64,23 @@ public class EpisodeDetailsService extends IntentService{
         }
     }
 
-    private void getElements(JSONObject obj){
+    private void getElements(JSONObject obj, String imdbId){
         try {
-            ContentValues cv = new ContentValues();
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_HOMEPAGE, obj.getString("homepage"));
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_ONGOING, Utility.getBooleanForDB(obj.getBoolean("in_production")));
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_SEASONS, obj.getString("number_of_seasons"));
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_ID, obj.getString("id"));
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_POSTER, POSTER_PATH+obj.getString("poster_path"));
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_NAME, obj.getString("name"));
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_POPULARITY, obj.getDouble("popularity"));
-
             JSONArray genres = obj.getJSONArray("genres");
             String genresStr = genres.getJSONObject(0).getString("name");
             for(int i = 1; i<genres.length(); i++){
-                genresStr += ", "+genres.getJSONObject(i).getString("name");
+                genresStr = genresStr.concat(", " + genres.getJSONObject(i).getString("name"));
             }
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_GENRES, genresStr);
 
             String overview = obj.getString("overview");
-            if(overview!=null)
-                cv.put(SReminderContract.SearchResultEntry.COLUMN_OVERVIEW, obj.getString("overview"));
+            if(overview == null)
+                overview = "";
             String episodeTime = obj.getString("episode_run_time");
             String[] times = episodeTime.split(",");
             episodeTime = times[0].replaceAll("[^\\d.]", "");
             for(int i = 1; i<times.length; i++){
-                episodeTime += ","+times[i].replaceAll("[^\\d.]", "");
+                episodeTime = episodeTime.concat(","+times[i].replaceAll("[^\\d.]", ""));
             }
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_EPISODE_TIME, episodeTime);
 
             String firstDate = obj.getString("first_air_date");
             Date date;
@@ -108,11 +94,22 @@ public class EpisodeDetailsService extends IntentService{
             }catch(Exception ex){
                 date = null;
             }
-            if(date!=null)
-                cv.put(SReminderContract.SearchResultEntry.COLUMN_FIRST_DATE,  Utility.getDateTime(date));
 
-            getContentResolver().insert(SReminderContract.SearchResultEntry.CONTENT_URI, cv);
+            SearchResult sr = new SearchResult();
+            sr.setImdbId(imdbId);
+            sr.setHomepage(obj.getString("homepage"));
+            sr.setOngoing(obj.getBoolean("in_production"));
+            sr.setSeasons(obj.getInt("number_of_seasons"));
+            sr.setSRId(obj.getString("id"));
+            sr.setPoster(POSTER_PATH+obj.getString("poster_path"));
+            sr.setName(obj.getString("name"));
+            sr.setPopularity((float) obj.getDouble("popularity"));
+            sr.setGenres(genresStr);
+            sr.setOverview(overview);
+            sr.setEpisodeTime(episodeTime);
+            sr.setFirstDate(Utility.getDateTime(date));
 
+            SReminderDatabase.getAppDatabase(this).searchResultDao().insert(sr);
 
         }catch (JSONException e){
             e.printStackTrace();
@@ -176,7 +173,7 @@ public class EpisodeDetailsService extends IntentService{
         return null;
     }
 
-    private void getImdbId(Uri uri, String id) throws JSONException {
+    private String getImdbId(String id) throws JSONException {
 
         final String EXTERNAL_PARAM = "external_ids";
         final String APPKEY_PARAM = "api_key";
@@ -190,9 +187,8 @@ public class EpisodeDetailsService extends IntentService{
         JSONObject infoJson = getData(builtUri);
 
         if(infoJson!=null) {
-            ContentValues cv = new ContentValues();
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_IMDB, infoJson.getString("imdb_id"));
-            getContentResolver().update(uri, cv, SReminderContract.SearchResultEntry.COLUMN_ID + "= ?", new String[]{id});
+            return infoJson.getString("imdb_id");
         }
+        return null;
     }
 }

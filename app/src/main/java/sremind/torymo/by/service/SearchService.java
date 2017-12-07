@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,17 +18,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import sremind.torymo.by.BuildConfig;
 import sremind.torymo.by.Utility;
-import sremind.torymo.by.data.SReminderContract.SearchResultEntry;
+import sremind.torymo.by.data.SReminderDatabase;
+import sremind.torymo.by.data.SearchResult;
 
 public class SearchService extends IntentService{
     private static final String APP_NAME = "SReminder";
     public static final String SEARCH_QUERY_EXTRA = "sqe";
-    public static final String SEARCH_RESULT_EXTRA = "sre";
     final String MOVIE_DB_URL = "http://api.themoviedb.org/3/search/tv";
     final String POSTER_PATH = "http://image.tmdb.org/t/p/w300/";
     public SearchService() {
@@ -48,46 +51,37 @@ public class SearchService extends IntentService{
             final String IMDB_VALUE = "imdb_id";
             final String QUERY = "query";
             final String APPKEY_PARAM = "api_key";
-            final String LANGUAGE_PARAM = "language";
 
             Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
                     .appendQueryParameter(EXTERNAL_PARAM, IMDB_VALUE)
                     .appendQueryParameter(QUERY, strQuery)
-                    //.appendQueryParameter(LANGUAGE_PARAM, Locale.getDefault().getLanguage())
                     .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                     .build();
             JSONObject obj = getData(builtUri);
 
-            getElements(obj);
-            //int cnt = getEpisodes(imdbId, id, lastSeason);
-            //Intent newIntent = new Intent(Utility.BROADCAST_ACTION);
-            //newIntent.putExtra(EPISODES_RESULT_EXTRA, cnt);
-
-            //LocalBroadcastManager.getInstance(this).sendBroadcast(newIntent);
-//        } catch (JSONException e) {
-//            Log.e("", e.getMessage(), e);
-//            e.printStackTrace();
-//        }
-
+            if(getElements(obj) > 0)
+                ;
     }
 
-    private void getElements(JSONObject obj){
+    private int getElements(JSONObject obj){
+        int added = 0;
         String id;
         String name;
         String poster;
         String overview;
         String firstDate;
-        double popularity;
+        float popularity;
         Date date;
+        List<SearchResult> searchResults = new ArrayList<>();
         try {
             JSONArray array = obj.getJSONArray("results");
             for(int i = 0; i<array.length(); i++){
                 JSONObject item = array.getJSONObject(i);
                 id = item.getString("id");
-                poster = POSTER_PATH+item.getString("poster_path");
+                poster = POSTER_PATH + item.getString("poster_path");
                 overview = item.getString("overview");
                 name = item.getString("name");
-                popularity = item.getDouble("popularity");
+                popularity = (float) item.getDouble("popularity");
                 firstDate = item.getString("first_air_date");
                 try {
                     if (firstDate.contains("."))
@@ -99,19 +93,24 @@ public class SearchService extends IntentService{
                 }catch(Exception ex){
                     date = null;
                 }
-                ContentValues cv = new ContentValues();
-                cv.put(SearchResultEntry.COLUMN_ID, id);
-                cv.put(SearchResultEntry.COLUMN_POSTER, poster);
-                cv.put(SearchResultEntry.COLUMN_NAME, name);
-                cv.put(SearchResultEntry.COLUMN_OVERVIEW, overview);
-                cv.put(SearchResultEntry.COLUMN_POPULARITY, popularity);
-                if(date!=null)
-                    cv.put(SearchResultEntry.COLUMN_FIRST_DATE,  Utility.getDateTime(date));
-                getContentResolver().insert(SearchResultEntry.CONTENT_URI, cv);
+
+                SearchResult sr = new SearchResult();
+                sr.setSRId(id);
+                sr.setPoster(poster);
+                sr.setName(name);
+                sr.setOverview(overview);
+                sr.setPopularity(popularity);
+                if(date != null)
+                    sr.setFirstDate(Utility.getDateTime(date));
+
+                searchResults.add(sr);
+                added++;
             }
+            SReminderDatabase.getAppDatabase(this).searchResultDao().insert(searchResults);
         }catch (JSONException e){
             e.printStackTrace();
         }
+        return added;
     }
 
     private JSONObject getData(Uri builtUri){

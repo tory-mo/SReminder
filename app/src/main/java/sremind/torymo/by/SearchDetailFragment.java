@@ -1,15 +1,10 @@
 package sremind.torymo.by;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -20,19 +15,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
+
 import java.util.Date;
 
-import sremind.torymo.by.data.SReminderContract;
+import sremind.torymo.by.data.SReminderDatabase;
+import sremind.torymo.by.data.SearchResult;
+import sremind.torymo.by.data.Series;
 import sremind.torymo.by.service.EpisodeDetailsService;
 import sremind.torymo.by.service.EpisodesService;
 import sremind.torymo.by.service.SeriesService;
 
-public class SearchDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class SearchDetailFragment extends Fragment{
 
     static final String SEARCH_DETAIL_URI = "SD_URI";
-    private static final int SEARCH_DETAIL_LOADER = 0;
-    private Uri mUri;
     boolean mInList = false;
+    String mdbId;
     private String mName = "";
     private String mImdbId = "";
     private String mPoster = "";
@@ -58,106 +61,79 @@ public class SearchDetailFragment extends Fragment implements LoaderManager.Load
         View rootView = inflater.inflate(R.layout.overview_fragment,container, false);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mUri = arguments.getParcelable(SearchDetailFragment.SEARCH_DETAIL_URI);
-            String mdbid = SReminderContract.SearchResultEntry.getIdfromUri(mUri);
-            Cursor cursor = getActivity().getContentResolver().query(SReminderContract.SeriesEntry.buildSeriesBymdbId(mdbid),null,null,null,null);
-            if(cursor!=null && cursor.moveToFirst()){
-                mInList = true;
-            }
-            Intent intent;
-            if(getActivity().getClass().equals(SearchActivity.class)) {
-                intent = new Intent(getActivity(), SeriesService.class);
-                intent.putExtra(SeriesService.SERIES_QUERY_EXTRA, mUri.toString());
-            }else{
-                intent = new Intent(getActivity(), EpisodeDetailsService.class);
-                intent.putExtra(EpisodeDetailsService.ED_QUERY_EXTRA, mUri.toString());
-            }
-            getActivity().startService(intent);
+            mOverviewTextView =  rootView.findViewById(R.id.overviewTextView);
+            mFirstDateTextView =  rootView.findViewById(R.id.firstDateTextView);
+            mOngoingTextView =  rootView.findViewById(R.id.ongoingTextView);
+            mHomepageTextView =  rootView.findViewById(R.id.homepageTextView);
+            mSeasonsTextView =  rootView.findViewById(R.id.seasonsTextView);
+            mEpisodeTimeTextView =  rootView.findViewById(R.id.episodeTimeTextView);
+            mGenresTextView =  rootView.findViewById(R.id.genresTextView);
 
+            mdbId = arguments.getString(SearchDetailFragment.SEARCH_DETAIL_URI);
+            refresh(mdbId);
 
-            //mPosterImageView = (ImageView) rootView.findViewById(R.id.posterImageView);
-            mOverviewTextView = (TextView) rootView.findViewById(R.id.overviewTextView);
-            mFirstDateTextView = (TextView) rootView.findViewById(R.id.firstDateTextView);
-            mOngoingTextView = (TextView) rootView.findViewById(R.id.ongoingTextView);
-            mHomepageTextView = (TextView) rootView.findViewById(R.id.homepageTextView);
-            mSeasonsTextView = (TextView) rootView.findViewById(R.id.seasonsTextView);
-            mEpisodeTimeTextView = (TextView) rootView.findViewById(R.id.episodeTimeTextView);
-            mGenresTextView = (TextView) rootView.findViewById(R.id.genresTextView);
         }
         return rootView;
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if ( null != mUri ) {
-            // Now create and return a CursorLoader that will take care of
-            // creating a Cursor for the data being displayed.
-            return new CursorLoader(
-                    getActivity(),
-                    mUri,
-                    SReminderContract.SEARCH_RESULT_COLUMNS,
-                    null,
-                    null,
-                    null
-            );
+    public void refresh(String mdbId){
+        Series seriesInList = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getSeriesByMdbId(mdbId);
+        if(seriesInList != null){
+            mInList = true;
         }
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data != null && data.moveToFirst()) {
-            // Read weather condition ID from cursor
-            String overview = data.getString(SReminderContract.COL_SEARCH_RESULT_OVERVIEW);
-            Date firstDate = Utility.getCalendarFromFormattedLong(data.getLong(SReminderContract.COL_SEARCH_RESULT_FIRST_DATE));
-            boolean ongoing = Utility.getBooleanFromDB(data.getInt(SReminderContract.COL_SEARCH_RESULT_ONGOING));
-            mPoster = data.getString(SReminderContract.COL_SEARCH_RESULT_POSTER);
-            String homepage = data.getString(SReminderContract.COL_SEARCH_RESULT_HOMEPAGE);
-            String seasons = data.getString(SReminderContract.COL_SEARCH_RESULT_SEASONS);
-            String episodeTime = data.getString(SReminderContract.COL_SEARCH_RESULT_EPISODETIME);
-            String genres = data.getString(SReminderContract.COL_SEARCH_RESULT_GENRES);
-            mName = data.getString(SReminderContract.COL_SEARCH_RESULT_NAME);
-            mImdbId = data.getString(SReminderContract.COL_SEARCH_RESULT_IMDB);
+//        Intent intent;
+//        if(getActivity().getClass().equals(SearchActivity.class)) {
+//            intent = new Intent(getActivity(), SeriesService.class);
+//            intent.putExtra(SeriesService.SERIES_QUERY_EXTRA, mdbId);
+//        }else{
+//            intent = new Intent(getActivity(), EpisodeDetailsService.class);
+//            intent.putExtra(EpisodeDetailsService.ED_QUERY_EXTRA, mdbId);
+//        }
+//        getActivity().startService(intent);
 
 
-            String firstDateStr = "";
-            if(firstDate!=null)
-                firstDateStr = Utility.dateToStrFormat.format(firstDate);
-            mFirstDateTextView.setText(getActivity().getString(R.string.format_first_date, firstDateStr));
+        SearchResult searchResult = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getSeriesResultById(mdbId);
 
-            String ongoing_status;
-            if(ongoing)
-                ongoing_status = getActivity().getString(R.string.format_ongoing_true);
-            else
-                ongoing_status = getActivity().getString(R.string.format_ongoing_false);
-            mOngoingTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_ongoing, ongoing_status)));
+        if(searchResult == null ) return;
 
 
-            mHomepageTextView.setMovementMethod(LinkMovementMethod.getInstance());
-            homepage = "<a href=\""+homepage+"\">"+homepage+"</a>";
-            mHomepageTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_homepage, homepage)));
+        String overview = searchResult.getOverview();
+        Date firstDate = Utility.getCalendarFromFormattedLong(searchResult.getFirstDate());
+        boolean ongoing = searchResult.isOngoing();
+        mPoster = searchResult.getPoster();
+        String homepage = searchResult.getHomepage();
+        String seasons = String.valueOf(searchResult.getSeasons());
+        String episodeTime = searchResult.getEpisodeTime();
+        String genres = searchResult.getGenres();
+        mName = searchResult.getName();
+        mImdbId = searchResult.getImdbId();
 
-            mSeasonsTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_seasons, seasons)));
-            mEpisodeTimeTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_episode_time, episodeTime)));
-            mGenresTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_genres, genres)));
-            mOverviewTextView.setText(getActivity().getString(R.string.format_overview, overview));
 
-            /*Picasso.with(getActivity())
-                    .load(mPoster)
-                    .resize(342, 513)
-                    .error(R.drawable.no_photo)
-                    .into(mPosterImageView);*/
-        }
-    }
+        String firstDateStr = "";
+        if(firstDate!=null)
+            firstDateStr = Utility.dateToStrFormat.format(firstDate);
+        mFirstDateTextView.setText(getActivity().getString(R.string.format_first_date, firstDateStr));
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+        String ongoing_status;
+        if(ongoing)
+            ongoing_status = getActivity().getString(R.string.format_ongoing_true);
+        else
+            ongoing_status = getActivity().getString(R.string.format_ongoing_false);
+        mOngoingTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_ongoing, ongoing_status)));
 
+
+        mHomepageTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        homepage = "<a href=\""+homepage+"\">"+homepage+"</a>";
+        mHomepageTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_homepage, homepage)));
+
+        mSeasonsTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_seasons, seasons)));
+        mEpisodeTimeTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_episode_time, episodeTime)));
+        mGenresTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_genres, genres)));
+        mOverviewTextView.setText(getActivity().getString(R.string.format_overview, overview));
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        getLoaderManager().initLoader(SEARCH_DETAIL_LOADER,null,this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -181,18 +157,11 @@ public class SearchDetailFragment extends Fragment implements LoaderManager.Load
         switch(item.getItemId()){
             case R.id.action_add_series:
                 if(mInList){
-                    getActivity().getContentResolver().delete(SReminderContract.SeriesEntry.CONTENT_URI,
-                            SReminderContract.SeriesEntry.COLUMN_IMDB_ID + " = ?",
-                            new String[]{mImdbId});
+                    SReminderDatabase.getAppDatabase(getActivity()).seriesDao().delete(mImdbId);
                 }else {
-                    ContentValues cv = new ContentValues();
-                    cv.put(SReminderContract.SeriesEntry.COLUMN_NAME, mName);
-                    cv.put(SReminderContract.SeriesEntry.COLUMN_IMDB_ID, mImdbId);
-                    cv.put(SReminderContract.SeriesEntry.COLUMN_POSTER, mPoster);
-                    cv.put(SReminderContract.SeriesEntry.COLUMN_MDBID, SReminderContract.SearchResultEntry.getIdfromUri(mUri));
-                    cv.put(SReminderContract.SeriesEntry.COLUMN_WATCHLIST, Utility.getBooleanForDB(true));
-                    getActivity().getContentResolver().insert(SReminderContract.SeriesEntry.CONTENT_URI,
-                                cv);
+                    Series s = new Series(mName, mImdbId, mdbId, mPoster, true);
+                    SReminderDatabase.getAppDatabase(getActivity()).seriesDao().insert(s);
+
                     Intent intent = new Intent(getActivity(), EpisodesService.class);
                     intent.putExtra(EpisodesService.EPISODES_QUERY_EXTRA, mImdbId);
                     getActivity().startService(intent);

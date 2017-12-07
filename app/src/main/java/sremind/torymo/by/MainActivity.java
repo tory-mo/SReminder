@@ -4,8 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,12 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import io.karim.MaterialTabs;
 import sremind.torymo.by.service.EpisodesService;
 
 public class MainActivity extends AppCompatActivity implements SeriesFragment.Callback{
 
-	MaterialTabs mMaterialTabs;
+
 	ViewPager mViewPager;
 
 	SReminderServicesBroadcastReceiver mBroadcastReceiver;
@@ -32,13 +31,33 @@ public class MainActivity extends AppCompatActivity implements SeriesFragment.Ca
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mMaterialTabs = (MaterialTabs)findViewById(R.id.material_tabs);
-		mViewPager = (ViewPager)findViewById(R.id.view_pager);
+		TabLayout tabLayout = findViewById(R.id.tab_layout);
+		tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.calendar)));
+		tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.series)));
+		tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.watchlist)));
+
+		mViewPager = findViewById(R.id.view_pager);
 
 		SeriesPagerAdapter adapter = new SeriesPagerAdapter(getSupportFragmentManager());
 		mViewPager.setAdapter(adapter);
+		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+		tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+			@Override
+			public void onTabSelected(TabLayout.Tab tab) {
+				mViewPager.setCurrentItem(tab.getPosition());
+				//chooseType(tab.getPosition());
+			}
 
-		mMaterialTabs.setViewPager(mViewPager);
+			@Override
+			public void onTabUnselected(TabLayout.Tab tab) {
+
+			}
+
+			@Override
+			public void onTabReselected(TabLayout.Tab tab) {
+
+			}
+		});
 
 		getSupportActionBar().setTitle(getString(R.string.app_caption));
 		getSupportActionBar().setElevation(0f);
@@ -60,10 +79,10 @@ public class MainActivity extends AppCompatActivity implements SeriesFragment.Ca
     }
 
 	@Override
-	public void onItemSelected(Uri dateUri) {
+	public void onItemSelected(String imdbId) {
 		if(mViewPager.getCurrentItem()==1){
 			Intent intent = new Intent(this, EpisodeListActivity.class)
-					.setData(dateUri);
+					.putExtra(EpisodeListFragment.EPISODE_LIST_URI, imdbId);
 			startActivity(intent);
 		}
 	}
@@ -73,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements SeriesFragment.Ca
 				getResources().getString(R.string.series),
 				getResources().getString(R.string.watchlist)};
 
-		public SeriesPagerAdapter(FragmentManager fm) {
+		SeriesPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
@@ -90,13 +109,12 @@ public class MainActivity extends AppCompatActivity implements SeriesFragment.Ca
 		@Override
 		public Fragment getItem(int position) {
 			switch (position){
-				case 0:
-				default:
-					return new CalendarFragment();
 				case 1:
 					return new SeriesFragment();
 				case 2:
 					return new WatchlistFragment();
+				default:
+					return new CalendarFragment();
 			}
 		}
 	}

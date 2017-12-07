@@ -2,19 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="15dp"
     android:background="@drawable/touch_selector">
-     
     <TextView android:id="@+id/seriesNameWatchlist"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/watchlistCheckBox"
         android:layout_alignBottom="@+id/watchlistCheckBox"
+        android:layout_toLeftOf="@+id/watchlistCheckBox"
         android:layout_alignParentLeft="true"
+        android:ellipsize="end"
         android:textSize="20sp"
         android:textColor="@color/text_secondary"/>
-        
     <CheckBox 
         android:id="@+id/watchlistCheckBox"
         android:layout_width="wrap_content"

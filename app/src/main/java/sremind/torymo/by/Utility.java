@@ -42,12 +42,4 @@ public class Utility {
         editor.putBoolean(PREF_SEEN, !old);
         editor.commit();
     }
-
-    public static boolean getBooleanFromDB(int value){
-        return value == 1 ? true : false;
-    }
-
-    public static int getBooleanForDB(boolean value){
-        return value ? 1 : 0;
-    }
 }

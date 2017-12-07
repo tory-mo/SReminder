@@ -21,12 +21,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import sremind.torymo.by.BuildConfig;
 import sremind.torymo.by.R;
 import sremind.torymo.by.Utility;
-import sremind.torymo.by.data.SReminderContract;
+import sremind.torymo.by.data.Episode;
+import sremind.torymo.by.data.SReminderDatabase;
 
 public class EpisodesService extends IntentService{
     private static final String APP_NAME = "SReminder";
@@ -135,14 +137,13 @@ public class EpisodesService extends IntentService{
 
         JSONArray tvResultsJson = infoJson.getJSONArray(EPISODES);
 
-        ContentResolver contentResolver = this.getContentResolver();
         for(int i = 0; i<tvResultsJson.length(); i++){
             JSONObject episode = tvResultsJson.getJSONObject(i);
             try{
                 String dateStr = episode.getString(AIR_DATE);
                 String numberStr = getString(R.string.format_episode_number, season, episode.getString(EPISODE_NUMBER));
                 String nameStr = episode.getString(EPISODE_NAME);
-                addUpdateEpisode(contentResolver, dateStr,imdbId,numberStr,nameStr);
+                addUpdateEpisode(dateStr,imdbId,numberStr,nameStr);
                 res++;
             }catch(Exception exception){
                 Log.e("com.parse.push", "failed to parse date", exception);
@@ -208,7 +209,7 @@ public class EpisodesService extends IntentService{
         return null;
     }
 
-    private void addUpdateEpisode(ContentResolver contentResolver, String dateStr, String imdbId, String numberStr, String nameStr){
+    private void addUpdateEpisode(String dateStr, String imdbId, String numberStr, String nameStr){
         Date date;
         try{
             if(dateStr.contains("."))
@@ -222,32 +223,13 @@ public class EpisodesService extends IntentService{
             date = null;
         }
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(SReminderContract.EpisodeEntry.COLUMN_NUMBER, numberStr);
-        contentValues.put(SReminderContract.EpisodeEntry.COLUMN_SERIES_ID, imdbId);
-        contentValues.put(SReminderContract.EpisodeEntry.COLUMN_NAME, nameStr);
-        if(date!=null) {
-            contentValues.put(SReminderContract.EpisodeEntry.COLUMN_DATE, Utility.getDateTime(date));
-        }
+        List<Episode> episodes = SReminderDatabase.getAppDatabase(this).episodeDao().getEpisodesBySeriesAndNumber(imdbId, numberStr);
 
-        Cursor cursor = contentResolver.query(SReminderContract.EpisodeEntry.CONTENT_URI,
-                SReminderContract.EPISODES_COLUMNS,
-                SReminderContract.EpisodeEntry.COLUMN_SERIES_ID + " = ? AND "+
-                        SReminderContract.EpisodeEntry.COLUMN_NUMBER + " like ?",
-                new String[]{imdbId, numberStr},
-                null);
-
-        if(cursor != null &&cursor.moveToFirst()){
-            contentResolver.update(SReminderContract.EpisodeEntry.CONTENT_URI,
-                    contentValues,
-                    SReminderContract.EpisodeEntry._ID + " = ? ",
-                    new String[]{cursor.getString(SReminderContract.COL_EPISODE_ID)});
+        if(episodes != null && !episodes.isEmpty()){
+            SReminderDatabase.getAppDatabase(this).episodeDao().update(episodes.get(0).getId(),nameStr, numberStr, Utility.getDateTime(date));
         }else {
-            contentValues.put(SReminderContract.EpisodeEntry.COLUMN_SEEN, Utility.getBooleanForDB(false));
-            this.getContentResolver().insert(
-                    SReminderContract.EpisodeEntry.CONTENT_URI,
-                    contentValues);
+            Episode episode = new Episode(nameStr, Utility.getDateTime(date), imdbId, numberStr);
+            SReminderDatabase.getAppDatabase(this).episodeDao().insert(episode);
         }
-        if(cursor != null) cursor.close();
     }
 }

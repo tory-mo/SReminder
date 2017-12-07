@@ -1,46 +1,61 @@
 package sremind.torymo.by;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import sremind.torymo.by.data.SReminderContract;
+import java.util.List;
 
-public class WatchlistAdapter extends CursorAdapter {
+import sremind.torymo.by.data.Series;
 
-	public WatchlistAdapter(Context context, Cursor c, int flags) {
-		super(context, c, flags);
+public class WatchlistAdapter extends ArrayAdapter<Series> {
+
+	private List<Series> dataSet;
+	Context mContext;
+
+	public WatchlistAdapter(Context context, List<Series> data) {
+		super(context, R.layout.series_elem, data);
+		this.dataSet = data;
+		this.mContext = context;
 	}
 	
 	private class ViewHolder {
 		TextView name;
 		CheckBox watchlist;
+	}
 
-		public ViewHolder(View view){
-			name = (TextView)view.findViewById(R.id.seriesNameWatchlist);
-			watchlist = (CheckBox)view.findViewById(R.id.watchlistCheckBox);
+	@Override
+	public View getView(int i, View convertView, ViewGroup parent) {
+		Series series = getItem(i);
+		ViewHolder viewHolder; // view lookup cache stored in tag
+
+		final View result;
+
+		if (convertView == null) {
+			viewHolder = new ViewHolder();
+			LayoutInflater inflater = LayoutInflater.from(getContext());
+			convertView = inflater.inflate(R.layout.watchlist_item, parent, false);
+			viewHolder.name = convertView.findViewById(R.id.seriesNameWatchlist);
+			viewHolder.watchlist = convertView.findViewById(R.id.watchlistCheckBox);
+
+			result=convertView;
+
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) convertView.getTag();
+			result=convertView;
 		}
-	}
 
-	@Override
-	public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-		View view = LayoutInflater.from(context).inflate(R.layout.watchlist_item, viewGroup, false);
-		ViewHolder viewHolder = new ViewHolder(view);
-		view.setTag(viewHolder);
+		if(series != null) {
+			viewHolder.name.setText(series.getName());
+			viewHolder.watchlist.setChecked(series.isWatchlist());
+		}
 
-		return view;
-	}
-
-	@Override
-	public void bindView(View view, Context context, Cursor cursor) {
-		ViewHolder viewHolder = (ViewHolder) view.getTag();
-		viewHolder.name.setText(cursor.getString(SReminderContract.COL_SERIES_NAME));
-		viewHolder.watchlist.setChecked(Utility.getBooleanFromDB(cursor.getInt(SReminderContract.COL_SERIES_WATCHLIST)));
+		return result;
 	}
 
 }

@@ -1,48 +1,60 @@
 package sremind.torymo.by;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import sremind.torymo.by.data.SReminderContract;
+import java.util.List;
 
-public class SearchAdapter extends CursorAdapter {
+import sremind.torymo.by.data.SearchResult;
+
+public class SearchAdapter extends ArrayAdapter<SearchResult> {
+
+    private List<SearchResult> dataSet;
+    Context mContext;
 
     private class ViewHolder{
         TextView nameTextView;
         TextView overviewTextView;
+    }
 
-        public ViewHolder(View view){
-            nameTextView = (TextView) view.findViewById(R.id.tvName);
-            overviewTextView = (TextView) view.findViewById(R.id.tvDate);
+    public SearchAdapter(Context context, List<SearchResult> data) {
+        super(context, R.layout.search_result_list_item, data);
+        this.dataSet = data;
+        this.mContext = context;
+    }
+
+    @Override
+    public View getView(int i, View convertView, ViewGroup parent) {
+        SearchResult searchResult = getItem(i);
+        ViewHolder viewHolder; // view lookup cache stored in tag
+
+        final View result;
+
+        if (convertView == null) {
+            viewHolder = new ViewHolder();
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            convertView = inflater.inflate(R.layout.search_result_list_item, parent, false);
+            viewHolder.nameTextView = convertView.findViewById(R.id.tvName);
+            viewHolder.overviewTextView = convertView.findViewById(R.id.tvDate);
+
+            result=convertView;
+
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+            result=convertView;
         }
-    }
 
-    public SearchAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
-    }
-
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        View view = LayoutInflater.from(context).inflate(R.layout.search_result_list_item, viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        view.setTag(viewHolder);
-
-        return view;
-    }
-
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        ViewHolder viewHolder = (ViewHolder) view.getTag();
-        viewHolder.nameTextView.setText(cursor.getString(SReminderContract.COL_SEARCH_RESULT_NAME));
-        String overview = cursor.getString(SReminderContract.COL_SEARCH_RESULT_OVERVIEW);
+        viewHolder.nameTextView.setText(searchResult.getName());
+        String overview = searchResult.getOverview();
         if(overview.length()>140)
             overview = overview.substring(0, 140)+"...";
         viewHolder.overviewTextView.setText(overview);
 
+        return result;
     }
 }

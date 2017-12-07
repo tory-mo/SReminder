@@ -8,6 +8,5 @@
         android:id="@+id/name_day"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/grid_cell_style"
-        android:text=""/>
+        style="@style/grid_cell_style"/>
 </LinearLayout>

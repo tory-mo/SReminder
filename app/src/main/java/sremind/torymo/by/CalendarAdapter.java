@@ -2,9 +2,7 @@ package sremind.torymo.by;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,44 +13,27 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-import sremind.torymo.by.data.SReminderContract;
-import sremind.torymo.by.data.SReminderContract.EpisodeEntry;
-import sremind.torymo.by.data.SReminderContract.SeriesEntry;
+import sremind.torymo.by.data.Episode;
+import sremind.torymo.by.data.SReminderDatabase;
 
 public class CalendarAdapter extends BaseAdapter {
 
-	public static final String[] EPISODES_COLUMNS = {
-			EpisodeEntry.TABLE_NAME + "." + EpisodeEntry._ID,
-			EpisodeEntry.COLUMN_DATE,
-			EpisodeEntry.TABLE_NAME + "." +EpisodeEntry.COLUMN_NAME,
-			EpisodeEntry.COLUMN_NUMBER,
-			SeriesEntry.TABLE_NAME + "." + SeriesEntry.COLUMN_NAME,
-			EpisodeEntry.TABLE_NAME + "." + EpisodeEntry.COLUMN_SEEN
-	};
-	public static final int COL_EPISODE_ID = 0;
-	public static final int COL_EPISODE_DATE = 1;
-	public static final int COL_EPISODE_NAME = 2;
-	public static final int COL_EPISODE_NUMBER = 3;
-	public static final int COL_EPISODE_SERIES_ID = 4;
-	public static final int COL_EPISODE_SEEN = 5;
-
 	static final int FIRST_DAY_OF_WEEK = 1; // Sunday = 0, Monday = 1
-	private static final String EP_NAME = "epname";
-	private static final String EP_SER = "epser";
 
 	private Context mContext;
     private Calendar mChosenMonth;
 
 	// references to our items
-	public CalDay[] mDaysOfMonth;
+	CalDay[] mDaysOfMonth;
 
 	class CalDay{
 		String day;
 		boolean event;
 	}
     
-    public CalendarAdapter(Context context, Calendar monthCalendar) {
+    CalendarAdapter(Context context, Calendar monthCalendar) {
 		mContext = context;
 
 		mChosenMonth = monthCalendar;
@@ -83,7 +64,7 @@ public class CalendarAdapter extends BaseAdapter {
 		CalDay currDay = mDaysOfMonth[position];
 
 		convertView = LayoutInflater.from(mContext).inflate(R.layout.day, viewGroup, false);
-        dayView = (TextView)convertView.findViewById(R.id.date);
+        dayView = convertView.findViewById(R.id.date);
         
         // disable empty days from the beginning
         if(currDay.day.equals("")) {
@@ -115,7 +96,7 @@ public class CalendarAdapter extends BaseAdapter {
 				convertView.setOnClickListener(new View.OnClickListener() {
         	        public void onClick(View v)
 					{
-						TextView date = (TextView)v.findViewById(R.id.date);
+						TextView date = v.findViewById(R.id.date);
 						if(date != null) {
 							String day = date.getText().toString();
 							mChosenMonth.set(Calendar.DATE,Integer.valueOf(day));
@@ -133,7 +114,7 @@ public class CalendarAdapter extends BaseAdapter {
         return convertView;
     }
     
-    public void refreshDays()
+    void refreshDays()
     {
 		mChosenMonth.set(Calendar.DATE,1);
 		Date startDate = mChosenMonth.getTime();
@@ -151,29 +132,22 @@ public class CalendarAdapter extends BaseAdapter {
 			mDaysOfMonth[i].day = "";
 		}
 
-		Uri uri;
+
+		List<Episode> episodes;
 		if(Utility.getSeenParam(mContext)){
-			uri = EpisodeEntry.buildEpisodesBetweenDatesUnseenUri(startDate, endDate);
+
+			episodes = SReminderDatabase.getAppDatabase(mContext).episodeDao().getNotSeenEpisodesBetweenDates(startDate.getTime(), endDate.getTime());
 		}else {
-			uri = SReminderContract.EpisodeEntry.buildEpisodesBetweenDatesUri(startDate, endDate);
+
+			episodes = SReminderDatabase.getAppDatabase(mContext).episodeDao().getEpisodesBetweenDates(startDate.getTime(), endDate.getTime());
 		}
-		Cursor cursor = mContext.getContentResolver().query(
-				uri,
-				EPISODES_COLUMNS,
-				null,
-				null,
-				null
-		);
 
 		ArrayList<Date> datesOfEpisodes = new ArrayList<>();
-		if(cursor!=null) {
-			while (cursor.moveToNext()) {
-				long date = cursor.getLong(COL_EPISODE_DATE);
-				datesOfEpisodes.add(Utility.getCalendarFromFormattedLong(date));
+		if(episodes != null && !episodes.isEmpty()){
+			for (Episode ep: episodes) {
+				datesOfEpisodes.add(Utility.getCalendarFromFormattedLong(ep.getDate()));
 			}
-			cursor.close();
 		}
-
 
         int dayNumber = 1;
         for(int i = firstDay; i < (lastDay+firstDay); i++) {
@@ -190,7 +164,7 @@ public class CalendarAdapter extends BaseAdapter {
         }
     }
 
-	public void showEpisodesForDay(Date touchedDate, Activity activity){
+	void showEpisodesForDay(Date touchedDate, Activity activity){
 		ArrayList<String[]> episodesForDateList = new ArrayList<>();
 		EpisodesForDateAdapter episodesForDateAdapter = new EpisodesForDateAdapter(mContext, episodesForDateList);
 //		SimpleAdapter episodesForDayAdapter = new SimpleAdapter(mContext,
@@ -200,10 +174,10 @@ public class CalendarAdapter extends BaseAdapter {
 //				new int[]{R.id.tvName, R.id.tvDate}
 //		);
 
-		ListView lv = (ListView)activity.findViewById(R.id.lvEpisodesForDay);
+		ListView lv = activity.findViewById(R.id.lvEpisodesForDay);
 		if (lv == null) return;
 
-		TextView tvChosenDate = (TextView)activity.findViewById(R.id.tvToday);
+		TextView tvChosenDate = activity.findViewById(R.id.tvToday);
 		if(tvChosenDate != null) {
 			Calendar today = Calendar.getInstance();
 			today.set(Calendar.HOUR_OF_DAY, 0);
@@ -219,32 +193,25 @@ public class CalendarAdapter extends BaseAdapter {
 		lv.setAdapter(episodesForDateAdapter);
 		//HashMap<String, Object> hm;
 		String[] hm;
-		Uri uri;
 
+		List<Episode> episodes;
 		if(Utility.getSeenParam(mContext)){
-			uri = EpisodeEntry.buildEpisodesForDateUnseenUri(touchedDate);
+
+			episodes = SReminderDatabase.getAppDatabase(mContext).episodeDao().getNotSeenEpisodesForDate(touchedDate.getTime());
 		}else {
-			uri = EpisodeEntry.buildEpisodesForDateUri(touchedDate);
+
+			episodes = SReminderDatabase.getAppDatabase(mContext).episodeDao().getEpisodesForDate(touchedDate.getTime());
 		}
 
-		Cursor cursor = mContext.getContentResolver().query(
-				uri,
-				EPISODES_COLUMNS,
-				null,
-				null,
-				null);
 		episodesForDateList.clear();
-		if(cursor!=null) {
-			while (cursor.moveToNext()) {
+		if(episodes != null && !episodes.isEmpty()){
+			for (Episode ep: episodes) {
 				hm = new String[3];
-				hm[0] = cursor.getString(COL_EPISODE_NUMBER) + "; " + cursor.getString(COL_EPISODE_SERIES_ID);
-				hm[1] = cursor.getString(COL_EPISODE_NAME);
-				hm[2] = cursor.getString(COL_EPISODE_SEEN);
-				//hm.put(EP_NAME, cursor.getString(COL_EPISODE_NAME));
-				//hm.put(EP_SER, cursor.getString(COL_EPISODE_NUMBER) + "; " + cursor.getString(COL_EPISODE_SERIES_ID));
+				hm[0] = ep.getNumber() + "; " + ep.getSeries();
+				hm[1] = ep.getName();
+				hm[2] = String.valueOf(ep.isSeen());
 				episodesForDateList.add(hm);
 			}
-			cursor.close();
 		}
 	}
 

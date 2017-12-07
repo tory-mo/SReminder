@@ -1,16 +1,10 @@
 package sremind.torymo.by;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,11 +18,13 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import sremind.torymo.by.data.SReminderContract;
-import sremind.torymo.by.data.SReminderContract.SeriesEntry;
+import java.util.List;
+
+import sremind.torymo.by.data.SReminderDatabase;
+import sremind.torymo.by.data.Series;
 import sremind.torymo.by.service.EpisodesService;
 
-public class WatchlistFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class WatchlistFragment extends Fragment{
 
 	private static final int WATCHLIST_LOADER = 1;
     WatchlistAdapter mWatchlistAdapter;
@@ -44,21 +40,23 @@ public class WatchlistFragment extends Fragment implements LoaderManager.LoaderC
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.watchlist_fragment, container, false);
 
-		ListView watchlistListView = (ListView) rootView.findViewById(R.id.watchlistListView);
+		ListView watchlistListView = rootView.findViewById(R.id.watchlistListView);
 
-		mWatchlistAdapter = new WatchlistAdapter(getActivity(), null, 0);
+		List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
+
+		mWatchlistAdapter = new WatchlistAdapter(getActivity(), series);
 		watchlistListView.setAdapter(mWatchlistAdapter);
 		registerForContextMenu(watchlistListView);
 
 		watchlistListView.setOnItemClickListener(new OnItemClickListener() {
         	@Override
         	public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
-        		CheckBox item = (CheckBox) v.findViewById(R.id.watchlistCheckBox);
+        		CheckBox item = v.findViewById(R.id.watchlistCheckBox);
         		item.performClick();
         		boolean checked = item.isChecked();
 
-				Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-        		final String imdbId = cursor.getString(SReminderContract.COL_SERIES_IMDB_ID);
+				Series s = (Series) adapterView.getItemAtPosition(position);
+        		final String imdbId = s.getImdbId();
 				changeWatchlist(imdbId, checked);
         	}
 		});
@@ -92,50 +90,17 @@ public class WatchlistFragment extends Fragment implements LoaderManager.LoaderC
 	}
 
 	@Override
-	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		String sortOrder = SReminderContract.SeriesEntry.COLUMN_NAME + " ASC";
-		Uri seriesList = SReminderContract.SeriesEntry.CONTENT_URI;
-
-		return new CursorLoader(getActivity(),
-				seriesList,
-				SReminderContract.SERIES_COLUMNS,
-				null,
-				null,
-				sortOrder);
-	}
-
-	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		mWatchlistAdapter.swapCursor(data);
-	}
-
-	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
-		mWatchlistAdapter.swapCursor(null);
-	}
-
-	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		getLoaderManager().initLoader(WATCHLIST_LOADER, null, this);
 		super.onActivityCreated(savedInstanceState);
 	}
 
 	private void changeWatchlist(String imdbId, boolean watchlist){
-		ContentValues cv = new ContentValues();
-		cv.put(SeriesEntry.COLUMN_WATCHLIST, Utility.getBooleanForDB(watchlist) );
-		getActivity().getContentResolver().update(
-				SeriesEntry.CONTENT_URI,
-				cv,
-				SeriesEntry.COLUMN_IMDB_ID + " = ?",
-				new String[]{imdbId});
+		SReminderDatabase.getAppDatabase(getActivity()).seriesDao().setWatchlist(imdbId, watchlist);
 
 		if(watchlist){
 			addEpisodes(getActivity(), imdbId);
 		}else{
-			getActivity().getContentResolver().delete(
-					SReminderContract.EpisodeEntry.CONTENT_URI,
-					SReminderContract.EpisodeEntry.COLUMN_SERIES_ID + " = ?",
-					new String[]{imdbId});
+			SReminderDatabase.getAppDatabase(getActivity()).episodeDao().delete(imdbId);
 			Toast.makeText(getActivity(), R.string.episodes_deleted, Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -153,11 +118,9 @@ public class WatchlistFragment extends Fragment implements LoaderManager.LoaderC
 			case CM_DELETE_SERIES://удаляем  запись
 				AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-				Cursor cursor = (Cursor) mWatchlistAdapter.getItem(info.position);
-				final String imdbId = cursor.getString(SReminderContract.COL_SERIES_IMDB_ID);
-				getActivity().getContentResolver().delete(SeriesEntry.CONTENT_URI,
-						SeriesEntry.COLUMN_IMDB_ID + " = ?",
-						new String[]{imdbId});
+				Series series = mWatchlistAdapter.getItem(info.position);
+				final String imdbId = series.getImdbId();
+				SReminderDatabase.getAppDatabase(getActivity()).seriesDao().delete(imdbId);
 				return true;
 			default:
 				return super.onContextItemSelected(item);

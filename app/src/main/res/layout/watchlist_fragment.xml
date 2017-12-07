@@ -5,10 +5,8 @@
     android:orientation="vertical"
     android:background="@color/current_day"
     android:padding="@dimen/fragment_padding">
-
     <ListView
         android:id="@+id/watchlistListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 </LinearLayout>

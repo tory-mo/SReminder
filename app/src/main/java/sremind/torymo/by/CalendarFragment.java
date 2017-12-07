@@ -1,7 +1,6 @@
 package sremind.torymo.by;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,10 +16,12 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
-import sremind.torymo.by.data.SReminderContract;
+import sremind.torymo.by.data.SReminderDatabase;
+import sremind.torymo.by.data.Series;
 import sremind.torymo.by.service.EpisodesService;
+
 
 public class CalendarFragment extends Fragment{
 
@@ -52,11 +53,11 @@ public class CalendarFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.calendar_fragment, container, false);
-        mMonthTitle  = (TextView) rootView.findViewById(R.id.monthTitle);
-        daysTitlesGridView = (GridView) rootView.findViewById(R.id.gvDays);
-        GridView calendarGridView = (GridView) rootView.findViewById(R.id.gvCalendar);
-        TextView previousMonth  = (TextView) rootView.findViewById(R.id.previousMonth);
-        TextView nextMonth  = (TextView) rootView.findViewById(R.id.next);
+        mMonthTitle  =  rootView.findViewById(R.id.monthTitle);
+        daysTitlesGridView =  rootView.findViewById(R.id.gvDays);
+        GridView calendarGridView =  rootView.findViewById(R.id.gvCalendar);
+        TextView previousMonth  =  rootView.findViewById(R.id.previousMonth);
+        TextView nextMonth  =  rootView.findViewById(R.id.next);
 
         month = Calendar.getInstance();
 
@@ -114,18 +115,13 @@ public class CalendarFragment extends Fragment{
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.action_update_episodes:
-                Cursor cursor = getActivity().getContentResolver().query(SReminderContract.SeriesEntry.buildSeriesWatchlist(),
-                        SReminderContract.SERIES_COLUMNS,
-                        null,
-                        null,
-                        null);
-                if(cursor!=null) {
-                    while (cursor.moveToNext()) {
+                List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
+                if(series != null && !series.isEmpty()){
+                    for (Series s: series) {
                         Intent intent = new Intent(getActivity(), EpisodesService.class);
-                        intent.putExtra(EpisodesService.EPISODES_QUERY_EXTRA, cursor.getString(SReminderContract.COL_SERIES_IMDB_ID));
+                        intent.putExtra(EpisodesService.EPISODES_QUERY_EXTRA, s.getImdbId());
                         getActivity().startService(intent);
                     }
-                    cursor.close();
                 }
                 Toast.makeText(getActivity(), R.string.slist_updated, Toast.LENGTH_SHORT).show();
                 return true;

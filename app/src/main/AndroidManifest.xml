@@ -50,9 +50,7 @@
         <service android:name=".service.SearchService"/>
         <service android:name=".service.SeriesService"/>
         <service android:name=".service.EpisodeDetailsService"/>
-        <provider
-            android:authorities="by.torymo.sremind.app"
-            android:name=".data.SReminderProvider"/>
+
     </application>
 
 </manifest>

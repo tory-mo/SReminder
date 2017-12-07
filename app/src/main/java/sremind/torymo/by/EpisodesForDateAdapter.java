@@ -36,14 +36,14 @@ public class EpisodesForDateAdapter extends BaseAdapter {
     // create a new view for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup viewGroup) {
 		convertView = LayoutInflater.from(mContext).inflate(R.layout.episode_list_item, viewGroup, false);
-		TextView dateView = (TextView)convertView.findViewById(R.id.tvDate);
-		TextView nameView = (TextView)convertView.findViewById(R.id.tvName);
-		ImageView seenView = (ImageView)convertView.findViewById(R.id.ivSeenIcon);
+		TextView dateView = convertView.findViewById(R.id.tvDate);
+		TextView nameView = convertView.findViewById(R.id.tvName);
+		ImageView seenView = convertView.findViewById(R.id.ivSeenIcon);
 
 		dateView.setText(episodesForDateList.get(position)[0]);
 		nameView.setText(episodesForDateList.get(position)[1]);
 
-		if(Utility.getBooleanFromDB(Integer.parseInt(episodesForDateList.get(position)[2]))){
+		if(Boolean.parseBoolean(episodesForDateList.get(position)[2])){
 			seenView.setImageResource(R.drawable.eye);
 		}else{
 			seenView.setImageResource(R.drawable.eye_off);

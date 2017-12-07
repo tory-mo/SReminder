@@ -26,15 +26,13 @@
         android:layout_height="match_parent"
         android:id="@+id/tvName"
         android:textSize="20sp"
-        android:textColor="@color/text_secondary"
-        android:text="dgdfgfdggdfg"/>
+        android:textColor="@color/text_secondary"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:id="@+id/tvDate"
-        android:text="dfgdgfdgfdgdg"/>
+        android:id="@+id/tvDate"/>
   </LinearLayout>
 
 </LinearLayout>

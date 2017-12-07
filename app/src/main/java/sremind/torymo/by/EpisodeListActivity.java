@@ -1,12 +1,12 @@
 package sremind.torymo.by;
 
-import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -15,13 +15,12 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import io.karim.MaterialTabs;
-import sremind.torymo.by.data.SReminderContract;
+import sremind.torymo.by.data.SReminderDatabase;
+import sremind.torymo.by.data.Series;
 
-public class EpisodeListActivity extends ActionBarActivity{
+public class EpisodeListActivity extends AppCompatActivity{
 
     ImageView imageView;
-    MaterialTabs mMaterialTabs;
     ViewPager mViewPager;
     Bundle arguments;
 
@@ -43,50 +42,53 @@ public class EpisodeListActivity extends ActionBarActivity{
                 public void onError(){
                 }
             };
-            imageView = (ImageView)findViewById(R.id.ivEpisodesHeader);
+            imageView = findViewById(R.id.ivEpisodesHeader);
             arguments = new Bundle();
-            arguments.putParcelable(EpisodeListFragment.EPISODE_LIST_URI, getIntent().getData());
+            arguments.putString(EpisodeListFragment.EPISODE_LIST_URI, getIntent().getStringExtra(EpisodeListFragment.EPISODE_LIST_URI));
 
-            String imdbid = SReminderContract.EpisodeEntry.getImdbIdFromUri(getIntent().getData());
+            String imdbid = getIntent().getData().toString();
 
-            Cursor cursor = getContentResolver().query(SReminderContract.SeriesEntry.CONTENT_URI,
-                    SReminderContract.SERIES_COLUMNS,
-                    SReminderContract.SeriesEntry.COLUMN_IMDB_ID + " like ?",
-                    new String[]{imdbid},
-                    null);
-            if(cursor!=null) {
-                if (cursor.moveToFirst()) {
-                    getSupportActionBar().setTitle("");
-                    TextView tv = (TextView) findViewById(R.id.tvSeriesName);
-                    tv.setText(cursor.getString(SReminderContract.COL_SERIES_NAME));
+            Series series = SReminderDatabase.getAppDatabase(this).seriesDao().getSeriesByImdbId(imdbid);
+            if(series != null){
+                getSupportActionBar().setTitle("");
+                TextView tv = findViewById(R.id.tvSeriesName);
+                tv.setText(series.getName());
 
-                    arguments.putParcelable(SearchDetailFragment.SEARCH_DETAIL_URI, SReminderContract.SearchResultEntry.buildSearchResultId(cursor.getString(SReminderContract.COL_SERIES_MDBID)));
-                    Picasso.with(this)
-                            .load(cursor.getString(SReminderContract.COL_SERIES_POSTER))
-                            .error(R.drawable.no_photo)
-                            .into(imageView, callBack);
-
-
-                }
-                cursor.close();
+                arguments.putString(SearchDetailFragment.SEARCH_DETAIL_URI, series.getMdbId());
+                Picasso.with(this)
+                        .load(series.getPoster())
+                        .error(R.drawable.no_photo)
+                        .into(imageView, callBack);
             }
-
-//            EpisodeListFragment fragment = new EpisodeListFragment();
-//            fragment.setArguments(arguments);
-
-
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.fragment_episodes, fragment)
-//                    .commit();
         }
 
-        mMaterialTabs = (MaterialTabs)findViewById(R.id.ep_material_tabs);
-        mViewPager = (ViewPager)findViewById(R.id.ep_view_pager);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.episodes)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.overview)));
+
+        mViewPager = findViewById(R.id.ep_view_pager);
 
         EpisodesPagerAdapter adapter = new EpisodesPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+                //chooseType(tab.getPosition());
+            }
 
-        mMaterialTabs.setViewPager(mViewPager);
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setElevation(0f);

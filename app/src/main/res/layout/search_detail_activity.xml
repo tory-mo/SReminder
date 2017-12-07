@@ -3,5 +3,5 @@
     android:id="@+id/search_detail_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sremind.torymo.by.SearchDetailFragment"
+    tools:context=".SearchDetailFragment"
     tools:ignore="MergeRootFrame" />

@@ -1,13 +1,8 @@
 package sremind.torymo.by;
 
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import sremind.torymo.by.data.SReminderContract;
+import java.util.List;
 
-public class SeriesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+import sremind.torymo.by.data.SReminderDatabase;
+import sremind.torymo.by.data.Series;
 
-	private static final int SERIES_LOADER = 1;
+public class SeriesFragment extends Fragment{
+
 	static final String  SELECTED_KEY = "SELECTED_ITEM";
 	private int mPosition = ListView.INVALID_POSITION;
 	SeriesAdapter mSeriesAdapter;
@@ -29,7 +26,7 @@ public class SeriesFragment extends Fragment implements LoaderManager.LoaderCall
 	ListView mListView;
 
 	public interface Callback{
-		void onItemSelected(Uri dateUri);
+		void onItemSelected(String imdbId);
 	}
 
 	@Override
@@ -42,17 +39,18 @@ public class SeriesFragment extends Fragment implements LoaderManager.LoaderCall
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.series_fragment, container, false);
 
-		mSeriesAdapter = new SeriesAdapter(getActivity(), null, 0);
-		mListView = (ListView)rootView.findViewById(R.id.lvSeries);
+		List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
+		mSeriesAdapter = new SeriesAdapter(getActivity(), series);
+		mListView = rootView.findViewById(R.id.lvSeries);
 		mListView.setAdapter(mSeriesAdapter);
 
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-				Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-				if (cursor != null) {
+				Series s = (Series) adapterView.getItemAtPosition(position);
+				if (s != null) {
 					((Callback)getActivity())
-							.onItemSelected(SReminderContract.EpisodeEntry.buildEpisodesSeries(cursor.getString(SReminderContract.COL_SERIES_IMDB_ID)));
+							.onItemSelected(s.getImdbId());
 				}
 				mPosition = position;
 			}
@@ -79,35 +77,7 @@ public class SeriesFragment extends Fragment implements LoaderManager.LoaderCall
 	}
 
 	@Override
-	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		String sortOrder = SReminderContract.SeriesEntry.COLUMN_NAME + " ASC";
-		Uri seriesUri  = SReminderContract.SeriesEntry.buildSeriesWatchlist();
-
-		return new CursorLoader(
-				getActivity(),
-				seriesUri,
-				SReminderContract.SERIES_COLUMNS,
-				null,
-				null,
-				sortOrder);
-	}
-
-	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		mSeriesAdapter.swapCursor(data);
-		if(mPosition!=ListView.INVALID_POSITION) {
-			mListView.smoothScrollToPosition(mPosition);
-		}
-	}
-
-	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
-		mSeriesAdapter.swapCursor(null);
-	}
-
-	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		getLoaderManager().initLoader(SERIES_LOADER, null, this);
 		super.onActivityCreated(savedInstanceState);
 	}
 

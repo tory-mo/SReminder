@@ -19,14 +19,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import sremind.torymo.by.BuildConfig;
-import sremind.torymo.by.Utility;
-import sremind.torymo.by.data.SReminderContract;
+import sremind.torymo.by.data.SReminderDatabase;
 
 public class SeriesService extends IntentService{
     private static final String APP_NAME = "SReminder";
     final String MOVIE_DB_URL = "http://api.themoviedb.org/3/tv";
     public static final String SERIES_QUERY_EXTRA = "ssqe";
-    public static final String SERIES_RESULT_EXTRA = "ssre";
 
     public SeriesService() {
         super(APP_NAME);
@@ -37,17 +35,14 @@ public class SeriesService extends IntentService{
         if(intent == null || !intent.hasExtra(SERIES_QUERY_EXTRA)){
             return;
         }
-        Uri uri = Uri.parse(intent.getStringExtra(SERIES_QUERY_EXTRA));
-        String id = SReminderContract.SearchResultEntry.getIdfromUri(uri);
+        String id = intent.getStringExtra(SERIES_QUERY_EXTRA);
         if(id.length() == 0){
             return;
         }
         final String APPKEY_PARAM = "api_key";
-        final String LANGUAGE_PARAM = "language";
 
         Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
                 .appendPath(id)
-                //.appendQueryParameter(LANGUAGE_PARAM, Locale.getDefault().getLanguage())
                 .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                 .build();
         try {
@@ -55,29 +50,34 @@ public class SeriesService extends IntentService{
             if (infoJson == null) {
                 return;
             }
-            ContentValues cv = new ContentValues();
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_HOMEPAGE, infoJson.getString("homepage"));
+
             JSONArray genres = infoJson.getJSONArray("genres");
             String genresStr = genres.getJSONObject(0).getString("name");
             for(int i = 1; i<genres.length(); i++){
-                genresStr += ", "+genres.getJSONObject(i).getString("name");
+                genresStr = genresStr.concat(", "+genres.getJSONObject(i).getString("name"));
             }
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_GENRES, genresStr);
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_ONGOING, Utility.getBooleanForDB(infoJson.getBoolean("in_production")));
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_SEASONS, infoJson.getString("number_of_seasons"));
+
             String overview = infoJson.getString("overview");
-            if(overview!=null)
-                cv.put(SReminderContract.SearchResultEntry.COLUMN_OVERVIEW, infoJson.getString("overview"));
+            if(overview == null) overview = "";
+
             String episodeTime = infoJson.getString("episode_run_time");
             String[] times = episodeTime.split(",");
             episodeTime = times[0].replaceAll("[^\\d.]", "");
             for(int i = 1; i<times.length; i++){
-                episodeTime += ","+times[i].replaceAll("[^\\d.]", "");
+                episodeTime = episodeTime.concat(","+times[i].replaceAll("[^\\d.]", ""));
             }
 
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_EPISODE_TIME, episodeTime);
-            getContentResolver().update(uri, cv, SReminderContract.SearchResultEntry.COLUMN_ID + "= ?", new String[]{id});
-            getImdbId(uri, id);
+            String imdbId = getImdbId(id);
+            if(imdbId == null) return;
+
+            SReminderDatabase.getAppDatabase(this).searchResultDao().update(Integer.parseInt(id),
+                    imdbId,
+                    infoJson.getString("homepage"),
+                    genresStr,
+                    infoJson.getBoolean("in_production"),
+                    infoJson.getInt("number_of_seasons"),
+                    overview,
+                    episodeTime);
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -140,7 +140,7 @@ public class SeriesService extends IntentService{
         return null;
     }
 
-    private void getImdbId(Uri uri, String id) throws JSONException {
+    private String getImdbId(String id) throws JSONException {
 
         final String EXTERNAL_PARAM = "external_ids";
         final String APPKEY_PARAM = "api_key";
@@ -154,9 +154,8 @@ public class SeriesService extends IntentService{
         JSONObject infoJson = getData(builtUri);
 
         if(infoJson!=null) {
-            ContentValues cv = new ContentValues();
-            cv.put(SReminderContract.SearchResultEntry.COLUMN_IMDB, infoJson.getString("imdb_id"));
-            getContentResolver().update(uri, cv, SReminderContract.SearchResultEntry.COLUMN_ID + "= ?", new String[]{id});
+            return infoJson.getString("imdb_id");
         }
+        return null;
     }
 }
