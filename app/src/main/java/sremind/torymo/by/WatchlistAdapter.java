@@ -57,5 +57,4 @@ public class WatchlistAdapter extends ArrayAdapter<Series> {
 
 		return result;
 	}
-
 }

@@ -13,7 +13,7 @@ public interface SeriesDao {
     @Query("SELECT * FROM series")
     List<Series> getAll();
 
-    @Query("SELECT * FROM series WHERE watchlist = 'true'")
+    @Query("SELECT * FROM series WHERE watchlist = 1")
     List<Series> getWatchlist();
 
     @Query("SELECT * FROM series WHERE imdbid like :imdbId limit 1")

@@ -20,9 +20,6 @@ public class SeriesFragment extends Fragment{
 	static final String  SELECTED_KEY = "SELECTED_ITEM";
 	private int mPosition = ListView.INVALID_POSITION;
 	SeriesAdapter mSeriesAdapter;
-
-
-
 	ListView mListView;
 
 	public interface Callback{
@@ -66,6 +63,10 @@ public class SeriesFragment extends Fragment{
 	@Override
 	public void onResume() {
 		super.onResume();
+		List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
+		mSeriesAdapter.clear();
+		mSeriesAdapter.addAll(series);
+		mSeriesAdapter.notifyDataSetChanged();
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class EpisodeListActivity extends AppCompatActivity{
             arguments = new Bundle();
             arguments.putString(EpisodeListFragment.EPISODE_LIST_URI, getIntent().getStringExtra(EpisodeListFragment.EPISODE_LIST_URI));
 
-            String imdbid = getIntent().getData().toString();
+            String imdbid = getIntent().getStringExtra(EpisodeListFragment.EPISODE_LIST_URI);
 
             Series series = SReminderDatabase.getAppDatabase(this).seriesDao().getSeriesByImdbId(imdbid);
             if(series != null){

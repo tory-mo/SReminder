@@ -26,8 +26,9 @@ public class EpisodeListFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Bundle arguments = getArguments();
+        final String imdbId = arguments.getString(EpisodeListFragment.EPISODE_LIST_URI);
 
-        final List<Episode> episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeries(arguments.getParcelable(EpisodeListFragment.EPISODE_LIST_URI).toString());
+        final List<Episode> episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeries(imdbId);
         mEpisodeAdapter = new EpisodeListAdapter(getActivity(), episodes);
 
         View rootView = inflater.inflate(R.layout.episodes_fragment, container, false);
@@ -43,6 +44,10 @@ public class EpisodeListFragment extends Fragment{
                    int episodeId = ep.getId();
                    boolean seen = !ep.isSeen(); //get inverted to current value
                    SReminderDatabase.getAppDatabase(getActivity()).episodeDao().setSeen(episodeId, seen);
+                   final List<Episode> episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeries(imdbId);
+                   mEpisodeAdapter.clear();
+                   mEpisodeAdapter.addAll(episodes);
+                   mEpisodeAdapter.notifyDataSetChanged();
 	        	}
 
         });

@@ -26,9 +26,10 @@ import sremind.torymo.by.service.EpisodesService;
 
 public class WatchlistFragment extends Fragment{
 
-	private static final int WATCHLIST_LOADER = 1;
     WatchlistAdapter mWatchlistAdapter;
 	private static final int CM_DELETE_SERIES = 2;
+
+	ListView watchlistListView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class WatchlistFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.watchlist_fragment, container, false);
 
-		ListView watchlistListView = rootView.findViewById(R.id.watchlistListView);
+		watchlistListView = rootView.findViewById(R.id.watchlistListView);
 
 		List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
 
@@ -121,9 +122,23 @@ public class WatchlistFragment extends Fragment{
 				Series series = mWatchlistAdapter.getItem(info.position);
 				final String imdbId = series.getImdbId();
 				SReminderDatabase.getAppDatabase(getActivity()).seriesDao().delete(imdbId);
+				refreshWatchlist();
 				return true;
 			default:
 				return super.onContextItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		refreshWatchlist();
+	}
+
+	private void refreshWatchlist(){
+		List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
+		mWatchlistAdapter.clear();
+		mWatchlistAdapter.addAll(series);
+		mWatchlistAdapter.notifyDataSetChanged();
 	}
 }

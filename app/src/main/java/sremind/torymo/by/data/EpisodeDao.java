@@ -23,13 +23,13 @@ public interface EpisodeDao {
     @Query("SELECT * FROM episodes WHERE date between :date1 and :date2")
     List<Episode> getEpisodesBetweenDates(long date1, long date2);
 
-    @Query("SELECT * FROM episodes WHERE (seen = 'false') and (date between :date1 and :date2)")
+    @Query("SELECT * FROM episodes WHERE (seen = 0) and (date between :date1 and :date2)")
     List<Episode> getNotSeenEpisodesBetweenDates(long date1, long date2);
 
     @Query("SELECT * FROM episodes WHERE date = :date")
     List<Episode> getEpisodesForDate(long date);
 
-    @Query("SELECT * FROM episodes WHERE date = :date and seen = 'false'")
+    @Query("SELECT * FROM episodes WHERE date = :date and seen = 0")
     List<Episode> getNotSeenEpisodesForDate(long date);
 
     @Query("SELECT * FROM episodes WHERE date = :date and series like :series")
