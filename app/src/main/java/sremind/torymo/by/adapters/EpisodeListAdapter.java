@@ -1,4 +1,4 @@
-package sremind.torymo.by;
+package sremind.torymo.by.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import sremind.torymo.by.R;
 import sremind.torymo.by.data.Episode;
 
 public class EpisodeListAdapter extends ArrayAdapter<Episode> {
@@ -51,7 +52,7 @@ public class EpisodeListAdapter extends ArrayAdapter<Episode> {
         }
 
         viewHolder.name.setText(ep.getName());
-        Date date = Utility.getCalendarFromFormattedLong(ep.getDate());
+        Date date = new Date(ep.getDate());
         String epNum = ep.getNumber();
 
         if(ep.isSeen()){

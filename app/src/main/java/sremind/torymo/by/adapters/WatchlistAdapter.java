@@ -1,4 +1,4 @@
-package sremind.torymo.by;
+package sremind.torymo.by.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import sremind.torymo.by.R;
 import sremind.torymo.by.data.Series;
 
 public class WatchlistAdapter extends ArrayAdapter<Series> {

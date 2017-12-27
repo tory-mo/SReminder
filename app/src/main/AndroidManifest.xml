@@ -46,10 +46,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".SearchActivity" />
         </activity>
-        <service android:name=".service.EpisodesService"/>
-        <service android:name=".service.SearchService"/>
-        <service android:name=".service.SeriesService"/>
-        <service android:name=".service.EpisodeDetailsService"/>
 
     </application>
 

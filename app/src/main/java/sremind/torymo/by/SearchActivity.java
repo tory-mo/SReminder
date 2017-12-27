@@ -26,12 +26,15 @@ import java.util.Locale;
 
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.SearchResult;
-import sremind.torymo.by.service.SearchService;
 
 public class SearchActivity extends AppCompatActivity implements SearchFragment.Callback {
 
     final String MOVIE_DB_URL = "http://api.themoviedb.org/3/search/tv";
     final String POSTER_PATH = "http://image.tmdb.org/t/p/w300/";
+    final String EXTERNAL_PARAM = "external_source";
+    final String IMDB_VALUE = "imdb_id";
+    final String QUERY = "query";
+    final String APPKEY_PARAM = "api_key";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,17 +77,6 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
             String query = intent.getStringExtra(SearchManager.QUERY);
             SReminderDatabase.getAppDatabase(this).searchResultDao().delete();
             if(query.length()>1) {
-//                Intent searchIntent = new Intent(this, SearchService.class);
-//                searchIntent.putExtra(SearchService.SEARCH_QUERY_EXTRA, query);
-//                startService(searchIntent);
-
-                final String EXTERNAL_PARAM = "external_source";
-                final String IMDB_VALUE = "imdb_id";
-                final String QUERY = "query";
-                final String APPKEY_PARAM = "api_key";
-
-
-
                 Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
                         .appendQueryParameter(EXTERNAL_PARAM, IMDB_VALUE)
                         .appendQueryParameter(QUERY, query)
@@ -105,8 +97,6 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                // TODO Auto-generated method stub
-
                             }
                         });
 
@@ -160,7 +150,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                 sr.setOverview(overview);
                 sr.setPopularity(popularity);
                 if(date != null)
-                    sr.setFirstDate(Utility.getDateTime(date));
+                    sr.setFirstDate(date.getTime());
 
                 searchResults.add(sr);
                 added++;

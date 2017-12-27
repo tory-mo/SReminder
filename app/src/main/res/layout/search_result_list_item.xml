@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
       xmlns:android="http://schemas.android.com/apk/res/android"
-      android:layout_width="fill_parent"
-      android:orientation="vertical"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="@color/text_primary"
       android:padding="5dp">
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivPoster"/>
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/tvName"
+        android:paddingLeft="5dp"
         android:textSize="20sp"
-        android:textColor="@color/text_secondary"/>
+        android:textColor="@color/text_secondary"
+        android:layout_toRightOf="@+id/ivPoster"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:id="@+id/tvDate"/>
-</LinearLayout>
+        android:paddingLeft="5dp"
+        android:id="@+id/tvDate"
+        android:layout_toRightOf="@+id/ivPoster"
+        android:layout_below="@+id/tvName"/>
+</RelativeLayout>

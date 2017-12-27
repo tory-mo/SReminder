@@ -1,5 +1,6 @@
 package sremind.torymo.by;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,14 +21,16 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import sremind.torymo.by.adapters.WatchlistAdapter;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.Series;
-import sremind.torymo.by.service.EpisodesService;
+import sremind.torymo.by.service.EpisodesJsonRequest;
 
 public class WatchlistFragment extends Fragment{
 
     WatchlistAdapter mWatchlistAdapter;
 	private static final int CM_DELETE_SERIES = 2;
+
 
 	ListView watchlistListView;
 
@@ -43,9 +46,9 @@ public class WatchlistFragment extends Fragment{
 
 		watchlistListView = rootView.findViewById(R.id.watchlistListView);
 
-		List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
+		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
 
-		mWatchlistAdapter = new WatchlistAdapter(getActivity(), series);
+		mWatchlistAdapter = new WatchlistAdapter(getActivity(), series.getValue());
 		watchlistListView.setAdapter(mWatchlistAdapter);
 		registerForContextMenu(watchlistListView);
 
@@ -58,19 +61,18 @@ public class WatchlistFragment extends Fragment{
 
 				Series s = (Series) adapterView.getItemAtPosition(position);
         		final String imdbId = s.getImdbId();
-				changeWatchlist(imdbId, checked);
+				changeWatchlist(imdbId, s.getMdbId(), checked);
         	}
 		});
 
 		return rootView;
 	}
 	
-	public static void addEpisodes(final Context context, final String imdbId){
-		Intent intent = new Intent(context, EpisodesService.class);
-		intent.putExtra(EpisodesService.EPISODES_QUERY_EXTRA, imdbId);
-		context.startService(intent);
+	public static void addEpisodes(final Context context, final String imdbId, final String mdbId){
+		EpisodesJsonRequest.getEpisodes(context, mdbId, imdbId);
 	}
-	
+
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -95,11 +97,11 @@ public class WatchlistFragment extends Fragment{
 		super.onActivityCreated(savedInstanceState);
 	}
 
-	private void changeWatchlist(String imdbId, boolean watchlist){
+	private void changeWatchlist(String imdbId, String mdbId, boolean watchlist){
 		SReminderDatabase.getAppDatabase(getActivity()).seriesDao().setWatchlist(imdbId, watchlist);
 
 		if(watchlist){
-			addEpisodes(getActivity(), imdbId);
+			addEpisodes(getActivity(), imdbId, mdbId);
 		}else{
 			SReminderDatabase.getAppDatabase(getActivity()).episodeDao().delete(imdbId);
 			Toast.makeText(getActivity(), R.string.episodes_deleted, Toast.LENGTH_SHORT).show();
@@ -136,9 +138,9 @@ public class WatchlistFragment extends Fragment{
 	}
 
 	private void refreshWatchlist(){
-		List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
+		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
 		mWatchlistAdapter.clear();
-		mWatchlistAdapter.addAll(series);
+		mWatchlistAdapter.addAll(series.getValue());
 		mWatchlistAdapter.notifyDataSetChanged();
 	}
 }

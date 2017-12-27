@@ -1,4 +1,4 @@
-package sremind.torymo.by;
+package sremind.torymo.by.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import sremind.torymo.by.R;
 
 public class EpisodesForDateAdapter extends BaseAdapter {
 

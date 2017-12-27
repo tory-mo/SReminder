@@ -1,7 +1,6 @@
 package sremind.torymo.by;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.arch.lifecycle.LiveData;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,21 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONObject;
-
 import java.util.Date;
 
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.SearchResult;
 import sremind.torymo.by.data.Series;
-import sremind.torymo.by.service.EpisodeDetailsService;
-import sremind.torymo.by.service.EpisodesService;
-import sremind.torymo.by.service.SeriesService;
+import sremind.torymo.by.service.EpisodesJsonRequest;
+import sremind.torymo.by.service.SeriesDetailsRequest;
+import sremind.torymo.by.service.SeriesRequest;
 
 public class SearchDetailFragment extends Fragment{
 
@@ -77,28 +69,24 @@ public class SearchDetailFragment extends Fragment{
     }
 
     public void refresh(String mdbId){
-        Series seriesInList = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getSeriesByMdbId(mdbId);
+        LiveData<Series> seriesInList = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getSeriesByMdbId(mdbId);
         if(seriesInList != null){
             mInList = true;
         }
-//        Intent intent;
-//        if(getActivity().getClass().equals(SearchActivity.class)) {
-//            intent = new Intent(getActivity(), SeriesService.class);
-//            intent.putExtra(SeriesService.SERIES_QUERY_EXTRA, mdbId);
-//        }else{
-//            intent = new Intent(getActivity(), EpisodeDetailsService.class);
-//            intent.putExtra(EpisodeDetailsService.ED_QUERY_EXTRA, mdbId);
-//        }
-//        getActivity().startService(intent);
 
+        if(getActivity().getClass().equals(SearchActivity.class)) {
+            SeriesRequest.getSeries(getActivity(), mdbId);
+        }else{
+            SeriesDetailsRequest.getDetails(getActivity(), mdbId);
+        }
 
-        SearchResult searchResult = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getSeriesResultById(mdbId);
+        LiveData<SearchResult> searchResultLD = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getSeriesResultById(mdbId);
+        SearchResult searchResult = searchResultLD.getValue();
 
         if(searchResult == null ) return;
 
-
         String overview = searchResult.getOverview();
-        Date firstDate = Utility.getCalendarFromFormattedLong(searchResult.getFirstDate());
+        Date firstDate = new Date(searchResult.getFirstDate());
         boolean ongoing = searchResult.isOngoing();
         mPoster = searchResult.getPoster();
         String homepage = searchResult.getHomepage();
@@ -109,9 +97,7 @@ public class SearchDetailFragment extends Fragment{
         mImdbId = searchResult.getImdbId();
 
 
-        String firstDateStr = "";
-        if(firstDate!=null)
-            firstDateStr = Utility.dateToStrFormat.format(firstDate);
+        String firstDateStr = Utility.dateToStrFormat.format(firstDate);
         mFirstDateTextView.setText(getActivity().getString(R.string.format_first_date, firstDateStr));
 
         String ongoing_status;
@@ -162,9 +148,7 @@ public class SearchDetailFragment extends Fragment{
                     Series s = new Series(mName, mImdbId, mdbId, mPoster, true);
                     SReminderDatabase.getAppDatabase(getActivity()).seriesDao().insert(s);
 
-                    Intent intent = new Intent(getActivity(), EpisodesService.class);
-                    intent.putExtra(EpisodesService.EPISODES_QUERY_EXTRA, mImdbId);
-                    getActivity().startService(intent);
+                    EpisodesJsonRequest.getEpisodes(getActivity(), mdbId, mImdbId);
                 }
                 mInList = !mInList;
                 changeMenuTitle(item);

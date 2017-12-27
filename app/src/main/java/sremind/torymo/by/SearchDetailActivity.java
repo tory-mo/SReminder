@@ -1,6 +1,7 @@
 package sremind.torymo.by;
 
 
+import android.arch.lifecycle.LiveData;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -47,10 +48,10 @@ public class SearchDetailActivity extends AppCompatActivity {
                     .add(R.id.search_detail_fragment, fragment)
                     .commit();
 
-            SearchResult sr = SReminderDatabase.getAppDatabase(this).searchResultDao().getSeriesResultById(mdbId);
+            LiveData<SearchResult> sr = SReminderDatabase.getAppDatabase(this).searchResultDao().getSeriesResultById(mdbId);
 
             if(sr!=null) {
-                getSupportActionBar().setTitle(sr.getName());
+                getSupportActionBar().setTitle(sr.getValue().getName());
             }
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -100,7 +101,7 @@ public class SearchDetailActivity extends AppCompatActivity {
             sr.setGenres(genresStr);
             sr.setOverview(overview);
             sr.setEpisodeTime(episodeTime);
-            sr.setFirstDate(Utility.getDateTime(date));
+            sr.setFirstDate(date.getTime());
 
             SReminderDatabase.getAppDatabase(this).searchResultDao().insert(sr);
 

@@ -1,5 +1,6 @@
 package sremind.torymo.by.data;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -12,28 +13,28 @@ import java.util.List;
 public interface EpisodeDao {
 
     @Query("SELECT * FROM episodes")
-    List<Episode> getAll();
+    LiveData<List<Episode>> getAll();
 
     @Query("SELECT * FROM episodes WHERE series like :series")
-    List<Episode> getEpisodesBySeries(String series);
+    LiveData<List<Episode>> getEpisodesBySeries(String series);
 
     @Query("SELECT * FROM episodes WHERE series like :series and ep_number like :number")
-    List<Episode> getEpisodesBySeriesAndNumber(String series, String number);
+    LiveData<List<Episode>> getEpisodesBySeriesAndNumber(String series, String number);
 
     @Query("SELECT * FROM episodes WHERE date between :date1 and :date2")
-    List<Episode> getEpisodesBetweenDates(long date1, long date2);
+    LiveData<List<Episode>> getEpisodesBetweenDates(long date1, long date2);
 
     @Query("SELECT * FROM episodes WHERE (seen = 0) and (date between :date1 and :date2)")
-    List<Episode> getNotSeenEpisodesBetweenDates(long date1, long date2);
+    LiveData<List<Episode>> getNotSeenEpisodesBetweenDates(long date1, long date2);
 
     @Query("SELECT * FROM episodes WHERE date = :date")
-    List<Episode> getEpisodesForDate(long date);
+    LiveData<List<Episode>> getEpisodesForDate(long date);
 
     @Query("SELECT * FROM episodes WHERE date = :date and seen = 0")
-    List<Episode> getNotSeenEpisodesForDate(long date);
+    LiveData<List<Episode>> getNotSeenEpisodesForDate(long date);
 
     @Query("SELECT * FROM episodes WHERE date = :date and series like :series")
-    List<Episode> getEpisodesForSeriesAndDate(String series, long date);
+    LiveData<List<Episode>> getEpisodesForSeriesAndDate(String series, long date);
 
     @Query("UPDATE episodes set seen = :seen where id = :id")
     void setSeen(int id, boolean seen);

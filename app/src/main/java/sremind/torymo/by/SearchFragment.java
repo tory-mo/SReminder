@@ -1,5 +1,6 @@
 package sremind.torymo.by;
 
+import android.arch.lifecycle.LiveData;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import sremind.torymo.by.adapters.SearchAdapter;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.SearchResult;
 
@@ -30,8 +32,8 @@ public class SearchFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.search_fragment, container, false);
 
-        List<SearchResult> searchResults = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getAll();
-        mSearchAdapter = new SearchAdapter(getActivity(), searchResults);
+        LiveData<List<SearchResult>> searchResults = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getAll();
+        mSearchAdapter = new SearchAdapter(getActivity(), searchResults.getValue());
 
         mSearchListView = rootView.findViewById(R.id.searchListView);
         mSearchListView.setAdapter(mSearchAdapter);
@@ -59,9 +61,9 @@ public class SearchFragment extends Fragment{
     public void refresh(){
         if(mSearchAdapter == null) return;
 
-        List<SearchResult> searchResults = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getAll();
+        LiveData<List<SearchResult>> searchResults = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getAll();
         mSearchAdapter.clear();
-        mSearchAdapter.addAll(searchResults);
+        mSearchAdapter.addAll(searchResults.getValue());
         mSearchAdapter.notifyDataSetChanged();
     }
 

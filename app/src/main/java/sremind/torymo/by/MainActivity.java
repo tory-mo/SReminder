@@ -1,30 +1,21 @@
 package sremind.torymo.by;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
-
-import sremind.torymo.by.service.EpisodesService;
 
 public class MainActivity extends AppCompatActivity implements SeriesFragment.Callback{
 
 
 	ViewPager mViewPager;
-
-	SReminderServicesBroadcastReceiver mBroadcastReceiver;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements SeriesFragment.Ca
 
 		getSupportActionBar().setTitle(getString(R.string.app_caption));
 		getSupportActionBar().setElevation(0f);
-
-		mBroadcastReceiver = new SReminderServicesBroadcastReceiver();
 	}
 
     @Override
@@ -119,27 +108,13 @@ public class MainActivity extends AppCompatActivity implements SeriesFragment.Ca
 		}
 	}
 
-	public class SReminderServicesBroadcastReceiver extends BroadcastReceiver{
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if(intent == null || !intent.hasExtra(EpisodesService.EPISODES_RESULT_EXTRA))
-				return;
-			Toast.makeText(context,intent.getIntExtra(EpisodesService.EPISODES_RESULT_EXTRA,0) + context.getString(R.string.are_updated), Toast.LENGTH_SHORT).show();
-		}
-	}
-
 	@Override
 	protected void onPause() {
 		super.onPause();
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		LocalBroadcastManager.getInstance(this).registerReceiver(
-				mBroadcastReceiver,
-				new IntentFilter(Utility.BROADCAST_ACTION));
 	}
 }

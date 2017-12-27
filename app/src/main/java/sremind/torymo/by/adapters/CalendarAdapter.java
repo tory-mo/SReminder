@@ -1,6 +1,7 @@
-package sremind.torymo.by;
+package sremind.torymo.by.adapters;
 
 import android.app.Activity;
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -15,8 +16,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import sremind.torymo.by.R;
+import sremind.torymo.by.Utility;
 import sremind.torymo.by.data.Episode;
 import sremind.torymo.by.data.SReminderDatabase;
+import sremind.torymo.by.data.Series;
 
 public class CalendarAdapter extends BaseAdapter {
 
@@ -33,7 +37,7 @@ public class CalendarAdapter extends BaseAdapter {
 		boolean event;
 	}
     
-    CalendarAdapter(Context context, Calendar monthCalendar) {
+    public CalendarAdapter(Context context, Calendar monthCalendar) {
 		mContext = context;
 
 		mChosenMonth = monthCalendar;
@@ -114,7 +118,7 @@ public class CalendarAdapter extends BaseAdapter {
         return convertView;
     }
     
-    void refreshDays()
+    public void refreshDays()
     {
 		mChosenMonth.set(Calendar.DATE,1);
 		Date startDate = mChosenMonth.getTime();
@@ -132,20 +136,17 @@ public class CalendarAdapter extends BaseAdapter {
 			mDaysOfMonth[i].day = "";
 		}
 
-
-		List<Episode> episodes;
+		LiveData<List<Episode>> episodes;
 		if(Utility.getSeenParam(mContext)){
-
 			episodes = SReminderDatabase.getAppDatabase(mContext).episodeDao().getNotSeenEpisodesBetweenDates(startDate.getTime(), endDate.getTime());
 		}else {
-
 			episodes = SReminderDatabase.getAppDatabase(mContext).episodeDao().getEpisodesBetweenDates(startDate.getTime(), endDate.getTime());
 		}
 
 		ArrayList<Date> datesOfEpisodes = new ArrayList<>();
-		if(episodes != null && !episodes.isEmpty()){
-			for (Episode ep: episodes) {
-				datesOfEpisodes.add(Utility.getCalendarFromFormattedLong(ep.getDate()));
+		if(episodes != null && !episodes.getValue().isEmpty()){
+			for (Episode ep: episodes.getValue()) {
+				datesOfEpisodes.add(new Date(ep.getDate()));
 			}
 		}
 
@@ -164,7 +165,7 @@ public class CalendarAdapter extends BaseAdapter {
         }
     }
 
-	void showEpisodesForDay(Date touchedDate, Activity activity){
+	public void showEpisodesForDay(Date touchedDate, Activity activity){
 		ArrayList<String[]> episodesForDateList = new ArrayList<>();
 		EpisodesForDateAdapter episodesForDateAdapter = new EpisodesForDateAdapter(mContext, episodesForDateList);
 //		SimpleAdapter episodesForDayAdapter = new SimpleAdapter(mContext,
@@ -194,26 +195,23 @@ public class CalendarAdapter extends BaseAdapter {
 		//HashMap<String, Object> hm;
 		String[] hm;
 
-		List<Episode> episodes;
+		LiveData<List<Episode>> episodes;
 		if(Utility.getSeenParam(mContext)){
-
 			episodes = SReminderDatabase.getAppDatabase(mContext).episodeDao().getNotSeenEpisodesForDate(touchedDate.getTime());
 		}else {
-
 			episodes = SReminderDatabase.getAppDatabase(mContext).episodeDao().getEpisodesForDate(touchedDate.getTime());
 		}
 
 		episodesForDateList.clear();
-		if(episodes != null && !episodes.isEmpty()){
-			for (Episode ep: episodes) {
+		if(episodes != null && !episodes.getValue().isEmpty()){
+			for (Episode ep: episodes.getValue()) {
+				LiveData<Series> s = SReminderDatabase.getAppDatabase(mContext).seriesDao().getSeriesByImdbId(ep.getSeries());
 				hm = new String[3];
-				hm[0] = ep.getNumber() + "; " + ep.getSeries();
+				hm[0] = ep.getNumber() + "; " + s.getValue().getName();
 				hm[1] = ep.getName();
 				hm[2] = String.valueOf(ep.isSeen());
 				episodesForDateList.add(hm);
 			}
 		}
 	}
-
-
 }

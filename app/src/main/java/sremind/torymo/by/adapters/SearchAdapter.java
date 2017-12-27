@@ -1,14 +1,18 @@
-package sremind.torymo.by;
+package sremind.torymo.by.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import sremind.torymo.by.R;
 import sremind.torymo.by.data.SearchResult;
 
 public class SearchAdapter extends ArrayAdapter<SearchResult> {
@@ -17,6 +21,7 @@ public class SearchAdapter extends ArrayAdapter<SearchResult> {
     Context mContext;
 
     private class ViewHolder{
+        ImageView posterImageView;
         TextView nameTextView;
         TextView overviewTextView;
     }
@@ -40,6 +45,7 @@ public class SearchAdapter extends ArrayAdapter<SearchResult> {
             convertView = inflater.inflate(R.layout.search_result_list_item, parent, false);
             viewHolder.nameTextView = convertView.findViewById(R.id.tvName);
             viewHolder.overviewTextView = convertView.findViewById(R.id.tvDate);
+            viewHolder.posterImageView = convertView.findViewById(R.id.ivPoster);
 
             result=convertView;
 
@@ -54,6 +60,11 @@ public class SearchAdapter extends ArrayAdapter<SearchResult> {
         if(overview.length()>140)
             overview = overview.substring(0, 140)+"...";
         viewHolder.overviewTextView.setText(overview);
+
+        Picasso.with(mContext)
+                .load(searchResult.getPoster())
+                .error(R.drawable.no_photo)
+                .into(viewHolder.posterImageView);
 
         return result;
     }

@@ -1,5 +1,6 @@
 package sremind.torymo.by.data;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -12,13 +13,13 @@ import java.util.List;
 public interface SearchResultDao {
 
     @Query("SELECT * FROM search_result")
-    List<SearchResult> getAll();
+    LiveData<List<SearchResult> > getAll();
 
     @Query("SELECT * FROM search_result WHERE imdbid like :imdbId limit 1")
-    SearchResult getSeriesResultByImdbId(String imdbId);
+    LiveData<SearchResult> getSeriesResultByImdbId(String imdbId);
 
     @Query("SELECT * FROM search_result WHERE sr_id like :searchResultId limit 1")
-    SearchResult getSeriesResultById(String searchResultId);
+    LiveData<SearchResult> getSeriesResultById(String searchResultId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SearchResult searchResult);

@@ -1,5 +1,6 @@
 package sremind.torymo.by;
 
+import android.arch.lifecycle.LiveData;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -48,15 +49,15 @@ public class EpisodeListActivity extends AppCompatActivity{
 
             String imdbid = getIntent().getStringExtra(EpisodeListFragment.EPISODE_LIST_URI);
 
-            Series series = SReminderDatabase.getAppDatabase(this).seriesDao().getSeriesByImdbId(imdbid);
+            LiveData<Series> series = SReminderDatabase.getAppDatabase(this).seriesDao().getSeriesByImdbId(imdbid);
             if(series != null){
                 getSupportActionBar().setTitle("");
                 TextView tv = findViewById(R.id.tvSeriesName);
-                tv.setText(series.getName());
+                tv.setText(series.getValue().getName());
 
-                arguments.putString(SearchDetailFragment.SEARCH_DETAIL_URI, series.getMdbId());
+                arguments.putString(SearchDetailFragment.SEARCH_DETAIL_URI, series.getValue().getMdbId());
                 Picasso.with(this)
-                        .load(series.getPoster())
+                        .load(series.getValue().getPoster())
                         .error(R.drawable.no_photo)
                         .into(imageView, callBack);
             }

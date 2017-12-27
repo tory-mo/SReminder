@@ -1,6 +1,7 @@
-package sremind.torymo.by;
+package sremind.torymo.by.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import sremind.torymo.by.R;
 import sremind.torymo.by.data.Series;
 
 public class SeriesAdapter extends ArrayAdapter<Series> {
@@ -26,6 +28,7 @@ public class SeriesAdapter extends ArrayAdapter<Series> {
         TextView seriesName;
     }
 
+    @NonNull
     @Override
     public View getView(int i, View convertView, ViewGroup parent) {
         Series series = getItem(i);

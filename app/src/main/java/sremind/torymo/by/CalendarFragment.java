@@ -1,6 +1,6 @@
 package sremind.torymo.by;
 
-import android.content.Intent;
+import android.arch.lifecycle.LiveData;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,9 +18,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import sremind.torymo.by.adapters.CalendarAdapter;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.Series;
-import sremind.torymo.by.service.EpisodesService;
+import sremind.torymo.by.service.EpisodesJsonRequest;
 
 
 public class CalendarFragment extends Fragment{
@@ -115,12 +116,10 @@ public class CalendarFragment extends Fragment{
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.action_update_episodes:
-                List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
-                if(series != null && !series.isEmpty()){
-                    for (Series s: series) {
-                        Intent intent = new Intent(getActivity(), EpisodesService.class);
-                        intent.putExtra(EpisodesService.EPISODES_QUERY_EXTRA, s.getImdbId());
-                        getActivity().startService(intent);
+                LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
+                if(series != null && !series.getValue().isEmpty()){
+                    for (Series s: series.getValue()) {
+                        EpisodesJsonRequest.getEpisodes(getActivity(), s.getMdbId(), s.getImdbId());
                     }
                 }
                 Toast.makeText(getActivity(), R.string.slist_updated, Toast.LENGTH_SHORT).show();

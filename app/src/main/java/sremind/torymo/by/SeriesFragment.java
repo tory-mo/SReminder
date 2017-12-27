@@ -1,5 +1,6 @@
 package sremind.torymo.by;
 
+import android.arch.lifecycle.LiveData;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import sremind.torymo.by.adapters.SeriesAdapter;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.Series;
 
@@ -36,8 +38,8 @@ public class SeriesFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.series_fragment, container, false);
 
-		List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
-		mSeriesAdapter = new SeriesAdapter(getActivity(), series);
+		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
+		mSeriesAdapter = new SeriesAdapter(getActivity(), series.getValue());
 		mListView = rootView.findViewById(R.id.lvSeries);
 		mListView.setAdapter(mSeriesAdapter);
 
@@ -63,9 +65,9 @@ public class SeriesFragment extends Fragment{
 	@Override
 	public void onResume() {
 		super.onResume();
-		List<Series> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
+		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
 		mSeriesAdapter.clear();
-		mSeriesAdapter.addAll(series);
+		mSeriesAdapter.addAll(series.getValue());
 		mSeriesAdapter.notifyDataSetChanged();
 	}
 
