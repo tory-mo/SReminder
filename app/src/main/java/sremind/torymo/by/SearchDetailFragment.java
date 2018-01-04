@@ -1,6 +1,7 @@
 package sremind.torymo.by;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -70,9 +71,13 @@ public class SearchDetailFragment extends Fragment{
 
     public void refresh(String mdbId){
         LiveData<Series> seriesInList = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getSeriesByMdbId(mdbId);
-        if(seriesInList != null){
-            mInList = true;
-        }
+        seriesInList.observe(this, new Observer<Series>() {
+            @Override
+            public void onChanged(@Nullable Series series) {
+                if(series != null)
+                    mInList = true;
+            }
+        });
 
         if(getActivity().getClass().equals(SearchActivity.class)) {
             SeriesRequest.getSeries(getActivity(), mdbId);
@@ -81,41 +86,45 @@ public class SearchDetailFragment extends Fragment{
         }
 
         LiveData<SearchResult> searchResultLD = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getSeriesResultById(mdbId);
-        SearchResult searchResult = searchResultLD.getValue();
+        searchResultLD.observe(this, new Observer<SearchResult>() {
+            @Override
+            public void onChanged(@Nullable SearchResult searchResult) {
+                if(searchResult == null ) return;
 
-        if(searchResult == null ) return;
-
-        String overview = searchResult.getOverview();
-        Date firstDate = new Date(searchResult.getFirstDate());
-        boolean ongoing = searchResult.isOngoing();
-        mPoster = searchResult.getPoster();
-        String homepage = searchResult.getHomepage();
-        String seasons = String.valueOf(searchResult.getSeasons());
-        String episodeTime = searchResult.getEpisodeTime();
-        String genres = searchResult.getGenres();
-        mName = searchResult.getName();
-        mImdbId = searchResult.getImdbId();
-
-
-        String firstDateStr = Utility.dateToStrFormat.format(firstDate);
-        mFirstDateTextView.setText(getActivity().getString(R.string.format_first_date, firstDateStr));
-
-        String ongoing_status;
-        if(ongoing)
-            ongoing_status = getActivity().getString(R.string.format_ongoing_true);
-        else
-            ongoing_status = getActivity().getString(R.string.format_ongoing_false);
-        mOngoingTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_ongoing, ongoing_status)));
+                String overview = searchResult.getOverview();
+                Date firstDate = new Date(searchResult.getFirstDate());
+                boolean ongoing = searchResult.isOngoing();
+                mPoster = searchResult.getPoster();
+                String homepage = searchResult.getHomepage();
+                String seasons = String.valueOf(searchResult.getSeasons());
+                String episodeTime = searchResult.getEpisodeTime();
+                String genres = searchResult.getGenres();
+                mName = searchResult.getName();
+                mImdbId = searchResult.getImdbId();
 
 
-        mHomepageTextView.setMovementMethod(LinkMovementMethod.getInstance());
-        homepage = "<a href=\""+homepage+"\">"+homepage+"</a>";
-        mHomepageTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_homepage, homepage)));
+                String firstDateStr = Utility.dateToStrFormat.format(firstDate);
+                mFirstDateTextView.setText(getActivity().getString(R.string.format_first_date, firstDateStr));
 
-        mSeasonsTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_seasons, seasons)));
-        mEpisodeTimeTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_episode_time, episodeTime)));
-        mGenresTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_genres, genres)));
-        mOverviewTextView.setText(getActivity().getString(R.string.format_overview, overview));
+                String ongoing_status;
+                if(ongoing)
+                    ongoing_status = getActivity().getString(R.string.format_ongoing_true);
+                else
+                    ongoing_status = getActivity().getString(R.string.format_ongoing_false);
+                mOngoingTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_ongoing, ongoing_status)));
+
+
+                mHomepageTextView.setMovementMethod(LinkMovementMethod.getInstance());
+                homepage = "<a href=\""+homepage+"\">"+homepage+"</a>";
+                mHomepageTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_homepage, homepage)));
+
+                mSeasonsTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_seasons, seasons)));
+                mEpisodeTimeTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_episode_time, episodeTime)));
+                mGenresTextView.setText(Html.fromHtml(getActivity().getString(R.string.format_genres, genres)));
+                mOverviewTextView.setText(getActivity().getString(R.string.format_overview, overview));
+            }
+        });
+
     }
 
     @Override
@@ -148,7 +157,7 @@ public class SearchDetailFragment extends Fragment{
                     Series s = new Series(mName, mImdbId, mdbId, mPoster, true);
                     SReminderDatabase.getAppDatabase(getActivity()).seriesDao().insert(s);
 
-                    EpisodesJsonRequest.getEpisodes(getActivity(), mdbId, mImdbId);
+                    EpisodesJsonRequest.getEpisodes(this, getActivity(), mdbId, mImdbId);
                 }
                 mInList = !mInList;
                 changeMenuTitle(item);

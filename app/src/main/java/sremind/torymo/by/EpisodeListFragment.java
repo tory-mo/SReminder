@@ -1,22 +1,26 @@
 package sremind.torymo.by;
 
+
+import android.support.v4.app.Fragment;
+import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sremind.torymo.by.adapters.EpisodeListAdapter;
 import sremind.torymo.by.data.Episode;
 import sremind.torymo.by.data.SReminderDatabase;
 
-public class EpisodeListFragment extends Fragment{
+public class EpisodeListFragment extends Fragment {
 
     EpisodeListAdapter mEpisodeAdapter;
     ListView mListView;
@@ -31,7 +35,16 @@ public class EpisodeListFragment extends Fragment{
         final String imdbId = arguments.getString(EpisodeListFragment.EPISODE_LIST_URI);
 
         final LiveData<List<Episode>> episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeries(imdbId);
-        mEpisodeAdapter = new EpisodeListAdapter(getActivity(), episodes.getValue());
+        episodes.observe(this, new Observer<List<Episode>>() {
+            @Override
+            public void onChanged(@Nullable List<Episode> productEntity) {
+                if(!mEpisodeAdapter.isEmpty())
+                    mEpisodeAdapter.clear();
+                mEpisodeAdapter.addAll(productEntity);
+                mEpisodeAdapter.notifyDataSetChanged();
+            }
+        });
+        mEpisodeAdapter = new EpisodeListAdapter(getActivity(), new ArrayList<Episode>());
 
         View rootView = inflater.inflate(R.layout.episodes_fragment, container, false);
 
@@ -47,9 +60,16 @@ public class EpisodeListFragment extends Fragment{
                    boolean seen = !ep.isSeen(); //get inverted to current value
                    SReminderDatabase.getAppDatabase(getActivity()).episodeDao().setSeen(episodeId, seen);
                    final LiveData<List<Episode>> episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeries(imdbId);
-                   mEpisodeAdapter.clear();
-                   mEpisodeAdapter.addAll(episodes.getValue());
-                   mEpisodeAdapter.notifyDataSetChanged();
+                   episodes.observe(getTargetFragment(), new Observer<List<Episode>>() {
+                       @Override
+                       public void onChanged(@Nullable List<Episode> episodes) {
+                           if(!mEpisodeAdapter.isEmpty())
+                               mEpisodeAdapter.clear();
+                           mEpisodeAdapter.addAll(episodes);
+                           mEpisodeAdapter.notifyDataSetChanged();
+                       }
+                   });
+
 	        	}
 
         });

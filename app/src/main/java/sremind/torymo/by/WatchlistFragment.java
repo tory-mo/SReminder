@@ -1,6 +1,8 @@
 package sremind.torymo.by;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sremind.torymo.by.adapters.WatchlistAdapter;
@@ -47,8 +50,16 @@ public class WatchlistFragment extends Fragment{
 		watchlistListView = rootView.findViewById(R.id.watchlistListView);
 
 		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
+		series.observe(this, new Observer<List<Series>>() {
+			@Override
+			public void onChanged(@Nullable List<Series> series) {
+				mWatchlistAdapter.clear();
+				mWatchlistAdapter.addAll(series);
+				mWatchlistAdapter.notifyDataSetChanged();
+			}
+		});
 
-		mWatchlistAdapter = new WatchlistAdapter(getActivity(), series.getValue());
+		mWatchlistAdapter = new WatchlistAdapter(getActivity(), new ArrayList<Series>());
 		watchlistListView.setAdapter(mWatchlistAdapter);
 		registerForContextMenu(watchlistListView);
 
@@ -68,8 +79,8 @@ public class WatchlistFragment extends Fragment{
 		return rootView;
 	}
 	
-	public static void addEpisodes(final Context context, final String imdbId, final String mdbId){
-		EpisodesJsonRequest.getEpisodes(context, mdbId, imdbId);
+	public static void addEpisodes(LifecycleOwner lifecycleOwner, final Context context, final String imdbId, final String mdbId){
+		EpisodesJsonRequest.getEpisodes(lifecycleOwner, context, mdbId, imdbId);
 	}
 
 
@@ -101,7 +112,7 @@ public class WatchlistFragment extends Fragment{
 		SReminderDatabase.getAppDatabase(getActivity()).seriesDao().setWatchlist(imdbId, watchlist);
 
 		if(watchlist){
-			addEpisodes(getActivity(), imdbId, mdbId);
+			addEpisodes(this, getActivity(), imdbId, mdbId);
 		}else{
 			SReminderDatabase.getAppDatabase(getActivity()).episodeDao().delete(imdbId);
 			Toast.makeText(getActivity(), R.string.episodes_deleted, Toast.LENGTH_SHORT).show();
@@ -139,8 +150,14 @@ public class WatchlistFragment extends Fragment{
 
 	private void refreshWatchlist(){
 		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
-		mWatchlistAdapter.clear();
-		mWatchlistAdapter.addAll(series.getValue());
-		mWatchlistAdapter.notifyDataSetChanged();
+		series.observe(this, new Observer<List<Series>>() {
+			@Override
+			public void onChanged(@Nullable List<Series> series) {
+				mWatchlistAdapter.clear();
+				mWatchlistAdapter.addAll(series);
+				mWatchlistAdapter.notifyDataSetChanged();
+			}
+		});
+
 	}
 }

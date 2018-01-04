@@ -1,6 +1,7 @@
 package sremind.torymo.by;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sremind.torymo.by.adapters.SeriesAdapter;
@@ -38,8 +40,8 @@ public class SeriesFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.series_fragment, container, false);
 
-		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
-		mSeriesAdapter = new SeriesAdapter(getActivity(), series.getValue());
+
+		mSeriesAdapter = new SeriesAdapter(getActivity(), new ArrayList<Series>());
 		mListView = rootView.findViewById(R.id.lvSeries);
 		mListView.setAdapter(mSeriesAdapter);
 
@@ -55,6 +57,17 @@ public class SeriesFragment extends Fragment{
 			}
 		});
 
+		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
+		series.observe(this, new Observer<List<Series>>() {
+			@Override
+			public void onChanged(@Nullable List<Series> series) {
+				if(!mSeriesAdapter.isEmpty())
+					mSeriesAdapter.clear();
+				mSeriesAdapter.addAll(series);
+				mSeriesAdapter.notifyDataSetChanged();
+			}
+		});
+
 		if(savedInstanceState!=null && savedInstanceState.containsKey(SELECTED_KEY)){
 			mPosition = savedInstanceState.getInt(SELECTED_KEY);
 		}
@@ -66,9 +79,15 @@ public class SeriesFragment extends Fragment{
 	public void onResume() {
 		super.onResume();
 		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
-		mSeriesAdapter.clear();
-		mSeriesAdapter.addAll(series.getValue());
-		mSeriesAdapter.notifyDataSetChanged();
+		series.observe(this, new Observer<List<Series>>() {
+			@Override
+			public void onChanged(@Nullable List<Series> series) {
+				if(!mSeriesAdapter.isEmpty())
+					mSeriesAdapter.clear();
+				mSeriesAdapter.addAll(series);
+				mSeriesAdapter.notifyDataSetChanged();
+			}
+		});
 	}
 
 	@Override

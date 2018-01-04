@@ -1,6 +1,7 @@
 package sremind.torymo.by;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sremind.torymo.by.adapters.SearchAdapter;
@@ -33,7 +35,16 @@ public class SearchFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.search_fragment, container, false);
 
         LiveData<List<SearchResult>> searchResults = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getAll();
-        mSearchAdapter = new SearchAdapter(getActivity(), searchResults.getValue());
+        searchResults.observe(this, new Observer<List<SearchResult>>() {
+            @Override
+            public void onChanged(@Nullable List<SearchResult> searchResults) {
+                if(!mSearchAdapter.isEmpty())
+                    mSearchAdapter.clear();
+                mSearchAdapter.addAll(searchResults);
+                mSearchAdapter.notifyDataSetChanged();
+            }
+        });
+        mSearchAdapter = new SearchAdapter(getActivity(), new ArrayList<SearchResult>());
 
         mSearchListView = rootView.findViewById(R.id.searchListView);
         mSearchListView.setAdapter(mSearchAdapter);
@@ -62,9 +73,15 @@ public class SearchFragment extends Fragment{
         if(mSearchAdapter == null) return;
 
         LiveData<List<SearchResult>> searchResults = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getAll();
-        mSearchAdapter.clear();
-        mSearchAdapter.addAll(searchResults.getValue());
-        mSearchAdapter.notifyDataSetChanged();
+        searchResults.observe(this, new Observer<List<SearchResult>>() {
+            @Override
+            public void onChanged(@Nullable List<SearchResult> searchResults) {
+                if(!mSearchAdapter.isEmpty())
+                    mSearchAdapter.clear();
+                mSearchAdapter.addAll(searchResults);
+                mSearchAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

@@ -1,7 +1,9 @@
 package sremind.torymo.by;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,7 +36,7 @@ public class EpisodeListActivity extends AppCompatActivity{
         if (savedInstanceState == null) {
             // using a fragment transaction.
 
-            Callback callBack = new Callback(){
+            final Callback callBack = new Callback(){
                 @Override
                 public void onSuccess(){
                     //imageView.setColorFilter(R.color.primary, PorterDuff.Mode.DARKEN);
@@ -50,17 +52,23 @@ public class EpisodeListActivity extends AppCompatActivity{
             String imdbid = getIntent().getStringExtra(EpisodeListFragment.EPISODE_LIST_URI);
 
             LiveData<Series> series = SReminderDatabase.getAppDatabase(this).seriesDao().getSeriesByImdbId(imdbid);
-            if(series != null){
-                getSupportActionBar().setTitle("");
-                TextView tv = findViewById(R.id.tvSeriesName);
-                tv.setText(series.getValue().getName());
+            series.observe(this, new Observer<Series>() {
+                @Override
+                public void onChanged(@Nullable Series series) {
+                    if(series != null){
+                        getSupportActionBar().setTitle("");
+                        TextView tv = findViewById(R.id.tvSeriesName);
+                        tv.setText(series.getName());
 
-                arguments.putString(SearchDetailFragment.SEARCH_DETAIL_URI, series.getValue().getMdbId());
-                Picasso.with(this)
-                        .load(series.getValue().getPoster())
-                        .error(R.drawable.no_photo)
-                        .into(imageView, callBack);
-            }
+                        arguments.putString(SearchDetailFragment.SEARCH_DETAIL_URI, series.getMdbId());
+                        Picasso.with(getBaseContext())
+                                .load(series.getPoster())
+                                .error(R.drawable.no_photo)
+                                .into(imageView, callBack);
+                    }
+                }
+            });
+
         }
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);

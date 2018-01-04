@@ -16,15 +16,16 @@ public class EpisodesForDateAdapter extends BaseAdapter {
 
 	private Context mContext;
 
-	ArrayList<String[]> episodesForDateList;
+	ArrayList<String[]> episodesForDateList = new ArrayList<>();
 
     public EpisodesForDateAdapter(Context context, ArrayList<String[]> data) {
 		mContext = context;
-		episodesForDateList = data;
+		episodesForDateList.addAll(data);
     }
 
     public int getCount() {
-        return episodesForDateList.size();
+        return (episodesForDateList == null)?0:episodesForDateList.size();
+
     }
 
     public Object getItem(int position) {

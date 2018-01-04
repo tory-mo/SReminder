@@ -1,7 +1,9 @@
 package sremind.torymo.by;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -62,7 +64,7 @@ public class CalendarFragment extends Fragment{
 
         month = Calendar.getInstance();
 
-        mCalendarAdapter = new CalendarAdapter(getActivity(), month);
+        mCalendarAdapter = new CalendarAdapter(getActivity(), this, month);
         daysAdapter = new ArrayAdapter<>(getActivity(), R.layout.day_name, R.id.name_day, getResources().getStringArray(R.array.weekDays));
 
         calendarGridView.setAdapter(mCalendarAdapter);
@@ -117,12 +119,19 @@ public class CalendarFragment extends Fragment{
         switch(item.getItemId()){
             case R.id.action_update_episodes:
                 LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
-                if(series != null && !series.getValue().isEmpty()){
-                    for (Series s: series.getValue()) {
-                        EpisodesJsonRequest.getEpisodes(getActivity(), s.getMdbId(), s.getImdbId());
+                series.observe(this, new Observer<List<Series>>() {
+
+                    @Override
+                    public void onChanged(@Nullable List<Series> series) {
+                        if(series != null && !series.isEmpty()){
+                            for (Series s: series) {
+                                EpisodesJsonRequest.getEpisodes(getTargetFragment(), getActivity(), s.getMdbId(), s.getImdbId());
+                            }
+                        }
+                        Toast.makeText(getActivity(), R.string.slist_updated, Toast.LENGTH_SHORT).show();
                     }
-                }
-                Toast.makeText(getActivity(), R.string.slist_updated, Toast.LENGTH_SHORT).show();
+                });
+
                 return true;
             case R.id.action_only_seen:
                 Utility.changeSeenParam(getActivity());

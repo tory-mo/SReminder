@@ -1,6 +1,7 @@
 package sremind.torymo.by.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sremind.torymo.by.R;
@@ -17,7 +19,7 @@ import sremind.torymo.by.data.SearchResult;
 
 public class SearchAdapter extends ArrayAdapter<SearchResult> {
 
-    private List<SearchResult> dataSet;
+    private List<SearchResult> dataSet = new ArrayList<>();
     Context mContext;
 
     private class ViewHolder{
@@ -26,10 +28,15 @@ public class SearchAdapter extends ArrayAdapter<SearchResult> {
         TextView overviewTextView;
     }
 
-    public SearchAdapter(Context context, List<SearchResult> data) {
+    public SearchAdapter(Context context, @NonNull List<SearchResult> data) {
         super(context, R.layout.search_result_list_item, data);
-        this.dataSet = data;
+        this.dataSet.addAll(data);
         this.mContext = context;
+    }
+
+    @Override
+    public int getCount() {
+        return (dataSet == null)?0:dataSet.size();
     }
 
     @Override

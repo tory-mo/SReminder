@@ -2,6 +2,7 @@ package sremind.torymo.by;
 
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -49,10 +50,12 @@ public class SearchDetailActivity extends AppCompatActivity {
                     .commit();
 
             LiveData<SearchResult> sr = SReminderDatabase.getAppDatabase(this).searchResultDao().getSeriesResultById(mdbId);
-
-            if(sr!=null) {
-                getSupportActionBar().setTitle(sr.getValue().getName());
-            }
+            sr.observe(this, new Observer<SearchResult>() {
+                @Override
+                public void onChanged(@Nullable SearchResult searchResult) {
+                    getSupportActionBar().setTitle(searchResult.getName());
+                }
+            });
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setElevation(0f);

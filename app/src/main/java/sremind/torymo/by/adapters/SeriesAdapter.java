@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sremind.torymo.by.R;
@@ -15,17 +16,22 @@ import sremind.torymo.by.data.Series;
 
 public class SeriesAdapter extends ArrayAdapter<Series> {
 
-    private List<Series> dataSet;
+    private List<Series> dataSet = new ArrayList<>();
     Context mContext;
 
-    public SeriesAdapter(Context context, List<Series> data) {
+    public SeriesAdapter(Context context, @NonNull List<Series> data) {
         super(context, R.layout.series_elem, data);
-        this.dataSet = data;
+        this.dataSet.addAll(data);
         this.mContext = context;
     }
 
     public class ViewHolder{
         TextView seriesName;
+    }
+
+    @Override
+    public int getCount() {
+        return (dataSet == null)?0:dataSet.size() ;
     }
 
     @NonNull

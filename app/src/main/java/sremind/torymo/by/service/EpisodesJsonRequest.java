@@ -1,8 +1,13 @@
 package sremind.torymo.by.service;
 
+
+import android.app.Activity;
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,7 +34,7 @@ public class EpisodesJsonRequest{
 
     final static String MOVIE_DB_URL = "https://api.themoviedb.org/3/tv";
 
-    public static void getEpisodes(final Context context, final String mdbId, final String imdbId){
+    public static void getEpisodes(final LifecycleOwner lifecycleOwner, final Context context, final String mdbId, final String imdbId){
         final String APPKEY_PARAM = "api_key";
 
         Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
@@ -55,7 +60,7 @@ public class EpisodesJsonRequest{
                                     .build();
                             JsonObjectRequest jsObjRequest = new JsonObjectRequest
                                     (Request.Method.GET, builtUri.toString(), null,
-                                            EpisodesJsonRequest.episodesResponse(context, imdbId, seasons),
+                                            EpisodesJsonRequest.episodesResponse(lifecycleOwner, context, imdbId, seasons),
                                             EpisodesJsonRequest.errorListener(context));
                             RequestSingleton.getInstance(context).addToRequestQueue(jsObjRequest);
                         }catch (JSONException e){
@@ -67,7 +72,7 @@ public class EpisodesJsonRequest{
         RequestSingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
-    private static Response.Listener<JSONObject> episodesResponse(final Context context, final String imdbId, final String seasons){
+    private static Response.Listener<JSONObject> episodesResponse(final LifecycleOwner lifecycleOwner, final Context context, final String imdbId, final String seasons){
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -86,7 +91,7 @@ public class EpisodesJsonRequest{
                             String dateStr = episode.getString(AIR_DATE);
                             String numberStr = context.getString(R.string.format_episode_number, seasons, episode.getString(EPISODE_NUMBER));
                             String nameStr = episode.getString(EPISODE_NAME);
-                            addUpdateEpisode(context, dateStr,imdbId,numberStr,nameStr);
+                            addUpdateEpisode(lifecycleOwner, context, dateStr,imdbId,numberStr,nameStr);
                         }catch(Exception exception){
                             exception.printStackTrace();
                         }
@@ -99,28 +104,35 @@ public class EpisodesJsonRequest{
         };
     }
 
-    private static void addUpdateEpisode(Context context, String dateStr, String imdbId, String numberStr, String nameStr){
-        Date date;
-        try{
-            if(dateStr.contains("."))
-                date = new SimpleDateFormat("dd MMM. yyyy", Locale.ENGLISH).parse(dateStr);
-            else if(dateStr.contains("-")){
-                date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dateStr);
-            }
-            else
-                date = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).parse(dateStr);
-        }catch(Exception ex){
-            date = null;
-        }
+    private static void addUpdateEpisode(final LifecycleOwner lifecycleOwner, final Context context, final String dateStr, final String imdbId, final String numberStr, final String nameStr){
+
 
         LiveData<List<Episode>> episodes = SReminderDatabase.getAppDatabase(context).episodeDao().getEpisodesBySeriesAndNumber(imdbId, numberStr);
+        episodes.observe(lifecycleOwner, new Observer<List<Episode>>() {
+            @Override
+            public void onChanged(@Nullable List<Episode> episodes) {
+                Date date;
+                try{
+                    if(dateStr.contains("."))
+                        date = new SimpleDateFormat("dd MMM. yyyy", Locale.ENGLISH).parse(dateStr);
+                    else if(dateStr.contains("-")){
+                        date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dateStr);
+                    }
+                    else
+                        date = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).parse(dateStr);
+                }catch(Exception ex){
+                    date = null;
+                }
 
-        if(episodes != null && !episodes.getValue().isEmpty()){
-            SReminderDatabase.getAppDatabase(context).episodeDao().update(episodes.getValue().get(0).getId(),nameStr, numberStr, date.getTime());
-        }else {
-            Episode episode = new Episode(nameStr, date.getTime(), imdbId, numberStr);
-            SReminderDatabase.getAppDatabase(context).episodeDao().insert(episode);
-        }
+                if(episodes.isEmpty()){
+                    SReminderDatabase.getAppDatabase(context).episodeDao().update(episodes.get(0).getId(),nameStr, numberStr, date.getTime());
+                }else {
+                    Episode episode = new Episode(nameStr, date.getTime(), imdbId, numberStr);
+                    SReminderDatabase.getAppDatabase(context).episodeDao().insert(episode);
+                }
+            }
+        });
+
     }
 
     private static Response.ErrorListener errorListener(final Context context) {

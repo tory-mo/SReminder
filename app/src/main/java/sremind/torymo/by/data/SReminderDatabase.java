@@ -5,7 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {Series.class, Episode.class, SearchResult.class}, version = 3, exportSchema = false)
+@Database(entities = {Series.class, Episode.class, SearchResult.class}, version = 4, exportSchema = false)
 public abstract class SReminderDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "sreminder_database.db";
     private static SReminderDatabase INSTANCE;

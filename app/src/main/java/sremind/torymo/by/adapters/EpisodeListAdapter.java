@@ -1,6 +1,7 @@
 package sremind.torymo.by.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,18 @@ import sremind.torymo.by.data.Episode;
 public class EpisodeListAdapter extends ArrayAdapter<Episode> {
 
     public static final SimpleDateFormat dateListFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private List<Episode> dataSet;
+    private List<Episode> dataSet = new ArrayList<>();
     Context mContext;
 
-    public EpisodeListAdapter(Context context, List<Episode> data) {
+    public EpisodeListAdapter(Context context, @NonNull List<Episode> data) {
         super(context, R.layout.episode_list_item, data);
-        this.dataSet = data;
+        this.dataSet.addAll(data);
         this.mContext = context;
+    }
+
+    @Override
+    public int getCount() {
+        return (dataSet == null)?0:dataSet.size();
     }
 
     @Override
