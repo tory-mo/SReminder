@@ -6,8 +6,10 @@ import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,9 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class WatchlistFragment extends Fragment{
 	private static final int CM_DELETE_SERIES = 2;
 
 
-	ListView watchlistListView;
+	RecyclerView watchlistListView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,37 +44,28 @@ public class WatchlistFragment extends Fragment{
 	}
     
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.watchlist_fragment, container, false);
 
 		watchlistListView = rootView.findViewById(R.id.watchlistListView);
-
-		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
-		series.observe(this, new Observer<List<Series>>() {
-			@Override
-			public void onChanged(@Nullable List<Series> series) {
-				mWatchlistAdapter.clear();
-				mWatchlistAdapter.addAll(series);
-				mWatchlistAdapter.notifyDataSetChanged();
-			}
-		});
 
 		mWatchlistAdapter = new WatchlistAdapter(getActivity(), new ArrayList<Series>());
 		watchlistListView.setAdapter(mWatchlistAdapter);
 		registerForContextMenu(watchlistListView);
 
-		watchlistListView.setOnItemClickListener(new OnItemClickListener() {
-        	@Override
-        	public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
-        		CheckBox item = v.findViewById(R.id.watchlistCheckBox);
-        		item.performClick();
-        		boolean checked = item.isChecked();
+		mWatchlistAdapter.setOnItemClickListener(new WatchlistAdapter.OnItemClickListener() {
+			@Override
+			public void onItemClicked(View v, Series series) {
+				CheckBox item = v.findViewById(R.id.watchlistCheckBox);
+				item.performClick();
+				boolean checked = item.isChecked();
 
-				Series s = (Series) adapterView.getItemAtPosition(position);
-        		final String imdbId = s.getImdbId();
-				changeWatchlist(imdbId, s.getMdbId(), checked);
-        	}
+				final String imdbId = series.getImdbId();
+				changeWatchlist(imdbId, series.getMdbId(), checked);
+			}
 		});
+
+		refreshWatchlist();
 
 		return rootView;
 	}
@@ -153,8 +144,7 @@ public class WatchlistFragment extends Fragment{
 		series.observe(this, new Observer<List<Series>>() {
 			@Override
 			public void onChanged(@Nullable List<Series> series) {
-				mWatchlistAdapter.clear();
-				mWatchlistAdapter.addAll(series);
+				mWatchlistAdapter.setItems(series);
 				mWatchlistAdapter.notifyDataSetChanged();
 			}
 		});

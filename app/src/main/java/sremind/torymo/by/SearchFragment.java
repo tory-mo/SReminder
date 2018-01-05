@@ -1,29 +1,31 @@
 package sremind.torymo.by;
 
+import android.app.Activity;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import sremind.torymo.by.adapters.SearchAdapter;
+import sremind.torymo.by.adapters.SearchResultsAdapter;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.SearchResult;
 
 public class SearchFragment extends Fragment{
 
-    SearchAdapter mSearchAdapter;
+    SearchResultsAdapter mSearchAdapter;
     static final String  SELECTED_KEY = "SELECTED_ITEM";
     private int mPosition = ListView.INVALID_POSITION;
-    ListView mSearchListView;
+    RecyclerView mSearchListView;
 
     public interface Callback{
         void onItemSelected(String srId);
@@ -31,36 +33,25 @@ public class SearchFragment extends Fragment{
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.search_fragment, container, false);
-
-        LiveData<List<SearchResult>> searchResults = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getAll();
-        searchResults.observe(this, new Observer<List<SearchResult>>() {
-            @Override
-            public void onChanged(@Nullable List<SearchResult> searchResults) {
-                if(!mSearchAdapter.isEmpty())
-                    mSearchAdapter.clear();
-                mSearchAdapter.addAll(searchResults);
-                mSearchAdapter.notifyDataSetChanged();
-            }
-        });
-        mSearchAdapter = new SearchAdapter(getActivity(), new ArrayList<SearchResult>());
+        mSearchAdapter = new SearchResultsAdapter(getActivity(), new ArrayList<SearchResult>());
 
         mSearchListView = rootView.findViewById(R.id.searchListView);
         mSearchListView.setAdapter(mSearchAdapter);
 
-        mSearchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mSearchAdapter.setOnItemClickListener(new SearchResultsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
-                SearchResult sr = (SearchResult) adapterView.getItemAtPosition(position);
-                if (sr != null) {
-                    ((Callback)getActivity())
-                            .onItemSelected(sr.getSRId());
+            public void onItemClicked(SearchResult sr, int position) {
+                Activity ac = getActivity();
+                if (sr != null && ac != null) {
+                    ((Callback)ac).onItemSelected(sr.getSRId());
                 }
                 mPosition = position;
-
             }
         });
+
+        refresh();
 
         if(savedInstanceState!=null && savedInstanceState.containsKey(SELECTED_KEY)){
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
@@ -76,9 +67,7 @@ public class SearchFragment extends Fragment{
         searchResults.observe(this, new Observer<List<SearchResult>>() {
             @Override
             public void onChanged(@Nullable List<SearchResult> searchResults) {
-                if(!mSearchAdapter.isEmpty())
-                    mSearchAdapter.clear();
-                mSearchAdapter.addAll(searchResults);
+                mSearchAdapter.setItems(searchResults);
                 mSearchAdapter.notifyDataSetChanged();
             }
         });
@@ -90,7 +79,7 @@ public class SearchFragment extends Fragment{
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         if(mPosition != ListView.INVALID_POSITION){
             outState.putInt(SELECTED_KEY, mPosition);
         }

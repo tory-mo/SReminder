@@ -124,7 +124,7 @@ public class EpisodesJsonRequest{
                     date = null;
                 }
 
-                if(episodes.isEmpty()){
+                if(!episodes.isEmpty()){
                     SReminderDatabase.getAppDatabase(context).episodeDao().update(episodes.get(0).getId(),nameStr, numberStr, date.getTime());
                 }else {
                     Episode episode = new Episode(nameStr, date.getTime(), imdbId, numberStr);

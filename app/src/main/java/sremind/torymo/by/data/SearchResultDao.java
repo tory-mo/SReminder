@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface SearchResultDao {
 
-    @Query("SELECT * FROM search_result")
+    @Query("SELECT * FROM search_result order by popularity desc")
     LiveData<List<SearchResult> > getAll();
 
     @Query("SELECT * FROM search_result WHERE imdbid like :imdbId limit 1")

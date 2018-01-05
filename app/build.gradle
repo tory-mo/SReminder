@@ -16,7 +16,7 @@ android {
     defaultConfig {
         applicationId "sremind.torymo.by"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
     }
 
     buildTypes {
