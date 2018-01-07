@@ -4,11 +4,15 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,7 +22,11 @@ import java.util.Objects;
 import sremind.torymo.by.R;
 import sremind.torymo.by.data.Series;
 
-public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.WatchlistViewHolder> implements View.OnClickListener{
+public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.WatchlistViewHolder> implements View.OnClickListener,
+		View.OnCreateContextMenuListener,
+		PopupMenu.OnMenuItemClickListener{
+
+	private static final int CM_DELETE_SERIES = 2;
 
 	private List<Series> dataSet = new ArrayList<>();
 	private Context mContext;
@@ -28,6 +36,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 	public interface OnItemClickListener
 	{
 		void onItemClicked(View view, Series series);
+		void onMenuAction(MenuItem item, Series series);
 	}
 
 	public void setOnItemClickListener(final OnItemClickListener onItemClickListener)
@@ -90,6 +99,23 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 				this.onItemClickListener.onItemClicked(view, series);
 			}
 		}
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+		PopupMenu popup = new PopupMenu(view.getContext(), view);
+		popup.getMenu().add(0, CM_DELETE_SERIES, 0, R.string.DELETE);
+		popup.setOnMenuItemClickListener(this);
+		popup.show();
+	}
+
+	@Override
+	public boolean onMenuItemClick(MenuItem menuItem) {
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
+
+		Series series = getItem(info.position);
+		this.onItemClickListener.onMenuAction(menuItem, series);
+		return false;
 	}
 
 	@Override

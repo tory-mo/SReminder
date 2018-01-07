@@ -11,10 +11,10 @@ import java.util.List;
 
 @Dao
 public interface SeriesDao {
-    @Query("SELECT * FROM series")
+    @Query("SELECT * FROM series ORDER BY name asc")
     LiveData<List<Series>> getAll();
 
-    @Query("SELECT * FROM series WHERE watchlist = 1")
+    @Query("SELECT * FROM series WHERE watchlist = 1 ORDER BY name asc")
     LiveData<List<Series>> getWatchlist();
 
     @Query("SELECT * FROM series WHERE imdbid like :imdbId limit 1")

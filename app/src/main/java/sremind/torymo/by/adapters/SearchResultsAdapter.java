@@ -94,7 +94,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     @Override
     public SearchResultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mContext)
-                .inflate(R.layout.series_elem, parent, false);
+                .inflate(R.layout.search_result_list_item, parent, false);
         itemView.setOnClickListener(this);
         return new SearchResultViewHolder(itemView);
     }

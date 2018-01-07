@@ -12,19 +12,19 @@ import java.util.List;
 @Dao
 public interface EpisodeDao {
 
-    @Query("SELECT * FROM episodes")
+    @Query("SELECT * FROM episodes order by date asc")
     LiveData<List<Episode>> getAll();
 
-    @Query("SELECT * FROM episodes WHERE series like :series")
+    @Query("SELECT * FROM episodes WHERE series like :series order by date asc")
     LiveData<List<Episode>> getEpisodesBySeries(String series);
 
-    @Query("SELECT * FROM episodes WHERE series like :series and ep_number like :number")
+    @Query("SELECT * FROM episodes WHERE series like :series and ep_number like :number order by date asc")
     LiveData<List<Episode>> getEpisodesBySeriesAndNumber(String series, String number);
 
-    @Query("SELECT * FROM episodes WHERE date between :date1 and :date2")
+    @Query("SELECT * FROM episodes WHERE date between :date1 and :date2 order by date asc")
     LiveData<List<Episode>> getEpisodesBetweenDates(long date1, long date2);
 
-    @Query("SELECT * FROM episodes WHERE (seen = 0) and (date between :date1 and :date2)")
+    @Query("SELECT * FROM episodes WHERE (seen = 0) and (date between :date1 and :date2) order by date asc")
     LiveData<List<Episode>> getNotSeenEpisodesBetweenDates(long date1, long date2);
 
     @Query("SELECT * FROM episodes WHERE date = :date")

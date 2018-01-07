@@ -1,9 +1,7 @@
 package sremind.torymo.by;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.content.Context;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +26,7 @@ import sremind.torymo.by.adapters.WatchlistAdapter;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.Series;
 import sremind.torymo.by.service.EpisodesJsonRequest;
+import sremind.torymo.by.viewmodel.WatchlistViewModel;
 
 public class WatchlistFragment extends Fragment{
 
@@ -51,7 +50,6 @@ public class WatchlistFragment extends Fragment{
 
 		mWatchlistAdapter = new WatchlistAdapter(getActivity(), new ArrayList<Series>());
 		watchlistListView.setAdapter(mWatchlistAdapter);
-		registerForContextMenu(watchlistListView);
 
 		mWatchlistAdapter.setOnItemClickListener(new WatchlistAdapter.OnItemClickListener() {
 			@Override
@@ -63,17 +61,19 @@ public class WatchlistFragment extends Fragment{
 				final String imdbId = series.getImdbId();
 				changeWatchlist(imdbId, series.getMdbId(), checked);
 			}
-		});
 
-		refreshWatchlist();
+			@Override
+			public void onMenuAction(MenuItem item, Series series) {
+				switch(item.getItemId()){
+					case CM_DELETE_SERIES://удаляем  запись
+						final String imdbId = series.getImdbId();
+						SReminderDatabase.getAppDatabase(getActivity()).seriesDao().delete(imdbId);
+				}
+			}
+		});
 
 		return rootView;
 	}
-	
-	public static void addEpisodes(LifecycleOwner lifecycleOwner, final Context context, final String imdbId, final String mdbId){
-		EpisodesJsonRequest.getEpisodes(lifecycleOwner, context, mdbId, imdbId);
-	}
-
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -94,16 +94,10 @@ public class WatchlistFragment extends Fragment{
 		}		
 	}
 
-	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	}
-
 	private void changeWatchlist(String imdbId, String mdbId, boolean watchlist){
 		SReminderDatabase.getAppDatabase(getActivity()).seriesDao().setWatchlist(imdbId, watchlist);
-
 		if(watchlist){
-			addEpisodes(this, getActivity(), imdbId, mdbId);
+			EpisodesJsonRequest.getEpisodes(this, getActivity(), mdbId, imdbId);
 		}else{
 			SReminderDatabase.getAppDatabase(getActivity()).episodeDao().delete(imdbId);
 			Toast.makeText(getActivity(), R.string.episodes_deleted, Toast.LENGTH_SHORT).show();
@@ -111,43 +105,21 @@ public class WatchlistFragment extends Fragment{
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-									ContextMenu.ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(0, CM_DELETE_SERIES, 0, R.string.DELETE);
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		final WatchlistViewModel viewModel =
+				ViewModelProviders.of(this).get(WatchlistViewModel.class);
+
+		subscribeUi(viewModel);
 	}
 
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		switch(item.getItemId()){
-			case CM_DELETE_SERIES://удаляем  запись
-				AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-				Series series = mWatchlistAdapter.getItem(info.position);
-				final String imdbId = series.getImdbId();
-				SReminderDatabase.getAppDatabase(getActivity()).seriesDao().delete(imdbId);
-				refreshWatchlist();
-				return true;
-			default:
-				return super.onContextItemSelected(item);
-		}
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		refreshWatchlist();
-	}
-
-	private void refreshWatchlist(){
-		LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getAll();
-		series.observe(this, new Observer<List<Series>>() {
+	private void subscribeUi(WatchlistViewModel viewModel) {
+		viewModel.getSeries().observe(this, new Observer<List<Series>>() {
 			@Override
 			public void onChanged(@Nullable List<Series> series) {
 				mWatchlistAdapter.setItems(series);
 				mWatchlistAdapter.notifyDataSetChanged();
 			}
 		});
-
 	}
 }
