@@ -8,14 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -67,7 +65,7 @@ public class WatchlistFragment extends Fragment{
 				switch(item.getItemId()){
 					case CM_DELETE_SERIES://удаляем  запись
 						final String imdbId = series.getImdbId();
-						SReminderDatabase.getAppDatabase(getActivity()).seriesDao().delete(imdbId);
+						SReminderDatabase.getAppDatabase(getActivity()).seriesDao().deleteByImdbId(imdbId);
 				}
 			}
 		});

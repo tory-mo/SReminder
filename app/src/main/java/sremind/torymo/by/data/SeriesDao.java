@@ -33,7 +33,10 @@ public interface SeriesDao {
     void insert(List<Series> series);
 
     @Query("Delete from series where imdbid like :imdbId")
-    void delete(String imdbId);
+    void deleteByImdbId(String imdbId);
+
+    @Query("Delete from series where mdbid like :mdbid")
+    void deleteByMdbId(String mdbid);
 
     @Delete
     void delete(Series series);

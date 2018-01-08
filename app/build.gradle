@@ -13,6 +13,10 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.2'
 
+    dataBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "sremind.torymo.by"
         minSdkVersion 21

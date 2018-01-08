@@ -97,7 +97,7 @@ public class SearchDetailActivity extends AppCompatActivity {
             sr.setHomepage(obj.getString("homepage"));
             sr.setOngoing(obj.getBoolean("in_production"));
             sr.setSeasons(obj.getInt("number_of_seasons"));
-            sr.setSRId(obj.getString("id"));
+            sr.setMdbId(obj.getString("id"));
             sr.setPoster(POSTER_PATH+obj.getString("poster_path"));
             sr.setName(obj.getString("name"));
             sr.setPopularity((float) obj.getDouble("popularity"));
@@ -109,7 +109,7 @@ public class SearchDetailActivity extends AppCompatActivity {
             SReminderDatabase.getAppDatabase(this).searchResultDao().insert(sr);
 
             SearchDetailFragment sdf = (SearchDetailFragment)getSupportFragmentManager().findFragmentById(R.id.search_detail_fragment);
-            sdf.refresh(sr.getSRId());
+            sdf.refresh(sr.getMdbId());
         }catch (JSONException e){
             e.printStackTrace();
         }

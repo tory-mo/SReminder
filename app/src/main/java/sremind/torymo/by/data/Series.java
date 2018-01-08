@@ -6,8 +6,9 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "Series", indices = {@Index(value = {"imdbid"},
-        unique = true)})
+@Entity(tableName = "Series",
+        indices = {@Index(value = {"imdbid"},unique = true),
+                @Index(value = {"mdbid"}, unique = true)})
 public class Series {
 
     @PrimaryKey(autoGenerate = true)

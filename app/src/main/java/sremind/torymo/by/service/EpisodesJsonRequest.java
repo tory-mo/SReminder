@@ -1,7 +1,6 @@
 package sremind.torymo.by.service;
 
 
-import android.app.Activity;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;

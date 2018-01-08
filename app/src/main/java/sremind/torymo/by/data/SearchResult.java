@@ -5,8 +5,9 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "search_result", indices = {@Index(value = {"sr_id"},
-        unique = true)})
+@Entity(tableName = "search_result",
+        indices = {@Index(value = {"mdbid"}, unique = true),
+                @Index(value = {"imdbid"}, unique = true)})
 public class SearchResult {
 
     @PrimaryKey(autoGenerate = true)
@@ -15,8 +16,8 @@ public class SearchResult {
     @ColumnInfo(name = "name")
     private String mName;
 
-    @ColumnInfo(name = "sr_id")
-    private String mSRId;
+    @ColumnInfo(name = "mdbid")
+    private String mMdbId;
 
     @ColumnInfo(name = "imdbid")
     private String mImdbId;
@@ -61,12 +62,12 @@ public class SearchResult {
         this.mName = mName;
     }
 
-    public String getSRId() {
-        return mSRId;
+    public String getMdbId() {
+        return mMdbId;
     }
 
-    public void setSRId(String mSRId) {
-        this.mSRId = mSRId;
+    public void setMdbId(String mSRId) {
+        this.mMdbId = mSRId;
     }
 
     public String getImdbId() {

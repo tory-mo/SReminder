@@ -100,7 +100,7 @@ public class SeriesDetailsRequest {
                     sr.setHomepage(response.getString("homepage"));
                     sr.setOngoing(response.getBoolean("in_production"));
                     sr.setSeasons(response.getInt("number_of_seasons"));
-                    sr.setSRId(response.getString("id"));
+                    sr.setMdbId(response.getString("id"));
                     sr.setPoster(POSTER_PATH+response.getString("poster_path"));
                     sr.setName(response.getString("name"));
                     sr.setPopularity((float) response.getDouble("popularity"));

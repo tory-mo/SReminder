@@ -88,10 +88,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
 
                             @Override
                             public void onResponse(JSONObject response) {
-                                if(getElements(response)> 0){
-                                    SearchFragment sf = (SearchFragment) getSupportFragmentManager().findFragmentById(R.id.search_fragment);
-                                    sf.refresh();
-                                }
+                                getElements(response);
                             }
                         }, new Response.ErrorListener() {
 
@@ -114,7 +111,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
 
     private int getElements(JSONObject obj){
         int added = 0;
-        String id;
+        String mdbId;
         String name;
         String poster;
         String overview;
@@ -126,7 +123,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
             JSONArray array = obj.getJSONArray("results");
             for(int i = 0; i<array.length(); i++){
                 JSONObject item = array.getJSONObject(i);
-                id = item.getString("id");
+                mdbId = item.getString("id");
                 poster = POSTER_PATH + item.getString("poster_path");
                 overview = item.getString("overview");
                 name = item.getString("name");
@@ -143,8 +140,10 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                     date = null;
                 }
 
+                if(mdbId == null) continue;
+
                 SearchResult sr = new SearchResult();
-                sr.setSRId(id);
+                sr.setMdbId(mdbId);
                 sr.setPoster(poster);
                 sr.setName(name);
                 sr.setOverview(overview);
@@ -155,7 +154,8 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                 searchResults.add(sr);
                 added++;
             }
-            SReminderDatabase.getAppDatabase(this).searchResultDao().insert(searchResults);
+            if(added != 0)
+                SReminderDatabase.getAppDatabase(this).searchResultDao().insert(searchResults);
         }catch (JSONException e){
             e.printStackTrace();
         }

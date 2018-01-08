@@ -10,7 +10,9 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "Episodes", foreignKeys = @ForeignKey(entity = Series.class,
         parentColumns = "imdbid",
         childColumns = "series",
-        onDelete = ForeignKey.CASCADE), indices = {@Index(value = {"ep_number"}), @Index(value = {"series"})})
+        onDelete = ForeignKey.CASCADE),
+        indices = {@Index(value = {"ep_number"}),
+                @Index(value = {"series"})})
 public class Episode {
     @PrimaryKey(autoGenerate = true)
     private int id;

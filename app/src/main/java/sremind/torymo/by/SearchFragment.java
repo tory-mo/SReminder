@@ -1,8 +1,8 @@
 package sremind.torymo.by;
 
 import android.app.Activity;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sremind.torymo.by.adapters.SearchResultsAdapter;
-import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.SearchResult;
+import sremind.torymo.by.viewmodel.SearchResultViewModel;
 
 public class SearchFragment extends Fragment{
 
@@ -45,13 +45,11 @@ public class SearchFragment extends Fragment{
             public void onItemClicked(SearchResult sr, int position) {
                 Activity ac = getActivity();
                 if (sr != null && ac != null) {
-                    ((Callback)ac).onItemSelected(sr.getSRId());
+                    ((Callback)ac).onItemSelected(sr.getMdbId());
                 }
                 mPosition = position;
             }
         });
-
-        refresh();
 
         if(savedInstanceState!=null && savedInstanceState.containsKey(SELECTED_KEY)){
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
@@ -60,22 +58,19 @@ public class SearchFragment extends Fragment{
         return rootView;
     }
 
-    public void refresh(){
-        if(mSearchAdapter == null) return;
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final SearchResultViewModel viewModel =
+                ViewModelProviders.of(this).get(SearchResultViewModel.class);
 
-        LiveData<List<SearchResult>> searchResults = SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().getAll();
-        searchResults.observe(this, new Observer<List<SearchResult>>() {
+        viewModel.getSearchResults().observe(this, new Observer<List<SearchResult>>() {
             @Override
             public void onChanged(@Nullable List<SearchResult> searchResults) {
                 mSearchAdapter.setItems(searchResults);
                 mSearchAdapter.notifyDataSetChanged();
             }
         });
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

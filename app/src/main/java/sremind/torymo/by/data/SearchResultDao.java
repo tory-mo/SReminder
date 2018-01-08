@@ -18,7 +18,7 @@ public interface SearchResultDao {
     @Query("SELECT * FROM search_result WHERE imdbid like :imdbId limit 1")
     LiveData<SearchResult> getSeriesResultByImdbId(String imdbId);
 
-    @Query("SELECT * FROM search_result WHERE sr_id like :searchResultId limit 1")
+    @Query("SELECT * FROM search_result WHERE mdbId like :searchResultId limit 1")
     LiveData<SearchResult> getSeriesResultById(String searchResultId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -27,7 +27,7 @@ public interface SearchResultDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<SearchResult> searchResults);
 
-    @Query("Update search_result set imdbid = :imdbId, homepage = :homepage, genres = :genres, ongoing = :ongoing, seasons = :seasons, overview = :overview, episode_time = :episodeTime where sr_id = :id")
+    @Query("Update search_result set imdbid = :imdbId, homepage = :homepage, genres = :genres, ongoing = :ongoing, seasons = :seasons, overview = :overview, episode_time = :episodeTime where mdbId = :id")
     void update(int id, String imdbId, String homepage, String genres, boolean ongoing, int seasons, String overview, String episodeTime);
 
     @Delete
