@@ -34,6 +34,9 @@ public class SearchDetailFragment extends Fragment{
     private String mImdbId = "";
     private String mPoster = "";
 
+    SearchDetailViewModel.Factory factory;
+    SearchDetailViewModel model;
+
     MenuItem miOnlySeen;
 
     private SearchDetailFragmentBinding mBinding;
@@ -59,30 +62,25 @@ public class SearchDetailFragment extends Fragment{
     }
 
     public void refresh(String mdbId){
+        if(mdbId == null) return;
         if(getActivity().getClass().equals(SearchActivity.class)) {
             SeriesRequest.getSeries(getActivity(), mdbId);
         }else{
             SeriesDetailsRequest.getDetails(getActivity(), mdbId);
         }
+        reQueryData(mdbId);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        SearchDetailViewModel.Factory factory = new SearchDetailViewModel.Factory(
-                getActivity().getApplication(), getArguments().getString(SearchDetailFragment.SEARCH_DETAIL_URI));
-
-        final SearchDetailViewModel model = ViewModelProviders.of(this, factory)
-                .get(SearchDetailViewModel.class);
-
-        model.getSeries().observe(this, new Observer<Series>() {
+    private void  reQueryData(String mdbId){
+        if(model == null) return;
+        model.getSeries(mdbId).observe(this, new Observer<Series>() {
             @Override
             public void onChanged(@Nullable Series series) {
                 mInList = (series != null);
             }
         });
 
-        model.getSearchResult().observe(this, new Observer<SearchResult>() {
+        model.getSearchResult(mdbId).observe(this, new Observer<SearchResult>() {
             @Override
             public void onChanged(@Nullable SearchResult searchResult) {
                 if(searchResult != null) {
@@ -95,6 +93,20 @@ public class SearchDetailFragment extends Fragment{
                 mBinding.setSearchResult(searchResult);
             }
         });
+
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+         factory = new SearchDetailViewModel.Factory(getActivity().getApplication());
+
+        model = ViewModelProviders.of(this, factory)
+                .get(SearchDetailViewModel.class);
+
+
+        reQueryData(getArguments().getString(SearchDetailFragment.SEARCH_DETAIL_URI));
     }
 
     private void changeMenuTitle(MenuItem miOnlySeen){

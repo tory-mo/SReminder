@@ -1,11 +1,26 @@
 <resources>
 
-    <style name="TextViewStyle">
-       <item name="android:textSize">14dp</item>
-       <item name="android:paddingBottom">3dp</item>
-       <item name="android:textColor">#ffffff</item>
-       <item name="android:layout_width">fill_parent</item>
-     <item name="android:layout_height">wrap_content</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.SReminder</item>
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/ActionBar.Solid.SReminder</item>
+
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:windowBackground">@color/light_bg</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="popupTheme">@style/PopupMenuStyle</item>
+        <item name="android:radioButtonStyle">@style/RadioButtonWhiteCheck</item>
+    </style>
+
+    <style name="RadioButtonWhiteCheck" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:background">@color/accent</item>
+    </style>
+
+    <style name="PopupMenuStyle" parent="android:Widget.Holo.Light.PopupMenu">
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 
     <style name="grid_cell_style">
@@ -24,40 +39,13 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
     </style>
-    
+
     <style name="header_style">
         <item name="android:padding">5dp</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/primary_dark</item>
-    </style>
-
-    <style name="RadioButtonWhiteCheck" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:background">@color/accent</item>
-    </style>
-
-    <style name="RadioButtonBlackCheck" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:button">@color/accent</item>
-    </style>
-
-    <style name="PopupMenuStyle" parent="android:Widget.Holo.Light.PopupMenu">
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.SReminder</item>
-        <!-- Support library compatibility -->
-        <item name="actionBarStyle">@style/ActionBar.Solid.SReminder</item>
-
-        <item name="android:colorPrimary">@color/primary</item>
-        <item name="android:colorPrimaryDark">@color/primary_dark</item>
-        <item name="android:colorAccent">@color/accent</item>
-        <item name="android:windowBackground">@color/light_bg</item>
-        <item name="android:textColorPrimary">@color/text_primary</item>
-        <item name="android:textColorSecondary">@color/text_secondary</item>
-        <item name="popupTheme">@style/PopupMenuStyle</item>
-        <item name="android:radioButtonStyle">@style/RadioButtonWhiteCheck</item>
     </style>
 
     <style name="ActionBar.Solid.SReminder" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse" >
@@ -101,6 +89,10 @@
         <item name="android:windowBackground">@color/light_bg</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
+    </style>
+
+    <style name="chkBoxStyle" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/accent</item>
     </style>
 
 </resources>

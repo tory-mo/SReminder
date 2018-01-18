@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import sremind.torymo.by.R;
 import sremind.torymo.by.data.Series;
+import sremind.torymo.by.databinding.SeriesElemBinding;
 
 public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesViewHolder> implements View.OnClickListener{
 
@@ -27,11 +28,16 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
     }
 
     class SeriesViewHolder extends RecyclerView.ViewHolder{
-        TextView seriesName;
+        private final SeriesElemBinding binding;
 
-        SeriesViewHolder(View view){
-            super(view);
-            seriesName = view.findViewById(R.id.tvName);
+        SeriesViewHolder(SeriesElemBinding binding){
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        void bind(Series item) {
+            binding.setSeries(item);
+            binding.executePendingBindings();
         }
 
     }
@@ -107,15 +113,17 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
 
     @Override
     public SeriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(mContext)
-                .inflate(R.layout.series_elem, parent, false);
-        itemView.setOnClickListener(this);
-        return new SeriesViewHolder(itemView);
+        LayoutInflater layoutInflater =
+                LayoutInflater.from(parent.getContext());
+        SeriesElemBinding itemBinding =
+                SeriesElemBinding.inflate(layoutInflater, parent, false);
+        itemBinding.setHandler(this);
+        return new SeriesViewHolder(itemBinding);
     }
 
     @Override
     public void onBindViewHolder(SeriesViewHolder viewHolder, int position) {
         Series series = dataSet.get(position);
-        viewHolder.seriesName.setText(series.getName());
+        viewHolder.bind(series);
     }
 }

@@ -1,6 +1,5 @@
 package sremind.torymo.by.adapters;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +17,7 @@ import java.util.Objects;
 
 import sremind.torymo.by.R;
 import sremind.torymo.by.data.Series;
+import sremind.torymo.by.databinding.WatchlistItemBinding;
 
 public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.WatchlistViewHolder> implements View.OnClickListener,
 		View.OnCreateContextMenuListener,
@@ -29,7 +26,6 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 	private static final int CM_DELETE_SERIES = 2;
 
 	private List<Series> dataSet = new ArrayList<>();
-	private Context mContext;
 
 	private OnItemClickListener onItemClickListener;
 
@@ -44,9 +40,8 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 		this.onItemClickListener = onItemClickListener;
 	}
 
-	public WatchlistAdapter(Context context, @NonNull List<Series> data) {
+	public WatchlistAdapter(@NonNull List<Series> data) {
 		this.dataSet = data;
-		this.mContext = context;
 	}
 
 	public void setItems(final List<Series> series) {
@@ -129,29 +124,31 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 
 	@Override
 	public WatchlistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View itemView = LayoutInflater.from(mContext)
-				.inflate(R.layout.watchlist_item, parent, false);
-		itemView.setOnClickListener(this);
-		return new WatchlistViewHolder(itemView);
+		LayoutInflater layoutInflater =
+				LayoutInflater.from(parent.getContext());
+		WatchlistItemBinding itemBinding =
+				WatchlistItemBinding.inflate(layoutInflater, parent, false);
+		itemBinding.setHandler(this);
+		return new WatchlistViewHolder(itemBinding);
 	}
 
 	@Override
 	public void onBindViewHolder(WatchlistViewHolder viewHolder, int position) {
 		Series series = dataSet.get(position);
-		if(series != null) {
-			viewHolder.name.setText(series.getName());
-			viewHolder.watchlist.setChecked(series.isWatchlist());
-		}
+		viewHolder.bind(series);
 	}
 
 	class WatchlistViewHolder extends RecyclerView.ViewHolder {
-		TextView name;
-		CheckBox watchlist;
+		private final WatchlistItemBinding binding;
 
-		WatchlistViewHolder(View view) {
-			super(view);
-			name = view.findViewById(R.id.seriesNameWatchlist);
-			watchlist = view.findViewById(R.id.watchlistCheckBox);
+		WatchlistViewHolder(WatchlistItemBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
+		}
+
+		void bind(Series item) {
+			binding.setSeries(item);
+			binding.executePendingBindings();
 		}
 	}
 }

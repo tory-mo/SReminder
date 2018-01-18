@@ -5,6 +5,7 @@
         <variable name="searchResult"
             type="sremind.torymo.by.data.SearchResult"/>
         <import type="sremind.torymo.by.Utility"/>
+        <import type="android.view.View"/>
     </data>
     <ScrollView
         android:layout_height="wrap_content"
@@ -15,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/fragment_padding"
-            android:background="@color/ordinary_day">
+            android:background="@color/ordinary_day"
+            android:visibility="@{searchResult == null ?View.GONE :View.VISIBLE}">
             <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"

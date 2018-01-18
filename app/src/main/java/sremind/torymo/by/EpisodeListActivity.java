@@ -26,6 +26,7 @@ public class EpisodeListActivity extends AppCompatActivity{
     ImageView imageView;
     ViewPager mViewPager;
     Bundle arguments;
+    SearchDetailFragment sdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +47,9 @@ public class EpisodeListActivity extends AppCompatActivity{
                 }
             };
             imageView = findViewById(R.id.ivEpisodesHeader);
-            arguments = new Bundle();
-            arguments.putString(EpisodeListFragment.EPISODE_LIST_URI, getIntent().getStringExtra(EpisodeListFragment.EPISODE_LIST_URI));
-
             String imdbid = getIntent().getStringExtra(EpisodeListFragment.EPISODE_LIST_URI);
+            arguments = new Bundle();
+            arguments.putString(EpisodeListFragment.EPISODE_LIST_URI, imdbid);
 
             LiveData<Series> series = SReminderDatabase.getAppDatabase(this).seriesDao().getSeriesByImdbId(imdbid);
             series.observe(this, new Observer<Series>() {
@@ -60,7 +60,11 @@ public class EpisodeListActivity extends AppCompatActivity{
                         TextView tv = findViewById(R.id.tvSeriesName);
                         tv.setText(series.getName());
 
-                        arguments.putString(SearchDetailFragment.SEARCH_DETAIL_URI, series.getMdbId());
+                        if(sdf != null)
+                            sdf.refresh(series.getMdbId());
+                        else
+                            arguments.putString(SearchDetailFragment.SEARCH_DETAIL_URI, series.getMdbId());
+
                         Picasso.with(getBaseContext())
                                 .load(series.getPoster())
                                 .error(R.drawable.no_photo)
@@ -144,9 +148,9 @@ public class EpisodeListActivity extends AppCompatActivity{
                     fragment.setArguments(arguments);
                     return fragment;
                 case 1:
-                    SearchDetailFragment fr = new SearchDetailFragment();
-                    fr.setArguments(arguments);
-                    return fr;
+                    sdf = new SearchDetailFragment();
+                    sdf.setArguments(arguments);
+                    return sdf;
             }
         }
     }

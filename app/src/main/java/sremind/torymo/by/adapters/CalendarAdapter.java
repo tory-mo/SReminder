@@ -79,8 +79,7 @@ public class CalendarAdapter extends BaseAdapter {
         if(currDay.day.equals("")) {
         	dayView.setClickable(false);
         	dayView.setFocusable(false);
-        }
-        else {
+        } else {
         	// mark current day as focused
 			Calendar today = Calendar.getInstance();
 			today.set(Calendar.HOUR_OF_DAY, 0);
@@ -88,7 +87,7 @@ public class CalendarAdapter extends BaseAdapter {
 			today.set(Calendar.SECOND, 0);
 			today.set(Calendar.MILLISECOND, 0);
 			mChosenMonth.set(Calendar.DATE, Integer.valueOf(currDay.day));
-			GradientDrawable gd = new GradientDrawable();
+
         	if(mChosenMonth.compareTo(today) == 0 && currDay.event) {
 				//gd.setStroke(3, mContext.getResources().getColor(R.color.accent));
 				//gd.setColor(mContext.getResources().getColor(R.color.accent));
@@ -115,7 +114,7 @@ public class CalendarAdapter extends BaseAdapter {
 				});
         	}
 
-			convertView.setBackgroundDrawable(gd);
+
         	
         }
         dayView.setText(currDay.day);
@@ -174,8 +173,6 @@ public class CalendarAdapter extends BaseAdapter {
 				}
 			}
 		});
-
-
     }
 
 	public void showEpisodesForDay(Date touchedDate, Activity activity){

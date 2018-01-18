@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-  <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+  <data>
+    <variable
+        name="series"
+        type="sremind.torymo.by.data.Series"/>
+    <variable
+        name="handler"
+        type="android.view.View.OnClickListener"/>
+  </data>
+  <TextView 
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:padding="15dp"
       android:id="@+id/tvName"
       android:textSize="20sp"
       android:textColor="@color/text_secondary"
-      android:background="@drawable/touch_selector"/>
+      android:background="@drawable/touch_selector"
+      android:text="@{series.name}"
+      android:onClick="@{handler}"/>
+</layout>

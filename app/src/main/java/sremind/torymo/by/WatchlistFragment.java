@@ -46,7 +46,7 @@ public class WatchlistFragment extends Fragment{
 
 		watchlistListView = rootView.findViewById(R.id.watchlistListView);
 
-		mWatchlistAdapter = new WatchlistAdapter(getActivity(), new ArrayList<Series>());
+		mWatchlistAdapter = new WatchlistAdapter(new ArrayList<Series>());
 		watchlistListView.setAdapter(mWatchlistAdapter);
 
 		mWatchlistAdapter.setOnItemClickListener(new WatchlistAdapter.OnItemClickListener() {

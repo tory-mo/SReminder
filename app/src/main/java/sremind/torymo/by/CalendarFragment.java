@@ -1,7 +1,9 @@
 package sremind.torymo.by;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,14 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import sremind.torymo.by.adapters.CalendarAdapter;
+import sremind.torymo.by.adapters.EpisodesForDateAdapter;
+import sremind.torymo.by.data.Episode;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.Series;
 import sremind.torymo.by.service.EpisodesJsonRequest;
@@ -37,15 +45,12 @@ public class CalendarFragment extends Fragment{
     private static final String BACKUP_EPISODE = "-|-episode_list_item-|-";
     private static final String BACKUP_SEPAR = "-|-";
 
-    private static final SimpleDateFormat mMonthTitleFormat = new SimpleDateFormat("MMMM yyyy");
 
     Calendar month;
 
-    CalendarAdapter mCalendarAdapter;
+    ListView lvEpisodesForDay;
+    TextView tvToday;
 
-    GridView daysTitlesGridView;
-    TextView mMonthTitle;
-    ArrayAdapter<String> daysAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,45 +61,45 @@ public class CalendarFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.calendar_fragment, container, false);
-        mMonthTitle  =  rootView.findViewById(R.id.monthTitle);
-        daysTitlesGridView =  rootView.findViewById(R.id.gvDays);
-        GridView calendarGridView =  rootView.findViewById(R.id.gvCalendar);
-        TextView previousMonth  =  rootView.findViewById(R.id.previousMonth);
-        TextView nextMonth  =  rootView.findViewById(R.id.next);
+
 
         month = Calendar.getInstance();
 
-        mCalendarAdapter = new CalendarAdapter(getActivity(), this, month);
-        daysAdapter = new ArrayAdapter<>(getActivity(), R.layout.day_name, R.id.name_day, getResources().getStringArray(R.array.weekDays));
+        lvEpisodesForDay = rootView.findViewById(R.id.lvEpisodesForDay);
+        tvToday = rootView.findViewById(R.id.tvToday);
+        final CalendarView cv = (rootView.findViewById(R.id.calendar_view));
+        cv.updateCalendar();
+        final LifecycleOwner lifecycleOwner = this;
 
-        calendarGridView.setAdapter(mCalendarAdapter);
-        daysTitlesGridView.setAdapter(daysAdapter);
-
-        refreshCalendar();
-
-        previousMonth.setOnClickListener(new View.OnClickListener() {
+        // assign event handler
+        cv.setEventHandler(new CalendarView.EventHandler()
+        {
             @Override
-            public void onClick(View v) {
-                if (month.get(Calendar.MONTH) == month.getActualMinimum(Calendar.MONTH)) {
-                    month.set((month.get(Calendar.YEAR) - 1), month.getActualMaximum(Calendar.MONTH), 1);
-                } else {
-                    month.set(Calendar.MONTH, month.get(Calendar.MONTH) - 1);
+            public void onDayPress(Date date) {
+                showEpisodesForDay(date);
+            }
+
+            @Override
+            public void onMonthChanged(Date startDate, Date endDate) {
+                LiveData<List<Episode>> episodes;
+                if(Utility.getSeenParam(getActivity())){
+                    episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getNotSeenEpisodesBetweenDates(startDate.getTime(), endDate.getTime());
+                }else {
+                    episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBetweenDates(startDate.getTime(), endDate.getTime());
                 }
-                refreshCalendar();
+                episodes.observe(lifecycleOwner, new Observer<List<Episode>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Episode> episodes) {
+                        HashSet<Date> events = new HashSet<>();
+                        for (Episode ep: episodes){
+                            events.add(new Date(ep.getDate()));
+                        }
+                        cv.updateCalendar(events);
+                    }
+                });
             }
         });
 
-        nextMonth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(month.get(Calendar.MONTH) == month.getActualMaximum(Calendar.MONTH)) {
-                    month.set((month.get(Calendar.YEAR)+1),month.getActualMinimum(Calendar.MONTH),1);
-                } else {
-                    month.set(Calendar.MONTH,month.get(Calendar.MONTH)+1);
-                }
-                refreshCalendar();
-            }
-        });
 
         return rootView;
     }
@@ -135,7 +140,7 @@ public class CalendarFragment extends Fragment{
                 return true;
             case R.id.action_only_seen:
                 Utility.changeSeenParam(getActivity());
-                refreshCalendar();
+
                 changeSeenTitle(item);
                 return true;
 //          case R.id.action_make_backup:
@@ -199,23 +204,61 @@ public class CalendarFragment extends Fragment{
         }
     }
 
-    public void refreshCalendar()
-    {
-        mCalendarAdapter.refreshDays();
-        mCalendarAdapter.notifyDataSetChanged();
-        mMonthTitle.setText(mMonthTitleFormat.format(month.getTime()));
+    public void showEpisodesForDay(Date touchedDate){
+        final ArrayList<String[]> episodesForDateList = new ArrayList<>();
+        final EpisodesForDateAdapter episodesForDateAdapter = new EpisodesForDateAdapter(getActivity(), episodesForDateList);
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
         today.set(Calendar.SECOND, 0);
         today.set(Calendar.MILLISECOND, 0);
+        if(today.getTime().compareTo(touchedDate) == 0){
+            tvToday.setText(R.string.today);
+        }else{
+            tvToday.setText(Utility.dateToStrFormat.format(touchedDate));
+        }
 
-        mCalendarAdapter.showEpisodesForDay(today.getTime(), getActivity());
+        lvEpisodesForDay.setAdapter(episodesForDateAdapter);
+
+        LiveData<List<Episode>> episodes;
+        if(Utility.getSeenParam(getActivity())){
+            episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getNotSeenEpisodesForDate(touchedDate.getTime());
+        }else {
+            episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesForDate(touchedDate.getTime());
+        }
+        final LifecycleOwner lifecycleOwner = this;
+
+        episodes.observe(this, new Observer<List<Episode>>() {
+            @Override
+            public void onChanged(@Nullable List<Episode> episodes) {
+
+                episodesForDateList.clear();
+                if(episodes != null && !episodes.isEmpty()){
+                    for (final Episode ep: episodes) {
+                        LiveData<Series> s = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getSeriesByImdbId(ep.getSeries());
+                        s.observe(lifecycleOwner, new Observer<Series>() {
+                            @Override
+                            public void onChanged(@Nullable Series series) {
+                                String[] hm;
+                                hm = new String[3];
+                                hm[0] = ep.getNumber() + "; " + series.getName();
+                                hm[1] = ep.getName();
+                                hm[2] = String.valueOf(ep.isSeen());
+                                episodesForDateList.add(hm);
+                                episodesForDateAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+                    }
+                }
+                episodesForDateAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        refreshCalendar();
     }
 }

@@ -4,80 +4,14 @@
     android:layout_height="match_parent"
     android:background="@color/current_day"
     android:id="@+id/layoutCalendar">
-    <LinearLayout
+    <sremind.torymo.by.CalendarView
+        android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/ordinary_day"
         android:orientation="vertical"
         android:padding="@dimen/fragment_padding"
-        android:elevation="5dp">
-        <LinearLayout
-            android:id="@+id/header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/fragment_padding"
-            android:paddingLeft="@dimen/fragment_padding"
-            android:paddingRight="@dimen/fragment_padding">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="start">
-                <TextView
-                    android:id="@+id/previousMonth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="&lt;"
-                    style="@style/header_style"
-                    android:textStyle="bold"
-                    android:padding="@dimen/month_controls_padding"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="5">
-            <TextView
-                android:id="@+id/monthTitle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                style="@style/header_style" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="end"
-                >
-                <TextView
-                    android:id="@+id/next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text=">"
-                    android:textStyle="bold"
-                    style="@style/header_style"
-                    android:padding="@dimen/month_controls_padding"/>
-
-            </LinearLayout>
-        </LinearLayout>
-        <GridView
-            android:id="@+id/gvDays"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/grid_style"
-            android:layout_marginBottom="@dimen/fragment_padding"/>
-        <GridView
-            android:id="@+id/gvCalendar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/grid_style" />
-    </LinearLayout>
+        android:elevation="5dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"

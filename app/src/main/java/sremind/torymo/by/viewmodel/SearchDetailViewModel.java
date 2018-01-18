@@ -13,20 +13,20 @@ import sremind.torymo.by.data.Series;
 
 public class SearchDetailViewModel extends AndroidViewModel {
 
-    private final LiveData<SearchResult> mObservableSearchResult;
-    private final LiveData<Series> mObservableSeries;
+    private LiveData<SearchResult> mObservableSearchResult;
+    private LiveData<Series> mObservableSeries;
 
-    public SearchDetailViewModel(@NonNull Application application, String mdbId) {
+    public SearchDetailViewModel(@NonNull Application application) {
         super(application);
-        mObservableSearchResult = SReminderDatabase.getAppDatabase(application).searchResultDao().getSeriesResultById(mdbId);
-        mObservableSeries = SReminderDatabase.getAppDatabase(application).seriesDao().getSeriesByMdbId(mdbId);
     }
 
-    public LiveData<Series> getSeries(){
+    public LiveData<Series> getSeries(String mdbId){
+        mObservableSeries = SReminderDatabase.getAppDatabase(this.getApplication()).seriesDao().getSeriesByMdbId(mdbId);
         return mObservableSeries;
     }
 
-    public LiveData<SearchResult> getSearchResult(){
+    public LiveData<SearchResult> getSearchResult(String mdbId){
+        mObservableSearchResult = SReminderDatabase.getAppDatabase(this.getApplication()).searchResultDao().getSeriesResultById(mdbId);
         return mObservableSearchResult;
     }
 
@@ -35,19 +35,16 @@ public class SearchDetailViewModel extends AndroidViewModel {
         @NonNull
         private final Application mApplication;
 
-        private final String mdbId;
 
-
-        public Factory(@NonNull Application application, String mdbId) {
+        public Factory(@NonNull Application application) {
             mApplication = application;
-            this.mdbId = mdbId;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new SearchDetailViewModel(mApplication, mdbId);
+            return (T) new SearchDetailViewModel(mApplication);
         }
     }
 }

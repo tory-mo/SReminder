@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/text_primary"
-        android:padding="5dp">
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/ivPoster"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvName"
-            android:paddingLeft="5dp"
-            android:textSize="20sp"
-            android:textColor="@color/text_secondary"
-            android:layout_toEndOf="@+id/ivPoster"/>
-        <TextView
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <data>
+                <variable
+                   name="searchResult"
+                   type="sremind.torymo.by.data.SearchResult"/>
+                <variable
+                    name="handler"
+                    type="android.view.View.OnClickListener"/>
+        </data>
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:paddingLeft="5dp"
-            android:ellipsize="end"
-            android:id="@+id/tvDate"
-            android:layout_toEndOf="@+id/ivPoster"
-            android:layout_below="@+id/tvName"/>
-</RelativeLayout>
+            android:layout_height="128dp"
+            android:background="@color/text_primary"
+            android:padding="5dp"
+            android:onClick="@{handler}">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ivPoster"
+                    app:imageUrl="@{searchResult.poster}"
+                    android:contentDescription="@{searchResult.name}"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvName"
+                    android:paddingStart="5dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_toEndOf="@+id/ivPoster"
+                    android:text="@{searchResult.name}"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="16sp"
+                    android:paddingStart="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:id="@+id/tvDate"
+                    android:layout_toEndOf="@+id/ivPoster"
+                    android:layout_below="@+id/tvName"
+                    android:text="@{searchResult.overview}"/>
+        </RelativeLayout>
+</layout>
+
 
 

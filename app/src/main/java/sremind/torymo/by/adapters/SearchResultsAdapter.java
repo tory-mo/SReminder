@@ -1,6 +1,7 @@
 package sremind.torymo.by.adapters;
 
 import android.content.Context;
+import android.databinding.BindingAdapter;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import java.util.Objects;
 
 import sremind.torymo.by.R;
 import sremind.torymo.by.data.SearchResult;
+import sremind.torymo.by.databinding.SearchResultListItemBinding;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.SearchResultViewHolder> implements View.OnClickListener{
 
@@ -93,26 +95,23 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     @Override
     public SearchResultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(mContext)
-                .inflate(R.layout.search_result_list_item, parent, false);
-        itemView.setOnClickListener(this);
-        return new SearchResultViewHolder(itemView);
+        LayoutInflater layoutInflater =
+                LayoutInflater.from(parent.getContext());
+        SearchResultListItemBinding itemBinding =
+                SearchResultListItemBinding.inflate(layoutInflater, parent, false);
+        itemBinding.setHandler(this);
+        return new SearchResultViewHolder(itemBinding);
     }
 
     @Override
     public void onBindViewHolder(SearchResultViewHolder viewHolder, int position) {
         SearchResult searchResult = dataSet.get(position);
+        viewHolder.bind(searchResult);
+    }
 
-        viewHolder.nameTextView.setText(searchResult.getName());
-        String overview = searchResult.getOverview();
-        if(overview.length()>140)
-            overview = overview.substring(0, 140)+"...";
-        viewHolder.overviewTextView.setText(overview);
-
-        Picasso.with(mContext)
-                .load(searchResult.getPoster())
-                .error(R.drawable.no_photo)
-                .into(viewHolder.posterImageView);
+    @BindingAdapter("bind:imageUrl")
+    public static void loadImage(ImageView imageView, String v) {
+        Picasso.with(imageView.getContext()).load(v).error(R.drawable.no_photo).into(imageView);
     }
 
     @Override
@@ -121,16 +120,16 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
 
     static class SearchResultViewHolder extends RecyclerView.ViewHolder {
-        ImageView posterImageView;
-        TextView nameTextView;
-        TextView overviewTextView;
+        private final SearchResultListItemBinding binding;
 
-        SearchResultViewHolder(View view) {
-            super(view);
-            nameTextView = view.findViewById(R.id.tvName);
-            overviewTextView = view.findViewById(R.id.tvDate);
-            posterImageView = view.findViewById(R.id.ivPoster);
+        SearchResultViewHolder(SearchResultListItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
 
+        void bind(SearchResult item) {
+            binding.setSearchResult(item);
+            binding.executePendingBindings();
         }
     }
 }
