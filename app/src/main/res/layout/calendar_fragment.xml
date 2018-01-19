@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,17 +19,18 @@
         android:id="@+id/tvToday"
         android:gravity="center_vertical"
         android:padding="@dimen/fragment_padding"
-        android:text="@string/today"/>
+        android:text="@string/today"
+        android:textSize="14dp"
+        style="@style/OverviewTextViewStyle"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ordinary_day"
-        android:orientation="vertical"
-        android:padding="@dimen/fragment_padding">
-        <ListView
+        android:orientation="vertical">
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/lvEpisodesForDay"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ListView>
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager"/>
     </LinearLayout>
 </LinearLayout>

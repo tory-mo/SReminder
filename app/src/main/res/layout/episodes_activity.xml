@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:id="@+id/llEpisodesHeader"
-        >
+        android:id="@+id/llEpisodesHeader">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,9 +30,9 @@
             android:layout_gravity="bottom"
             android:paddingBottom="20dp"
             android:paddingLeft="20dp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/light_bg"/>
-
+            android:textSize="20dp"
+            android:textColor="@color/light_bg"
+            style="@style/OverviewTextViewStyle"/>
     </FrameLayout>
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
@@ -50,14 +49,5 @@
         android:layout_height="0dp"
         android:layout_weight="3"
         tools:context=".EpisodeListActivity" />
-<!--    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/fragment_episodes"
-        android:name="sremind.torymo.by.EpisodeListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        tools:context="sremind.torymo.by.EpisodeListFragment"
-        tools:layout="@android:layout/list_content" /> -->
 </LinearLayout>
 

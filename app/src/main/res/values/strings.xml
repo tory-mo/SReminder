@@ -30,17 +30,16 @@
 	<string name="delete_series_title">Delete series</string>
 	<string name="add_episode_title">Add episode</string>
 
-	<string name="format_episode_info">%1$s; %2$f.%3$f.%4$f</string>
-	<string name="format_episode_info1">%1$s; %2$s</string>
-	<string name="format_episode_number" translatable="false">S%1$s, E%2$s</string>
+	<string name="format_episode_number" translatable="true">season %1$s, episode %2$s</string>
 
-	<string name="format_first_date" translatable="true">First date: %1$s</string>
-	<string name="format_seasons" translatable="true"><b>Seasons:</b> %1$s</string>
-	<string name="format_episode_time" translatable="true"><b>Episode time:</b> %1$s min.</string>
-	<string name="format_homepage" translatable="true"><b>Homepage:</b> %1$s</string>
-	<string name="format_overview" translatable="true"><b>Overview:</b> %1$s</string>
-	<string name="format_ongoing" translatable="true"><b>Show status:</b> %1$s</string>
-	<string name="format_genres" translatable="true"><b>Genres:</b> %1$s</string>
+	<string name="format_first_date" translatable="true">First date:</string>
+	<string name="format_seasons" translatable="true">Seasons:</string>
+	<string name="episode_time_label" translatable="true">Episode time:</string>
+	<string name="format_episode_time" translatable="true">%1$s min.</string>
+	<string name="format_homepage" translatable="true">Homepage:</string>
+	<string name="format_overview" translatable="true">Overview:</string>
+	<string name="format_ongoing" translatable="true">Show status:</string>
+	<string name="format_genres" translatable="true">Genres:</string>
 
 	<string name="format_ongoing_true" translatable="true">Ongoing</string>
 	<string name="format_ongoing_false" translatable="true">Finished</string>

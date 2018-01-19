@@ -111,35 +111,35 @@ public class EpisodeListAdapter extends RecyclerView.Adapter<EpisodeListAdapter.
     public void onBindViewHolder(EpisodesViewHolder viewHolder, int position) {
         Episode ep = dataSet.get(position);
 
-        viewHolder.name.setText(ep.getName());
+        viewHolder.tvEpisodeName.setText(ep.getName());
         Date date = new Date(ep.getDate());
-        String epNum = ep.getNumber();
 
         if(ep.isSeen()){
-            viewHolder.icon.setImageResource(R.drawable.eye);
+            viewHolder.ivSeen.setImageResource(R.drawable.eye);
         }else{
-            viewHolder.icon.setImageResource(R.drawable.eye_off);
+            viewHolder.ivSeen.setImageResource(R.drawable.eye_off);
         }
 
-        if(date==null){
-            viewHolder.info.setText(epNum);
-        }else{
+        viewHolder.tvEpisodeInfo.setText(ep.getNumber());
+
+        if(date != null){
             String dateStr = dateListFormat.format(date);
-            viewHolder.info.setText(mContext.getString(R.string.format_episode_info1,
-                    epNum, dateStr));
+            viewHolder.tvDate.setText(dateStr);
         }
     }
 
     class EpisodesViewHolder extends RecyclerView.ViewHolder{
-        TextView name;
-        TextView info;
-        ImageView icon;
+        TextView tvEpisodeName;
+        TextView tvDate;
+        TextView tvEpisodeInfo;
+        ImageView ivSeen;
 
         EpisodesViewHolder(View view){
             super(view);
-            name = view.findViewById(R.id.tvName);
-            info = view.findViewById(R.id.tvDate);
-            icon = view.findViewById(R.id.ivSeenIcon);
+            tvEpisodeName = view.findViewById(R.id.tvName);
+            tvDate = view.findViewById(R.id.tvDate);
+            tvEpisodeInfo = view.findViewById(R.id.tvEpisodeInfo);
+            ivSeen = view.findViewById(R.id.ivSeenIcon);
         }
     }
 }

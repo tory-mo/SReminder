@@ -1,7 +1,7 @@
 package sremind.torymo.by;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +29,9 @@ public class CalendarView extends LinearLayout {
     private EventHandler eventHandler = null;
 
     // current displayed month
-    private Calendar currentDate = Calendar.getInstance();
+    private final Calendar currentDate = Calendar.getInstance();
 
-    private static final SimpleDateFormat mMonthTitleFormat = new SimpleDateFormat("MMMM yyyy");
+    private static final String MONTH_TITLE_FORMAT = "MMMM yyyy";
 
     static final int FIRST_DAY_OF_WEEK = 1; // Sunday = 0, Monday = 1
 
@@ -56,6 +56,9 @@ public class CalendarView extends LinearLayout {
     {
         LayoutInflater inflater = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if(inflater == null) return;
+
+        currentDate.set(Calendar.DAY_OF_MONTH, 1);
 
         inflater.inflate(R.layout.calendar_view, this);
 
@@ -68,7 +71,6 @@ public class CalendarView extends LinearLayout {
         gvHeader.setAdapter(new ArrayAdapter<>(context, R.layout.day_name, R.id.name_day, getResources().getStringArray(R.array.weekDays)));
 
         assignClickHandlers();
-
         updateCalendar();
     }
 
@@ -79,26 +81,11 @@ public class CalendarView extends LinearLayout {
             @Override
             public void onClick(View v)
             {
-//                if(month.get(Calendar.MONTH) == month.getActualMaximum(Calendar.MONTH)) {
-//                    month.set((month.get(Calendar.YEAR)+1),month.getActualMinimum(Calendar.MONTH),1);
-//                } else {
-//                    month.set(Calendar.MONTH,month.get(Calendar.MONTH)+1);
-//                }
-
                 currentDate.add(Calendar.MONTH, 1);
-
                 updateCalendar();
                 if(eventHandler != null){
-                    Calendar calendar = (Calendar)currentDate.clone();
-                    calendar.set(Calendar.DAY_OF_MONTH, 1);
-                    calendar.set(Calendar.HOUR_OF_DAY, 0);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.MILLISECOND, 0);
-                    Date startDate = new Date(calendar.getTimeInMillis());
-                    final int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                    calendar.set(Calendar.DATE,lastDay);
-                    Date endDate = calendar.getTime();
-                    eventHandler.onMonthChanged(startDate, endDate);
+                    Date[] startEnd = getCurrentMonthStartEnd();
+                    eventHandler.onMonthChanged(startEnd[0], startEnd[1]);
                 }
             }
         });
@@ -108,25 +95,11 @@ public class CalendarView extends LinearLayout {
             @Override
             public void onClick(View v)
             {
-//                if (month.get(Calendar.MONTH) == month.getActualMinimum(Calendar.MONTH)) {
-//                    month.set((month.get(Calendar.YEAR) - 1), month.getActualMaximum(Calendar.MONTH), 1);
-//                } else {
-//                    month.set(Calendar.MONTH, month.get(Calendar.MONTH) - 1);
-//                }
-
                 currentDate.add(Calendar.MONTH, -1);
                 updateCalendar();
                 if(eventHandler != null){
-                    Calendar calendar = (Calendar)currentDate.clone();
-                    calendar.set(Calendar.DAY_OF_MONTH, 1);
-                    calendar.set(Calendar.HOUR_OF_DAY, 0);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.MILLISECOND, 0);
-                    Date startDate = new Date(calendar.getTimeInMillis());
-                    final int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                    calendar.set(Calendar.DATE,lastDay);
-                    Date endDate = calendar.getTime();
-                    eventHandler.onMonthChanged(startDate, endDate);
+                    Date[] startEnd = getCurrentMonthStartEnd();
+                    eventHandler.onMonthChanged(startEnd[0], startEnd[1]);
                 }
             }
         });
@@ -161,9 +134,9 @@ public class CalendarView extends LinearLayout {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        currentDate.set(Calendar.DATE, 1);
-        int firstDay = currentDate.get(Calendar.DAY_OF_WEEK) - 1 - FIRST_DAY_OF_WEEK; //convert to start with zero
-        final int lastDay = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH);
+        calendar.set(Calendar.DATE, 1);
+        int firstDay = calendar.get(Calendar.DAY_OF_WEEK) - 1 - FIRST_DAY_OF_WEEK; //convert to start with zero
+        final int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
 
         for(int i = 0; i < firstDay; i++) {
@@ -179,12 +152,33 @@ public class CalendarView extends LinearLayout {
         gvCalendar.setAdapter(new CalendarAdapter(getContext(), cells, events));
 
         // update title
-        tvMonth.setText(mMonthTitleFormat.format(currentDate.getTime()));
+        SimpleDateFormat sdf = new SimpleDateFormat(MONTH_TITLE_FORMAT);
+        tvMonth.setText(sdf.format(currentDate.getTime()));
+        if(eventHandler != null){
+            Calendar now = Calendar.getInstance();
+            now.set(Calendar.HOUR_OF_DAY, 0);
+            now.set(Calendar.MINUTE, 0);
+            now.set(Calendar.SECOND, 0);
+            now.set(Calendar.MILLISECOND, 0);
+            eventHandler.onDayPress(now.getTime());
+        }
 
     }
 
-    private class CalendarAdapter extends ArrayAdapter<Date>
-    {
+    public Date[] getCurrentMonthStartEnd(){
+        Calendar calendar = (Calendar)currentDate.clone();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date startDate = new Date(calendar.getTimeInMillis());
+        final int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        calendar.set(Calendar.DATE,lastDay);
+        Date endDate = calendar.getTime();
+        return new Date[]{startDate, endDate};
+    }
+
+    private class CalendarAdapter extends ArrayAdapter<Date>{
         // days with events
         private HashSet<Date> eventDays;
 
@@ -193,8 +187,7 @@ public class CalendarView extends LinearLayout {
 
         private Context mContext;
 
-        public CalendarAdapter(Context context, ArrayList<Date> days, HashSet<Date> eventDays)
-        {
+        CalendarAdapter(Context context, ArrayList<Date> days, HashSet<Date> eventDays){
             super(context, R.layout.day, days);
             mContext = context;
             this.eventDays = eventDays;
@@ -202,12 +195,10 @@ public class CalendarView extends LinearLayout {
         }
 
         @Override
-        public View getView(int position, View view, ViewGroup parent)
-        {
+        @NonNull
+        public View getView(int position, View view, @NonNull ViewGroup parent){
             // day in question
             Date date = getItem(position);
-
-
 
             // inflate item if it does not exist yet
             if (view == null)
@@ -254,47 +245,21 @@ public class CalendarView extends LinearLayout {
                     dayView.setClickable(false);
                     dayView.setFocusable(false);
                 }
-
-//                if(currDay.event){
-//                    view.setOnClickListener(new View.OnClickListener() {
-//                        public void onClick(View v)
-//                        {
-//                            TextView date = v.findViewById(R.id.date);
-//                            if(date != null) {
-//                                String day = date.getText().toString();
-//                                currentDate.set(Calendar.DATE,Integer.valueOf(day));
-//                                showEpisodesForDay(mChosenMonth.getTime(), ((Activity)mContext));
-//                            }
-//                        }
-//                    });
-//                }
-
-
-
                 // set text
-                dayView.setText(String.valueOf(date.getDate()));
+                dayView.setText(String.valueOf(day));
             }
 
             return view;
         }
     }
 
-    /**
-     * Assign event handler to be passed needed events
-     */
     public void setEventHandler(EventHandler eventHandler)
     {
         this.eventHandler = eventHandler;
     }
 
-    /**
-     * This interface defines what events to be reported to
-     * the outside world
-     */
-    public interface EventHandler
-    {
+    public interface EventHandler{
         void onDayPress(Date date);
-
         void onMonthChanged(Date start, Date end);
     }
 

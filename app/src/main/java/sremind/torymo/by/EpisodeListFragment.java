@@ -7,6 +7,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +42,7 @@ public class EpisodeListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.episodes_fragment, container, false);
 
         mListView = rootView.findViewById(R.id.lvEpisodes);
+        mListView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
 
         mListView.setAdapter(mEpisodeAdapter);
 

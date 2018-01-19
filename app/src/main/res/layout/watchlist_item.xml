@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:background="@drawable/touch_selector"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
         android:onClick="@{handler}">
         <TextView android:id="@+id/seriesNameWatchlist"
             android:layout_width="match_parent"
@@ -22,8 +24,8 @@
             android:layout_toStartOf="@+id/watchlistCheckBox"
             android:layout_alignParentStart="true"
             android:ellipsize="end"
-            android:textSize="20sp"
             android:textColor="@color/text_secondary"
+            style="@style/OverviewTextViewStyle"
             android:text="@{series.name}"/>
         <CheckBox
             android:id="@+id/watchlistCheckBox"

@@ -8,14 +8,20 @@
         name="handler"
         type="android.view.View.OnClickListener"/>
   </data>
-  <TextView 
+  <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:padding="15dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:background="?attr/selectableItemBackground"
+      android:onClick="@{handler}">
+  <TextView 
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:id="@+id/tvName"
-      android:textSize="20sp"
       android:textColor="@color/text_secondary"
-      android:background="@drawable/touch_selector"
-      android:text="@{series.name}"
-      android:onClick="@{handler}"/>
+      style="@style/OverviewTextViewStyle"
+      android:text="@{series.name}"/>
+  </RelativeLayout>
 </layout>

@@ -120,7 +120,7 @@ public class EpisodesJsonRequest{
                     else
                         date = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).parse(dateStr);
                 }catch(Exception ex){
-                    date = null;
+                    return;
                 }
 
                 if(!episodes.isEmpty()){

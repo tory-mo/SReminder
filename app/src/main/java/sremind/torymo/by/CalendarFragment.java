@@ -3,30 +3,28 @@ package sremind.torymo.by;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import sremind.torymo.by.adapters.CalendarAdapter;
 import sremind.torymo.by.adapters.EpisodesForDateAdapter;
 import sremind.torymo.by.data.Episode;
 import sremind.torymo.by.data.SReminderDatabase;
@@ -48,8 +46,10 @@ public class CalendarFragment extends Fragment{
 
     Calendar month;
 
-    ListView lvEpisodesForDay;
+    RecyclerView lvEpisodesForDay;
     TextView tvToday;
+    EpisodesForDateAdapter episodesForDateAdapter;
+    CalendarView cvCalendar;
 
 
     @Override
@@ -59,20 +59,24 @@ public class CalendarFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.calendar_fragment, container, false);
 
 
         month = Calendar.getInstance();
 
         lvEpisodesForDay = rootView.findViewById(R.id.lvEpisodesForDay);
+        lvEpisodesForDay.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         tvToday = rootView.findViewById(R.id.tvToday);
-        final CalendarView cv = (rootView.findViewById(R.id.calendar_view));
-        cv.updateCalendar();
-        final LifecycleOwner lifecycleOwner = this;
 
+        episodesForDateAdapter = new EpisodesForDateAdapter(getActivity(),  new ArrayList<String[]>());
+
+        lvEpisodesForDay.setAdapter(episodesForDateAdapter);
+
+
+        cvCalendar = (rootView.findViewById(R.id.calendar_view));
         // assign event handler
-        cv.setEventHandler(new CalendarView.EventHandler()
+        cvCalendar.setEventHandler(new CalendarView.EventHandler()
         {
             @Override
             public void onDayPress(Date date) {
@@ -81,27 +85,35 @@ public class CalendarFragment extends Fragment{
 
             @Override
             public void onMonthChanged(Date startDate, Date endDate) {
-                LiveData<List<Episode>> episodes;
-                if(Utility.getSeenParam(getActivity())){
-                    episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getNotSeenEpisodesBetweenDates(startDate.getTime(), endDate.getTime());
-                }else {
-                    episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBetweenDates(startDate.getTime(), endDate.getTime());
-                }
-                episodes.observe(lifecycleOwner, new Observer<List<Episode>>() {
-                    @Override
-                    public void onChanged(@Nullable List<Episode> episodes) {
-                        HashSet<Date> events = new HashSet<>();
-                        for (Episode ep: episodes){
-                            events.add(new Date(ep.getDate()));
-                        }
-                        cv.updateCalendar(events);
-                    }
-                });
+                getEpisodesForMonth(startDate, endDate);
             }
         });
+        cvCalendar.updateCalendar();
 
+        Date[] startEnd = cvCalendar.getCurrentMonthStartEnd();
+        getEpisodesForMonth(startEnd[0], startEnd[1]);
 
         return rootView;
+    }
+
+    private void getEpisodesForMonth(Date startDate, Date endDate){
+        final LifecycleOwner lifecycleOwner = this;
+        LiveData<List<Episode>> episodes;
+        if(Utility.getSeenParam(getActivity())){
+            episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getNotSeenEpisodesBetweenDates(startDate.getTime(), endDate.getTime());
+        }else {
+            episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBetweenDates(startDate.getTime(), endDate.getTime());
+        }
+        episodes.observe(lifecycleOwner, new Observer<List<Episode>>() {
+            @Override
+            public void onChanged(@Nullable List<Episode> episodes) {
+                HashSet<Date> events = new HashSet<>();
+                for (Episode ep: episodes){
+                    events.add(new Date(ep.getDate()));
+                }
+                cvCalendar.updateCalendar(events);
+            }
+        });
     }
 
     private void changeSeenTitle(MenuItem miOnlySeen){
@@ -140,8 +152,9 @@ public class CalendarFragment extends Fragment{
                 return true;
             case R.id.action_only_seen:
                 Utility.changeSeenParam(getActivity());
-
                 changeSeenTitle(item);
+                Date[] startEnd = cvCalendar.getCurrentMonthStartEnd();
+                getEpisodesForMonth(startEnd[0], startEnd[1]);
                 return true;
 //          case R.id.action_make_backup:
 //                String separator = System.getProperty("line.separator");
@@ -205,8 +218,6 @@ public class CalendarFragment extends Fragment{
     }
 
     public void showEpisodesForDay(Date touchedDate){
-        final ArrayList<String[]> episodesForDateList = new ArrayList<>();
-        final EpisodesForDateAdapter episodesForDateAdapter = new EpisodesForDateAdapter(getActivity(), episodesForDateList);
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
@@ -217,8 +228,6 @@ public class CalendarFragment extends Fragment{
         }else{
             tvToday.setText(Utility.dateToStrFormat.format(touchedDate));
         }
-
-        lvEpisodesForDay.setAdapter(episodesForDateAdapter);
 
         LiveData<List<Episode>> episodes;
         if(Utility.getSeenParam(getActivity())){
@@ -232,7 +241,7 @@ public class CalendarFragment extends Fragment{
             @Override
             public void onChanged(@Nullable List<Episode> episodes) {
 
-                episodesForDateList.clear();
+                episodesForDateAdapter.clearItems();
                 if(episodes != null && !episodes.isEmpty()){
                     for (final Episode ep: episodes) {
                         LiveData<Series> s = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getSeriesByImdbId(ep.getSeries());
@@ -240,18 +249,17 @@ public class CalendarFragment extends Fragment{
                             @Override
                             public void onChanged(@Nullable Series series) {
                                 String[] hm;
-                                hm = new String[3];
-                                hm[0] = ep.getNumber() + "; " + series.getName();
+                                hm = new String[4];
+                                hm[0] = ep.getNumber();
                                 hm[1] = ep.getName();
                                 hm[2] = String.valueOf(ep.isSeen());
-                                episodesForDateList.add(hm);
+                                hm[3] = series.getName();
+                                episodesForDateAdapter.addItem(hm);
                                 episodesForDateAdapter.notifyDataSetChanged();
                             }
                         });
-
                     }
                 }
-                episodesForDateAdapter.notifyDataSetChanged();
             }
         });
 

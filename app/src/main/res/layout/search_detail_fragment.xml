@@ -6,66 +6,116 @@
             type="sremind.torymo.by.data.SearchResult"/>
         <import type="sremind.torymo.by.Utility"/>
         <import type="android.view.View"/>
+        <import type="java.lang.String"/>
     </data>
     <ScrollView
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:padding="@dimen/fragment_padding">
+        android:layout_width="match_parent">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/fragment_padding"
+            android:padding="16dp"
             android:background="@color/ordinary_day"
             android:visibility="@{searchResult == null ?View.GONE :View.VISIBLE}">
-            <LinearLayout
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_gravity="top"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvOngoingLabel"
+                    android:textColor="@color/text_secondary"
+                    android:paddingEnd="5dp"
+                    style="@style/OverviewTextViewStyle"
+                    android:text="@string/format_ongoing"/>
+                <TextView
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="top"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/firstDateTextView"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="20sp"
-                        android:text="@{@string/format_first_date(Utility.dateToStrFormat.format(searchResult.firstDate))}"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/seasonsTextView"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="20sp"
-                        android:text="@{@string/format_seasons(searchResult.seasons)}"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/episodeTimeTextView"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="20sp"
-                        android:text="@{@string/format_episode_time(searchResult.episodeTime)}"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ongoingTextView"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="20sp"
-                        android:text="@{@string/format_ongoing(searchResult.ongoing ? @string/format_ongoing_true : @string/format_ongoing_false)}"/>
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvOngoing"
+                    style="@style/OverviewTextViewStyle"
+                    android:layout_toEndOf="@id/tvOngoingLabel"
+                    android:text="@{searchResult.ongoing ? @string/format_ongoing_true : @string/format_ongoing_false}" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvSeasonsLabel"
+                    android:textColor="@color/text_secondary"
+                    android:paddingEnd="5dp"
+                    style="@style/OverviewTextViewStyle"
+                    android:text="@string/format_seasons"
+                    android:layout_below="@+id/tvOngoing"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvSeasons"
+                    style="@style/OverviewTextViewStyle"
+                    android:layout_below="@+id/tvOngoing"
+                    android:layout_toEndOf="@id/tvSeasonsLabel"
+                    android:text="@{String.valueOf(searchResult.seasons)}" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvFirstDateLabel"
+                    android:textColor="@color/text_secondary"
+                    android:paddingEnd="5dp"
+                    style="@style/OverviewTextViewStyle"
+                    android:text="@string/format_first_date"
+                    android:layout_below="@+id/tvSeasons"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvFirstDate"
+                    style="@style/OverviewTextViewStyle"
+                    android:layout_toEndOf="@id/tvFirstDateLabel"
+                    android:layout_below="@+id/tvSeasons"
+                    android:text="@{Utility.dateToStrFormat.format(searchResult.firstDate)}"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvEpisodeTimeLabel"
+                    android:textColor="@color/text_secondary"
+                    android:paddingEnd="5dp"
+                    style="@style/OverviewTextViewStyle"
+                    android:text="@string/episode_time_label"
+                    android:layout_below="@+id/tvFirstDate"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvEpisodeTime"
+                    style="@style/OverviewTextViewStyle"
+                    android:layout_below="@+id/tvFirstDate"
+                    android:layout_toEndOf="@+id/tvEpisodeTimeLabel"
+                    android:text="@{@string/format_episode_time(searchResult.episodeTime)}" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvGenresLabel"
+                    android:textColor="@color/text_secondary"
+                    android:paddingEnd="5dp"
+                    style="@style/OverviewTextViewStyle"
+                    android:text="@string/format_genres"
+                    android:layout_below="@+id/tvEpisodeTime"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvGenres"
+                    style="@style/OverviewTextViewStyle"
+                    android:layout_below="@+id/tvEpisodeTime"
+                    android:layout_toEndOf="@+id/tvGenresLabel"
+                    android:text="@{searchResult.genres}"/>
+            </RelativeLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/genresTextView"
+                android:id="@+id/tvOverview"
                 android:textColor="@color/text_secondary"
-                android:textSize="20sp"
-                android:text="@{@string/format_genres(searchResult.genres)}"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/overviewTextView"
-                android:textColor="@color/text_secondary"
-                android:textSize="20sp"
-                android:text="@{@string/format_overview(searchResult.overview)}"/>
+                android:paddingTop="10dp"
+                android:lineSpacingExtra="7dp"
+                style="@style/OverviewTextViewStyle"
+                android:text="@{searchResult.overview}"/>
         </LinearLayout>
     </ScrollView>
 </layout>
