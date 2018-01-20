@@ -58,7 +58,9 @@ public class EpisodeListActivity extends AppCompatActivity{
                     if(series != null){
                         getSupportActionBar().setTitle("");
                         TextView tv = findViewById(R.id.tvSeriesName);
+                        TextView tv1 = findViewById(R.id.tvSeriesOriginalName);
                         tv.setText(series.getName());
+                        tv1.setText(series.getOriginalName());
 
                         if(sdf != null)
                             sdf.refresh(series.getMdbId());

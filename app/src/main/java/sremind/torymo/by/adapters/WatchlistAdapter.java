@@ -1,27 +1,27 @@
 package sremind.torymo.by.adapters;
 
+import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.PopupMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import sremind.torymo.by.R;
+import sremind.torymo.by.WatchlistFragment;
 import sremind.torymo.by.data.Series;
 import sremind.torymo.by.databinding.WatchlistItemBinding;
 
-public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.WatchlistViewHolder> implements View.OnClickListener,
-		View.OnCreateContextMenuListener,
-		PopupMenu.OnMenuItemClickListener{
+public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.WatchlistViewHolder> implements View.OnClickListener{
 
 	private static final int CM_DELETE_SERIES = 2;
 
@@ -81,6 +81,11 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 		}
 	}
 
+	@BindingAdapter("android:onCreateContextMenu")
+	public static void setOnCreateContextMenu(View view, View.OnCreateContextMenuListener listener) {
+		view.setOnCreateContextMenuListener(listener);
+	}
+
 	@Override
 	public void onClick(final View view)
 	{
@@ -96,22 +101,6 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 		}
 	}
 
-	@Override
-	public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-		PopupMenu popup = new PopupMenu(view.getContext(), view);
-		popup.getMenu().add(0, CM_DELETE_SERIES, 0, R.string.DELETE);
-		popup.setOnMenuItemClickListener(this);
-		popup.show();
-	}
-
-	@Override
-	public boolean onMenuItemClick(MenuItem menuItem) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
-
-		Series series = getItem(info.position);
-		this.onItemClickListener.onMenuAction(menuItem, series);
-		return false;
-	}
 
 	@Override
 	public int getItemCount() {
@@ -138,7 +127,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 		viewHolder.bind(series);
 	}
 
-	class WatchlistViewHolder extends RecyclerView.ViewHolder {
+	class WatchlistViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
 		private final WatchlistItemBinding binding;
 
 		WatchlistViewHolder(WatchlistItemBinding binding) {
@@ -149,6 +138,20 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 		void bind(Series item) {
 			binding.setSeries(item);
 			binding.executePendingBindings();
+			binding.setLongClickHandler(this);
+		}
+
+		@Override
+		public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+			MenuItem mi = contextMenu.add(Menu.NONE, WatchlistFragment.CM_DELETE_SERIES, Menu.NONE, R.string.DELETE);
+			mi.setOnMenuItemClickListener(this);
+		}
+
+		@Override
+		public boolean onMenuItemClick(MenuItem menuItem) {
+			Series series = getItem(getAdapterPosition());
+			onItemClickListener.onMenuAction(menuItem, series);
+			return false;
 		}
 	}
 }

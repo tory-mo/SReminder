@@ -29,12 +29,7 @@ import sremind.torymo.by.data.SearchResult;
 
 public class SearchActivity extends AppCompatActivity implements SearchFragment.Callback {
 
-    final String MOVIE_DB_URL = "http://api.themoviedb.org/3/search/tv";
-    final String POSTER_PATH = "http://image.tmdb.org/t/p/w300/";
-    final String EXTERNAL_PARAM = "external_source";
-    final String IMDB_VALUE = "imdb_id";
-    final String QUERY = "query";
-    final String APPKEY_PARAM = "api_key";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,10 +72,17 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
             String query = intent.getStringExtra(SearchManager.QUERY);
             SReminderDatabase.getAppDatabase(this).searchResultDao().delete();
             if(query.length()>1) {
-                Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
-                        .appendQueryParameter(EXTERNAL_PARAM, IMDB_VALUE)
-                        .appendQueryParameter(QUERY, query)
-                        .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                String currLanguage = Locale.getDefault().getLanguage();
+                String needLang = Utility.LANGUAGE_EN;
+                if(!currLanguage.equals(needLang)){
+                    needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
+                }
+
+                Uri builtUri = Uri.parse(Utility.SEARCH_MOVIE_DB_URL).buildUpon()
+                        .appendQueryParameter(Utility.EXTERNAL_SOURCE_PARAM, Utility.IMDB_VALUE)
+                        .appendQueryParameter(Utility.QUERY, query)
+                        .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                        .appendQueryParameter(Utility.LANGUAGE_PARAM, needLang)
                         .build();
 
                 JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -124,7 +126,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
             for(int i = 0; i<array.length(); i++){
                 JSONObject item = array.getJSONObject(i);
                 mdbId = item.getString("id");
-                poster = POSTER_PATH + item.getString("poster_path");
+                poster = Utility.POSTER_PATH + item.getString("poster_path");
                 overview = item.getString("overview");
                 name = item.getString("name");
                 popularity = (float) item.getDouble("popularity");

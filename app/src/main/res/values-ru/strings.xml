@@ -28,7 +28,7 @@
 	<string name="delete_series_title">Удалить сериал</string>
 	<string name="add_episode_title">Добавить серию</string>
 
-	<string name="format_episode_number" translatable="true">сезон %1$s, серия %2$s</string>
+	<string name="format_episode_number" translatable="true">серия %1$s, сезон %2$s</string>
 
 	<string name="format_first_date" translatable="true">Первый выпуск:</string>
 	<string name="format_seasons" translatable="true">Cезонов:</string>
@@ -38,6 +38,7 @@
 	<string name="format_overview" translatable="true">Описание:</string>
 	<string name="format_ongoing" translatable="true">Статус:</string>
 	<string name="format_genres" translatable="true">Жанр:</string>
+	<string name="format_original_name" translatable="true">Оригинальное название:</string>
 
 	<string name="format_ongoing_true" translatable="true">Выходит</string>
 	<string name="format_ongoing_false" translatable="true">Завершен</string>

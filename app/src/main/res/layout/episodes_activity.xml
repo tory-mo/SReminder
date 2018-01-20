@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:background="@color/light_bg">
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
@@ -27,13 +27,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvSeriesName"
+            android:paddingLeft="20dp"
+            android:textSize="18dp"
+            android:textColor="@color/light_bg"
+            android:layout_above="@+id/tvSeriesOriginalName"
+            style="@style/OverviewTextViewStyle"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvSeriesOriginalName"
             android:layout_gravity="bottom"
             android:paddingBottom="20dp"
             android:paddingLeft="20dp"
-            android:textSize="20dp"
+            android:textSize="14dp"
+            android:layout_alignParentBottom="true"
             android:textColor="@color/light_bg"
             style="@style/OverviewTextViewStyle"/>
-    </FrameLayout>
+    </RelativeLayout>
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"

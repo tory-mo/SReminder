@@ -5,10 +5,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/fragment_padding">
+    android:padding="@dimen/fragment_padding"
+    android:background="@color/current_day">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/searchListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager"/>
+        app:layoutManager="LinearLayoutManager"
+        android:background="@color/list_bg"/>
 </RelativeLayout>

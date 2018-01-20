@@ -17,6 +17,9 @@ public class Series {
     @ColumnInfo(name = "name")
     private String mName;
 
+    @ColumnInfo(name = "original_name")
+    private String mOriginalName;
+
     @ColumnInfo(name = "imdbid")
     private String mImdbId;
 
@@ -30,8 +33,9 @@ public class Series {
     @ColumnInfo(name = "watchlist")
     private boolean mWatchlist = true;
 
-    public Series(String mName, String mImdbId, String mMdbId, String mPoster, boolean mWatchlist) {
+    public Series(String mName, String mOriginalName, String mImdbId, String mMdbId, String mPoster, boolean mWatchlist) {
         this.mName = mName;
+        this.mOriginalName = mOriginalName;
         this.mImdbId = mImdbId;
         this.mWatchlist = mWatchlist;
         this.mMdbId = mMdbId;
@@ -39,8 +43,9 @@ public class Series {
     }
 
     @Ignore
-    public Series(String mName, String mImdbId, String mMdbId, String mPoster) {
+    public Series(String mName, String mOriginalName, String mImdbId, String mMdbId, String mPoster) {
         this.mName = mName;
+        this.mOriginalName = mOriginalName;
         this.mImdbId = mImdbId;
         this.mMdbId = mMdbId;
         this.mPoster = mPoster;
@@ -92,5 +97,13 @@ public class Series {
 
     public void setPoster(String mPoster) {
         this.mPoster = mPoster;
+    }
+
+    public String getOriginalName() {
+        return mOriginalName;
+    }
+
+    public void setOriginalName(String mOriginalName) {
+        this.mOriginalName = mOriginalName;
     }
 }

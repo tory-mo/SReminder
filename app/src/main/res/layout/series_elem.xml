@@ -10,7 +10,7 @@
   </data>
   <RelativeLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="56dp"
       android:padding="15dp"
       android:clickable="true"
       android:focusable="true"
@@ -20,6 +20,8 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:id="@+id/tvName"
+      android:maxLines="1"
+      android:ellipsize="end"
       android:textColor="@color/text_secondary"
       style="@style/OverviewTextViewStyle"
       android:text="@{series.name}"/>

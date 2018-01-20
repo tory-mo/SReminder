@@ -26,19 +26,20 @@ import java.util.Locale;
 import sremind.torymo.by.BuildConfig;
 import sremind.torymo.by.R;
 import sremind.torymo.by.RequestSingleton;
+import sremind.torymo.by.Utility;
 import sremind.torymo.by.data.Episode;
 import sremind.torymo.by.data.SReminderDatabase;
 
 public class EpisodesJsonRequest{
 
-    final static String MOVIE_DB_URL = "https://api.themoviedb.org/3/tv";
+
 
     public static void getEpisodes(final LifecycleOwner lifecycleOwner, final Context context, final String mdbId, final String imdbId){
-        final String APPKEY_PARAM = "api_key";
 
-        Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
+
+        Uri builtUri = Uri.parse(Utility.MOVIE_DB_URL).buildUpon()
                 .appendPath(mdbId)
-                .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                 .build();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -48,14 +49,19 @@ public class EpisodesJsonRequest{
                     public void onResponse(JSONObject response) {
                         try {
                             final String seasons = response.getString("number_of_seasons");
-                            final String SEASON_PATH = "season";
-                            final String APPKEY_PARAM = "api_key";
 
-                            Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
+                            String currLanguage = Locale.getDefault().getLanguage();
+                            String needLang = Utility.LANGUAGE_EN;
+                            if(!currLanguage.equals(needLang)){
+                                needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
+                            }
+
+                            Uri builtUri = Uri.parse(Utility.MOVIE_DB_URL).buildUpon()
                                     .appendPath(mdbId)
-                                    .appendPath(SEASON_PATH)
+                                    .appendPath(Utility.SEASON_PATH)
                                     .appendPath(seasons)
-                                    .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                                    .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                                    .appendQueryParameter(Utility.LANGUAGE_PARAM, needLang)
                                     .build();
                             JsonObjectRequest jsObjRequest = new JsonObjectRequest
                                     (Request.Method.GET, builtUri.toString(), null,
@@ -88,7 +94,7 @@ public class EpisodesJsonRequest{
                         JSONObject episode = tvResultsJson.getJSONObject(i);
                         try{
                             String dateStr = episode.getString(AIR_DATE);
-                            String numberStr = context.getString(R.string.format_episode_number, seasons, episode.getString(EPISODE_NUMBER));
+                            String numberStr = context.getString(R.string.format_episode_number, episode.getString(EPISODE_NUMBER), seasons);
                             String nameStr = episode.getString(EPISODE_NAME);
                             addUpdateEpisode(lifecycleOwner, context, dateStr,imdbId,numberStr,nameStr);
                         }catch(Exception exception){

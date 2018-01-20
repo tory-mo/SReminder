@@ -19,21 +19,20 @@ import java.util.Locale;
 
 import sremind.torymo.by.BuildConfig;
 import sremind.torymo.by.RequestSingleton;
+import sremind.torymo.by.Utility;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.SearchResult;
 
 public class SeriesDetailsRequest {
-    final static String MOVIE_DB_URL = "http://api.themoviedb.org/3/tv";
-    final static String POSTER_PATH = "http://image.tmdb.org/t/p/w300/";
+
 
     public static void getDetails(final Context context, final String id){
-        final String EXTERNAL_PARAM = "external_ids";
-        final String APPKEY_PARAM = "api_key";
 
-        Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
+
+        Uri builtUri = Uri.parse(Utility.MOVIE_DB_URL).buildUpon()
                 .appendPath(id)
-                .appendPath(EXTERNAL_PARAM)
-                .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                .appendPath(Utility.EXTERNAL_IDS_PARAM)
+                .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                 .build();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, builtUri.toString(), null, new Response.Listener<JSONObject>() {
@@ -44,9 +43,16 @@ public class SeriesDetailsRequest {
                             String imdbId = response.getString("imdb_id");
                             if(imdbId == null) return;
 
-                            Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
+                            String currLanguage = Locale.getDefault().getLanguage();
+                            String needLang = Utility.LANGUAGE_EN;
+                            if(!currLanguage.equals(needLang)){
+                                needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
+                            }
+
+                            Uri builtUri = Uri.parse(Utility.MOVIE_DB_URL).buildUpon()
                                     .appendPath(id)
-                                    .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                                    .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                                    .appendQueryParameter(Utility.LANGUAGE_PARAM, needLang)
                                     .build();
                             JsonObjectRequest jsObjRequest = new JsonObjectRequest
                                     (Request.Method.GET, builtUri.toString(), null,
@@ -101,8 +107,9 @@ public class SeriesDetailsRequest {
                     sr.setOngoing(response.getBoolean("in_production"));
                     sr.setSeasons(response.getInt("number_of_seasons"));
                     sr.setMdbId(response.getString("id"));
-                    sr.setPoster(POSTER_PATH+response.getString("poster_path"));
+                    sr.setPoster(Utility.POSTER_PATH+response.getString("poster_path"));
                     sr.setName(response.getString("name"));
+                    sr.setOriginalName(response.getString("original_name"));
                     sr.setPopularity((float) response.getDouble("popularity"));
                     sr.setGenres(genresStr);
                     sr.setOverview(overview);

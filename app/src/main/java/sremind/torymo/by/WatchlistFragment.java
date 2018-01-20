@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -31,7 +32,7 @@ import sremind.torymo.by.viewmodel.WatchlistViewModel;
 public class WatchlistFragment extends Fragment{
 
     WatchlistAdapter mWatchlistAdapter;
-	private static final int CM_DELETE_SERIES = 2;
+	public static final int CM_DELETE_SERIES = 2;
 
 
 	RecyclerView watchlistListView;
@@ -48,6 +49,8 @@ public class WatchlistFragment extends Fragment{
 
 		watchlistListView = rootView.findViewById(R.id.watchlistListView);
 		watchlistListView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+
+		registerForContextMenu(watchlistListView);
 
 		mWatchlistAdapter = new WatchlistAdapter(new ArrayList<Series>());
 		watchlistListView.setAdapter(mWatchlistAdapter);
@@ -82,7 +85,7 @@ public class WatchlistFragment extends Fragment{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		inflater.inflate(R.menu.watchlist_menu, menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){

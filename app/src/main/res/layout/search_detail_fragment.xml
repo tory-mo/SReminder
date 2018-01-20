@@ -26,10 +26,26 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/tvOriginalNameLabel"
+                    android:textColor="@color/text_secondary"
+                    android:paddingEnd="5dp"
+                    style="@style/OverviewTextViewStyle"
+                    android:text="@string/format_original_name"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvOriginalName"
+                    style="@style/OverviewTextViewStyle"
+                    android:layout_toEndOf="@id/tvOriginalNameLabel"
+                    android:text="@{searchResult.originalName}" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:id="@+id/tvOngoingLabel"
                     android:textColor="@color/text_secondary"
                     android:paddingEnd="5dp"
                     style="@style/OverviewTextViewStyle"
+                    android:layout_below="@id/tvOriginalName"
                     android:text="@string/format_ongoing"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -37,6 +53,7 @@
                     android:id="@+id/tvOngoing"
                     style="@style/OverviewTextViewStyle"
                     android:layout_toEndOf="@id/tvOngoingLabel"
+                    android:layout_below="@id/tvOriginalName"
                     android:text="@{searchResult.ongoing ? @string/format_ongoing_true : @string/format_ongoing_false}" />
                 <TextView
                     android:layout_width="wrap_content"

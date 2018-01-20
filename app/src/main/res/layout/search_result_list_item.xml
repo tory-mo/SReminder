@@ -8,13 +8,14 @@
                 <variable
                     name="handler"
                     type="android.view.View.OnClickListener"/>
+                <import type="java.lang.String"/>
         </data>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="128dp"
-            android:background="@color/text_primary"
             android:padding="5dp"
-            android:onClick="@{handler}">
+            android:onClick="@{handler}"
+            android:background="?attr/selectableItemBackground">
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
@@ -26,15 +27,15 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tvName"
                     android:paddingStart="5dp"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="@color/text_secondary"
                     android:layout_toEndOf="@+id/ivPoster"
                     style="@style/OverviewTextViewStyle"
                     android:text="@{searchResult.name}"/>
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="16sp"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     android:paddingStart="5dp"
                     android:ellipsize="end"
                     android:maxLines="4"
@@ -42,7 +43,9 @@
                     android:layout_toEndOf="@+id/ivPoster"
                     android:layout_below="@+id/tvName"
                     style="@style/OverviewTextViewStyle"
-                    android:text="@{searchResult.overview}"/>
+                    android:layout_alignParentBottom="true"
+                    android:gravity="bottom"
+                    android:text="@{searchResult.overview.length() > 140 ? searchResult.overview.substring(0, 140): searchResult.overview}"/>
         </RelativeLayout>
 </layout>
 

@@ -7,15 +7,19 @@
         <variable
             name="handler"
             type="android.view.View.OnClickListener"/>
+        <variable
+            name="longClickHandler"
+            type="android.view.View.OnCreateContextMenuListener"/>
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:padding="15dp"
         android:clickable="true"
         android:focusable="true"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{handler}">
+        android:onClick="@{handler}"
+        android:onCreateContextMenu="@{longClickHandler}">
         <TextView android:id="@+id/seriesNameWatchlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,6 +27,7 @@
             android:layout_alignBottom="@+id/watchlistCheckBox"
             android:layout_toStartOf="@+id/watchlistCheckBox"
             android:layout_alignParentStart="true"
+            android:maxLines="1"
             android:ellipsize="end"
             android:textColor="@color/text_secondary"
             style="@style/OverviewTextViewStyle"

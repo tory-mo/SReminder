@@ -14,23 +14,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 import sremind.torymo.by.BuildConfig;
 import sremind.torymo.by.RequestSingleton;
+import sremind.torymo.by.Utility;
 import sremind.torymo.by.data.SReminderDatabase;
 
 public class SeriesRequest {
 
-    static final String MOVIE_DB_URL = "http://api.themoviedb.org/3/tv";
-    static final String APPKEY_PARAM = "api_key";
+
 
     public static void getSeries(final Context context, final String id){
-        final String EXTERNAL_PARAM = "external_ids";
-        final String APPKEY_PARAM = "api_key";
 
-        Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
+
+        Uri builtUri = Uri.parse(Utility.MOVIE_DB_URL).buildUpon()
                 .appendPath(id)
-                .appendPath(EXTERNAL_PARAM)
-                .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                .appendPath(Utility.EXTERNAL_IDS_PARAM)
+                .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                 .build();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -41,10 +42,16 @@ public class SeriesRequest {
                         try {
                             String imdbId = response.getString("imdb_id");
                             if(imdbId == null) return;
+                            String currLanguage = Locale.getDefault().getLanguage();
+                            String needLang = Utility.LANGUAGE_EN;
+                            if(!currLanguage.equals(needLang)){
+                                needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
+                            }
 
-                            Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
+                            Uri builtUri = Uri.parse(Utility.MOVIE_DB_URL).buildUpon()
                                     .appendPath(id)
-                                    .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                                    .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                                    .appendQueryParameter(Utility.LANGUAGE_PARAM, needLang)
                                     .build();
                             JsonObjectRequest jsObjRequest = new JsonObjectRequest
                                     (Request.Method.GET, builtUri.toString(), null,

@@ -21,7 +21,7 @@ import sremind.torymo.by.data.Episode;
 
 public class EpisodeListAdapter extends RecyclerView.Adapter<EpisodeListAdapter.EpisodesViewHolder> implements View.OnClickListener{
 
-    static final SimpleDateFormat dateListFormat = new SimpleDateFormat("dd.MM.yyyy");
+    static final SimpleDateFormat dateListFormat = new SimpleDateFormat("dd MMMM yyyy");
     private List<Episode> dataSet = new ArrayList<>();
     private Context mContext;
 

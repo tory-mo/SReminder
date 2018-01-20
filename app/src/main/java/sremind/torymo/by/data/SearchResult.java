@@ -16,6 +16,9 @@ public class SearchResult {
     @ColumnInfo(name = "name")
     private String mName;
 
+    @ColumnInfo(name = "original_name")
+    private String mOriginalName;
+
     @ColumnInfo(name = "mdbid")
     private String mMdbId;
 
@@ -152,5 +155,13 @@ public class SearchResult {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getOriginalName() {
+        return mOriginalName;
+    }
+
+    public void setOriginalName(String mOriginalName) {
+        this.mOriginalName = mOriginalName;
     }
 }

@@ -33,6 +33,7 @@ public class SearchDetailFragment extends Fragment{
     private String mName = "";
     private String mImdbId = "";
     private String mPoster = "";
+    private String mOriginalName = "";
 
     SearchDetailViewModel.Factory factory;
     SearchDetailViewModel model;
@@ -86,6 +87,7 @@ public class SearchDetailFragment extends Fragment{
                 if(searchResult != null) {
                     mPoster = searchResult.getPoster();
                     mName = searchResult.getName();
+                    mOriginalName = searchResult.getOriginalName();
                     mImdbId = searchResult.getImdbId();
                     mShowMenu = (mImdbId != null);
                     changeMenuTitle(miOnlySeen);
@@ -137,7 +139,7 @@ public class SearchDetailFragment extends Fragment{
                         Toast.makeText(getActivity(), "Can't be added", Toast.LENGTH_LONG).show();
                         return true;
                     }
-                    Series s = new Series(mName, mImdbId, mdbId, mPoster, true);
+                    Series s = new Series(mName, mOriginalName, mImdbId, mdbId, mPoster, true);
                     SReminderDatabase.getAppDatabase(getActivity()).seriesDao().insert(s);
 
                     EpisodesJsonRequest.getEpisodes(this, getActivity(), mdbId, mImdbId);
