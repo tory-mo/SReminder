@@ -18,7 +18,7 @@ public interface SeriesDao {
     LiveData<List<Series>> getWatchlist();
 
     @Query("SELECT * FROM series WHERE imdbid like :imdbId limit 1")
-    LiveData<Series> getSeriesByImdbId(String imdbId);
+    Series getSeriesByImdbId(String imdbId);
 
     @Query("SELECT * FROM series WHERE mdbid like :mdbId limit 1")
     LiveData<Series> getSeriesByMdbId(String mdbId);

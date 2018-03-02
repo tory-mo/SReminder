@@ -23,56 +23,31 @@ import sremind.torymo.by.data.SReminderDatabase;
 
 public class SeriesRequest {
 
-
-
     public static void getSeries(final Context context, final String id){
-
+        String currLanguage = Locale.getDefault().getLanguage();
+        String needLang = Utility.LANGUAGE_EN;
+        if(!currLanguage.equals(needLang)){
+            needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
+        }
 
         Uri builtUri = Uri.parse(Utility.MOVIE_DB_URL).buildUpon()
                 .appendPath(id)
-                .appendPath(Utility.EXTERNAL_IDS_PARAM)
                 .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                .appendQueryParameter(Utility.LANGUAGE_PARAM, needLang)
+                .appendQueryParameter(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM)
                 .build();
-
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, builtUri.toString(), null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String imdbId = response.getString("imdb_id");
-                            if(imdbId == null) return;
-                            String currLanguage = Locale.getDefault().getLanguage();
-                            String needLang = Utility.LANGUAGE_EN;
-                            if(!currLanguage.equals(needLang)){
-                                needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
-                            }
-
-                            Uri builtUri = Uri.parse(Utility.MOVIE_DB_URL).buildUpon()
-                                    .appendPath(id)
-                                    .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
-                                    .appendQueryParameter(Utility.LANGUAGE_PARAM, needLang)
-                                    .build();
-                            JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                                    (Request.Method.GET, builtUri.toString(), null,
-                                            getSeries(context, id, imdbId),
-                                            errorListener(context));
-                            RequestSingleton.getInstance(context).addToRequestQueue(jsObjRequest);
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }, errorListener(context));
+                (Request.Method.GET, builtUri.toString(), null,
+                        getSeriesObject(context, id),
+                        errorListener(context));
         RequestSingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
-    private static Response.Listener<JSONObject> getSeries(final Context context, final String id, final String imdbId){
+    private static Response.Listener<JSONObject> getSeriesObject(final Context context, final String id){
         return new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
                 try {
-
-
                     JSONArray genres = response.getJSONArray("genres");
                     String genresStr = genres.getJSONObject(0).getString("name");
                     for(int i = 1; i<genres.length(); i++){
@@ -89,7 +64,7 @@ public class SeriesRequest {
                         episodeTime = episodeTime.concat(","+times[i].replaceAll("[^\\d.]", ""));
                     }
                     SReminderDatabase.getAppDatabase(context).searchResultDao().update(Integer.parseInt(id),
-                            imdbId,
+                            response.getJSONObject("external_ids").getString("imdb_id"),
                             response.getString("homepage"),
                             genresStr,
                             response.getBoolean("in_production"),

@@ -27,47 +27,26 @@ public class SeriesDetailsRequest {
 
 
     public static void getDetails(final Context context, final String id){
-
+        String currLanguage = Locale.getDefault().getLanguage();
+        String needLang = Utility.LANGUAGE_EN;
+        if(!currLanguage.equals(needLang)){
+            needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
+        }
 
         Uri builtUri = Uri.parse(Utility.MOVIE_DB_URL).buildUpon()
                 .appendPath(id)
-                .appendPath(Utility.EXTERNAL_IDS_PARAM)
                 .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                .appendQueryParameter(Utility.LANGUAGE_PARAM, needLang)
+                .appendQueryParameter(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM)
                 .build();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, builtUri.toString(), null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String imdbId = response.getString("imdb_id");
-                            if(imdbId == null) return;
-
-                            String currLanguage = Locale.getDefault().getLanguage();
-                            String needLang = Utility.LANGUAGE_EN;
-                            if(!currLanguage.equals(needLang)){
-                                needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
-                            }
-
-                            Uri builtUri = Uri.parse(Utility.MOVIE_DB_URL).buildUpon()
-                                    .appendPath(id)
-                                    .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
-                                    .appendQueryParameter(Utility.LANGUAGE_PARAM, needLang)
-                                    .build();
-                            JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                                    (Request.Method.GET, builtUri.toString(), null,
-                                            getDetailsResponse(context, imdbId),
-                                            errorListener(context));
-                            RequestSingleton.getInstance(context).addToRequestQueue(jsObjRequest);
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }, errorListener(context));
+                (Request.Method.GET, builtUri.toString(), null,
+                        getDetailsResponse(context),
+                        errorListener(context));
         RequestSingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
-    private static Response.Listener<JSONObject> getDetailsResponse(final Context context, final String imdbId){
+    private static Response.Listener<JSONObject> getDetailsResponse(final Context context){
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -102,7 +81,7 @@ public class SeriesDetailsRequest {
                     }
 
                     SearchResult sr = new SearchResult();
-                    sr.setImdbId(imdbId);
+                    sr.setImdbId(response.getJSONObject("external_ids").getString("imdb_id"));
                     sr.setHomepage(response.getString("homepage"));
                     sr.setOngoing(response.getBoolean("in_production"));
                     sr.setSeasons(response.getInt("number_of_seasons"));

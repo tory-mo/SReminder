@@ -20,7 +20,8 @@
     <string name="action_search">Search</string>
 	<string name="slist_updated">Series list is updated</string>
 	<string name="episodes_deleted">Episodes are deleted</string>
-	<string name="are_updated">\u0020are updated</string>
+	<string name="are_updated">%1$d episodes are updated. %2$d out of %3$d series updating</string>
+	<string name="are_updated_short">%1$d episodes are updated</string>
 
 	<string name="DELETE">Delete</string>
 	<string name="OK">Ok</string>
@@ -30,7 +31,7 @@
 	<string name="delete_series_title">Delete series</string>
 	<string name="add_episode_title">Add episode</string>
 
-	<string name="format_episode_number" translatable="true">episode %1$s, season %2$s</string>
+	<string name="format_episode_number" translatable="true">episode %1$d, season %2$d</string>
 
 	<string name="format_first_date" translatable="true">First date:</string>
 	<string name="format_seasons" translatable="true">Seasons:</string>

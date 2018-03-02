@@ -120,7 +120,7 @@ public class EpisodeListAdapter extends RecyclerView.Adapter<EpisodeListAdapter.
             viewHolder.ivSeen.setImageResource(R.drawable.eye_off);
         }
 
-        viewHolder.tvEpisodeInfo.setText(ep.getNumber());
+        viewHolder.tvEpisodeInfo.setText(mContext.getString(R.string.format_episode_number, ep.getNumber(), ep.getSeasonNumber()));
 
         if(date != null){
             String dateStr = dateListFormat.format(date);

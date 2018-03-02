@@ -101,7 +101,14 @@ public class WatchlistFragment extends Fragment{
 	private void changeWatchlist(String imdbId, String mdbId, boolean watchlist){
 		SReminderDatabase.getAppDatabase(getActivity()).seriesDao().setWatchlist(imdbId, watchlist);
 		if(watchlist){
-			EpisodesJsonRequest.getEpisodes(this, getActivity(), mdbId, imdbId);
+			EpisodesJsonRequest request = new EpisodesJsonRequest(getActivity());
+			request.setOnEpisodesLoadedListener(new EpisodesJsonRequest.OnEpisodesLoadedListener() {
+				@Override
+				public void onEpisodesLoaded(int count, int activeRequests) {
+					Toast.makeText(getActivity(), getString(R.string.are_updated_short, count), Toast.LENGTH_SHORT).show();
+				}
+			});
+			request.getEpisodes(mdbId, imdbId);
 		}else{
 			SReminderDatabase.getAppDatabase(getActivity()).episodeDao().delete(imdbId);
 			Toast.makeText(getActivity(), R.string.episodes_deleted, Toast.LENGTH_SHORT).show();

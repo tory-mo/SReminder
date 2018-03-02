@@ -1,9 +1,6 @@
 package sremind.torymo.by;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -51,30 +48,24 @@ public class EpisodeListActivity extends AppCompatActivity{
             arguments = new Bundle();
             arguments.putString(EpisodeListFragment.EPISODE_LIST_URI, imdbid);
 
-            LiveData<Series> series = SReminderDatabase.getAppDatabase(this).seriesDao().getSeriesByImdbId(imdbid);
-            series.observe(this, new Observer<Series>() {
-                @Override
-                public void onChanged(@Nullable Series series) {
-                    if(series != null){
-                        getSupportActionBar().setTitle("");
-                        TextView tv = findViewById(R.id.tvSeriesName);
-                        TextView tv1 = findViewById(R.id.tvSeriesOriginalName);
-                        tv.setText(series.getName());
-                        tv1.setText(series.getOriginalName());
+            Series series = SReminderDatabase.getAppDatabase(this).seriesDao().getSeriesByImdbId(imdbid);
+            if(series != null){
+                getSupportActionBar().setTitle("");
+                TextView tv = findViewById(R.id.tvSeriesName);
+                TextView tv1 = findViewById(R.id.tvSeriesOriginalName);
+                tv.setText(series.getName());
+                tv1.setText(series.getOriginalName());
 
-                        if(sdf != null)
-                            sdf.refresh(series.getMdbId());
-                        else
-                            arguments.putString(SearchDetailFragment.SEARCH_DETAIL_URI, series.getMdbId());
+                if(sdf != null)
+                    sdf.refresh(series.getMdbId());
+                else
+                    arguments.putString(SearchDetailFragment.SEARCH_DETAIL_URI, series.getMdbId());
 
-                        Picasso.with(getBaseContext())
-                                .load(series.getPoster())
-                                .error(R.drawable.no_photo)
-                                .into(imageView, callBack);
-                    }
-                }
-            });
-
+                Picasso.with(getBaseContext())
+                        .load(series.getPoster())
+                        .error(R.drawable.no_photo)
+                        .into(imageView, callBack);
+            }
         }
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);

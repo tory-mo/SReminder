@@ -1,6 +1,7 @@
 package sremind.torymo.by.adapters;
 
 import android.content.Context;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +37,22 @@ public class EpisodesForDateAdapter extends RecyclerView.Adapter<EpisodesForDate
     }
 
     public void addItem(String[] newItem){
-        dataSet.add(newItem);
-        notifyDataSetChanged();
+        if(dataSet.size() == 0) {
+            dataSet.add(newItem);
+            notifyDataSetChanged();
+        }else {
+            int i = 0;
+            for(String[] item : dataSet){
+                if(item[0].equals(newItem[0]) && item[1].equals(newItem[1]) && item[2].equals(newItem[2]) && item[3].equals(newItem[3])){
+                    break;
+                }
+                i++;
+            }
+            if(i == dataSet.size()) {
+                dataSet.add(newItem);
+                notifyDataSetChanged();
+            }
+        }
     }
 
     @Override
@@ -53,7 +68,7 @@ public class EpisodesForDateAdapter extends RecyclerView.Adapter<EpisodesForDate
     public void onBindViewHolder(EpisodesForDateViewHolder viewHolder, int position) {
         String[] ep = dataSet.get(position);
 
-        viewHolder.tvDate.setText(ep[0]);
+        viewHolder.tvDate.setText(mContext.getString(R.string.format_episode_number, Integer.parseInt(ep[0]), Integer.parseInt(ep[4])));
         viewHolder.tvEpisodeInfo.setText(ep[3]);
         viewHolder.tvName.setText(ep[1]);
 

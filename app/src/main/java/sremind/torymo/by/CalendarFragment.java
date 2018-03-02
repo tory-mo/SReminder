@@ -1,21 +1,28 @@
 package sremind.torymo.by;
 
+import android.app.Activity;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +57,9 @@ public class CalendarFragment extends Fragment{
     TextView tvToday;
     EpisodesForDateAdapter episodesForDateAdapter;
     CalendarView cvCalendar;
+    ProgressBar pbSeriesUpdateProgress;
+    TextView tvProgress;
+    LinearLayout llUpdateProgress;
 
 
     @Override
@@ -65,6 +75,9 @@ public class CalendarFragment extends Fragment{
 
         month = Calendar.getInstance();
 
+        llUpdateProgress = rootView.findViewById(R.id.llUpdateProgress);
+        tvProgress = rootView.findViewById(R.id.tvProgress);
+        pbSeriesUpdateProgress = rootView.findViewById(R.id.pbSeriesUpdateProgress);
         lvEpisodesForDay = rootView.findViewById(R.id.lvEpisodesForDay);
         lvEpisodesForDay.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         tvToday = rootView.findViewById(R.id.tvToday);
@@ -135,22 +148,50 @@ public class CalendarFragment extends Fragment{
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.action_update_episodes:
+                episodesForDateAdapter.clearItems();
                 LiveData<List<Series>> series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getWatchlist();
                 series.observe(this, new Observer<List<Series>>() {
 
                     @Override
-                    public void onChanged(@Nullable List<Series> series) {
-                        if(series != null && !series.isEmpty()){
-                            for (Series s: series) {
-                                EpisodesJsonRequest.getEpisodes(getTargetFragment(), getActivity(), s.getMdbId(), s.getImdbId());
+                    public void onChanged(@Nullable final List<Series> series) {
+                        if(series == null) return;
+                        final int seriesSize = series.size();
+                        llUpdateProgress.setVisibility(View.VISIBLE);
+                        pbSeriesUpdateProgress.setProgress(0);
+                        pbSeriesUpdateProgress.setMax(seriesSize);
+                        final Context ctx = getActivity();
+                        new Thread() {
+                            public void run() {
+
+                                EpisodesJsonRequest request = new EpisodesJsonRequest(getActivity());
+                                request.setOnEpisodesLoadedListener(new EpisodesJsonRequest.OnEpisodesLoadedListener() {
+                                    @Override
+                                    public void onEpisodesLoaded(final int count, final int activeRequests) {
+                                        ((Activity) ctx).runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                tvProgress.setText(getString(R.string.are_updated, count, activeRequests, seriesSize));
+                                                pbSeriesUpdateProgress.setProgress(seriesSize - activeRequests);
+                                            }
+
+                                        });
+
+                                        Log.d("progress111", getString(R.string.are_updated, count, activeRequests, seriesSize) + " - " + new Date().toString());
+                                    }
+                                });
+                                if(!series.isEmpty()){
+                                    for (Series s: series) {
+                                        request.getEpisodes(s.getMdbId(), s.getImdbId());
+                                    }
+                                }
                             }
-                        }
-                        Toast.makeText(getActivity(), R.string.slist_updated, Toast.LENGTH_SHORT).show();
+                        }.start();
+
                     }
                 });
 
                 return true;
             case R.id.action_only_seen:
+                episodesForDateAdapter.clearItems();
                 Utility.changeSeenParam(getActivity());
                 changeSeenTitle(item);
                 Date[] startEnd = cvCalendar.getCurrentMonthStartEnd();
@@ -229,44 +270,31 @@ public class CalendarFragment extends Fragment{
             tvToday.setText(Utility.dateToStrFormat.format(touchedDate));
         }
 
-        LiveData<List<Episode>> episodes;
+        List<Episode> episodes;
         if(Utility.getSeenParam(getActivity())){
             episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getNotSeenEpisodesForDate(touchedDate.getTime());
         }else {
             episodes = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesForDate(touchedDate.getTime());
         }
-        final LifecycleOwner lifecycleOwner = this;
-
-        episodes.observe(this, new Observer<List<Episode>>() {
-            @Override
-            public void onChanged(@Nullable List<Episode> episodes) {
-
-                episodesForDateAdapter.clearItems();
-                if(episodes != null && !episodes.isEmpty()){
-                    for (final Episode ep: episodes) {
-                        LiveData<Series> s = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getSeriesByImdbId(ep.getSeries());
-                        s.observe(lifecycleOwner, new Observer<Series>() {
-                            @Override
-                            public void onChanged(@Nullable Series series) {
-                                String[] hm;
-                                hm = new String[4];
-                                hm[0] = ep.getNumber();
-                                hm[1] = ep.getName();
-                                hm[2] = String.valueOf(ep.isSeen());
-                                hm[3] = series.getName();
-                                episodesForDateAdapter.addItem(hm);
-                                episodesForDateAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    }
-                }
+        episodesForDateAdapter.clearItems();
+        if(episodes != null && !episodes.isEmpty()){
+            for (final Episode ep: episodes) {
+                Series series = SReminderDatabase.getAppDatabase(getActivity()).seriesDao().getSeriesByImdbId(ep.getSeries());
+                String[] hm;
+                hm = new String[5];
+                hm[0] = String.valueOf(ep.getNumber());
+                hm[1] = ep.getName();
+                hm[2] = String.valueOf(ep.isSeen());
+                hm[3] = series.getName();
+                hm[4] = String.valueOf(ep.getSeasonNumber());
+                episodesForDateAdapter.addItem(hm);
             }
-        });
-
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        llUpdateProgress.setVisibility(View.GONE);
     }
 }

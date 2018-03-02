@@ -19,7 +19,8 @@
     <string name="action_search">Поиск</string>
 	<string name="slist_updated">Список сериалов обновлен</string>
 	<string name="episodes_deleted">Серии удалены</string>
-	<string name="are_updated">\u0020обновлено</string>
+	<string name="are_updated">%1$d серий обновлено. %2$d из %3$d сериалов осталось</string>
+	<string name="are_updated_short">%1$d серий обновлено</string>
 
 	<string name="DELETE">Удалить</string>
 	<string name="OK">Ok</string>
@@ -28,7 +29,7 @@
 	<string name="delete_series_title">Удалить сериал</string>
 	<string name="add_episode_title">Добавить серию</string>
 
-	<string name="format_episode_number" translatable="true">серия %1$s, сезон %2$s</string>
+	<string name="format_episode_number" translatable="true">серия %1$d, сезон %2$d</string>
 
 	<string name="format_first_date" translatable="true">Первый выпуск:</string>
 	<string name="format_seasons" translatable="true">Cезонов:</string>

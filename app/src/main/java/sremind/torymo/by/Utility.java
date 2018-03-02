@@ -20,6 +20,7 @@ public class Utility {
     public final static String SEASON_PATH = "season";
     public final static String IMDB_VALUE = "imdb_id";
     public final static String QUERY = "query";
+    public final static String APPEND_TO_RESPONSE = "append_to_response";
 
     public static final SimpleDateFormat dateToStrFormat = new SimpleDateFormat("dd MMMM yyyy");
 

@@ -27,25 +27,30 @@ public class Episode {
     private String mSeries;
 
     @ColumnInfo(name = "ep_number")
-    private String mNumber;
+    private long mNumber;
+
+    @ColumnInfo(name = "s_number")
+    private long mSeasonNumber;
 
     @ColumnInfo(name = "seen")
     private boolean mSeen = false;
 
-    public Episode(String mName, long mDate, String mSeries, String mNumber, boolean mSeen) {
+    public Episode(String mName, long mDate, String mSeries, long mNumber, long mSeasonNumber, boolean mSeen) {
         this.mName = mName;
         this.mDate = mDate;
         this.mSeries = mSeries;
         this.mNumber = mNumber;
+        this.mSeasonNumber = mSeasonNumber;
         this.mSeen = mSeen;
     }
 
     @Ignore
-    public Episode(String mName, long mDate, String mSeries, String mNumber) {
+    public Episode(String mName, long mDate, String mSeries, long mNumber, long mSeasonNumber) {
         this.mName = mName;
         this.mDate = mDate;
         this.mSeries = mSeries;
         this.mNumber = mNumber;
+        this.mSeasonNumber = mSeasonNumber;
     }
 
     public int getId(){return id;};
@@ -74,11 +79,11 @@ public class Episode {
         this.mSeries = mSeries;
     }
 
-    public String getNumber() {
+    public long getNumber() {
         return mNumber;
     }
 
-    public void setNumber(String mNumber) {
+    public void setNumber(int mNumber) {
         this.mNumber = mNumber;
     }
 
@@ -92,5 +97,13 @@ public class Episode {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public long getSeasonNumber() {
+        return mSeasonNumber;
+    }
+
+    public void setSeasonNumber(int mSeasonNumber) {
+        this.mSeasonNumber = mSeasonNumber;
     }
 }

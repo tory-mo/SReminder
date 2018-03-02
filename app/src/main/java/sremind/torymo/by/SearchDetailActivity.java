@@ -39,7 +39,7 @@ public class SearchDetailActivity extends AppCompatActivity {
 
             String mdbId = getIntent().getStringExtra(SearchDetailFragment.SEARCH_DETAIL_URI);
 
-            getImdbId(mdbId);
+            getData(mdbId);
 
             Bundle arguments = new Bundle();
             arguments.putString(SearchDetailFragment.SEARCH_DETAIL_URI, mdbId);
@@ -61,7 +61,7 @@ public class SearchDetailActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(0f);
     }
 
-    private void getElements(JSONObject obj, String imdbId){
+    private void getElements(JSONObject obj){
         try {
             JSONArray genres = obj.getJSONArray("genres");
             String genresStr = genres.getJSONObject(0).getString("name");
@@ -93,7 +93,7 @@ public class SearchDetailActivity extends AppCompatActivity {
             }
 
             SearchResult sr = new SearchResult();
-            sr.setImdbId(imdbId);
+            sr.setImdbId(obj.getJSONObject("external_ids").getString("imdb_id"));
             sr.setHomepage(obj.getString("homepage"));
             sr.setOngoing(obj.getBoolean("in_production"));
             sr.setSeasons(obj.getInt("number_of_seasons"));
@@ -115,47 +115,14 @@ public class SearchDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void getImdbId(final String id){
 
-        final String EXTERNAL_PARAM = "external_ids";
-        final String APPKEY_PARAM = "api_key";
-
-        Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
-                .appendPath(id)
-                .appendPath(EXTERNAL_PARAM)
-                .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
-                .build();
-
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, builtUri.toString(), null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response){
-                        try {
-                            getData(id, response.getString("imdb_id"));
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-
-                    }
-                });
-
-        RequestSingleton.getInstance(this).addToRequestQueue(jsObjRequest);
-
-    }
-
-    public void getData(String mdbId, final String imdbId){
+    public void getData(String mdbId){
         final String APPKEY_PARAM = "api_key";
 
         Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
                 .appendPath(mdbId)
                 .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                .appendQueryParameter(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM)
                 .build();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -163,7 +130,7 @@ public class SearchDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response){
-                        getElements(response, imdbId);
+                        getElements(response);
                     }
                 }, new Response.ErrorListener() {
 

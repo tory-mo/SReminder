@@ -79,7 +79,6 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                 }
 
                 Uri builtUri = Uri.parse(Utility.SEARCH_MOVIE_DB_URL).buildUpon()
-                        .appendQueryParameter(Utility.EXTERNAL_SOURCE_PARAM, Utility.IMDB_VALUE)
                         .appendQueryParameter(Utility.QUERY, query)
                         .appendQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                         .appendQueryParameter(Utility.LANGUAGE_PARAM, needLang)

@@ -23,7 +23,6 @@ public class Series {
     @ColumnInfo(name = "imdbid")
     private String mImdbId;
 
-
     @ColumnInfo(name = "mdbid")
     private String mMdbId;
 

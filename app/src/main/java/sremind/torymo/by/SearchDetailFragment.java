@@ -142,7 +142,14 @@ public class SearchDetailFragment extends Fragment{
                     Series s = new Series(mName, mOriginalName, mImdbId, mdbId, mPoster, true);
                     SReminderDatabase.getAppDatabase(getActivity()).seriesDao().insert(s);
 
-                    EpisodesJsonRequest.getEpisodes(this, getActivity(), mdbId, mImdbId);
+                    EpisodesJsonRequest request = new EpisodesJsonRequest(getActivity());
+                    request.setOnEpisodesLoadedListener(new EpisodesJsonRequest.OnEpisodesLoadedListener() {
+                        @Override
+                        public void onEpisodesLoaded(int count, int activeRequests) {
+                            Toast.makeText(getActivity(), getString(R.string.are_updated_short, count), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    request.getEpisodes(mdbId, mImdbId);
                 }
                 mInList = !mInList;
                 changeMenuTitle(item);
