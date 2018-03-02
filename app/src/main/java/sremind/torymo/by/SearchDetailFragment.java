@@ -15,11 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import sremind.torymo.by.data.MdbSearchResultResponse;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.SearchResult;
 import sremind.torymo.by.data.Series;
 import sremind.torymo.by.databinding.SearchDetailFragmentBinding;
 import sremind.torymo.by.service.EpisodesJsonRequest;
+import sremind.torymo.by.service.MDBService;
 import sremind.torymo.by.service.SeriesDetailsRequest;
 import sremind.torymo.by.service.SeriesRequest;
 import sremind.torymo.by.viewmodel.SearchDetailViewModel;
@@ -64,10 +73,26 @@ public class SearchDetailFragment extends Fragment{
 
     public void refresh(String mdbId){
         if(mdbId == null) return;
-        if(getActivity().getClass().equals(SearchActivity.class)) {
-            SeriesRequest.getSeries(getActivity(), mdbId);
-        }else{
-            SeriesDetailsRequest.getDetails(getActivity(), mdbId);
+        HashMap<String, String> params = new HashMap<>();
+        String currLanguage = Locale.getDefault().getLanguage();
+        String needLang = Utility.LANGUAGE_EN;
+        if(!currLanguage.equals(needLang)){
+            needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
+        }
+
+        params.put(Utility.LANGUAGE_PARAM, needLang);
+        params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
+        params.put(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY);
+        try {
+            if (getActivity().getClass().equals(SearchActivity.class)) {
+                //SeriesRequest.getSeries(getActivity(), mdbId);
+                List<Series> seriesList = SRemindApp.getMdbService().getSeries(mdbId, params).execute().body();
+            } else {
+                //SeriesDetailsRequest.getDetails(getActivity(), mdbId);
+                MdbSearchResultResponse seriesList = SRemindApp.getMdbService().getSeriesDetails(mdbId, params).execute().body();
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
         }
         reQueryData(mdbId);
     }

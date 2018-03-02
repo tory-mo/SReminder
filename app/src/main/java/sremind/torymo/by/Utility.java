@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 public class Utility {
 
     //the moviedb paths
+    public final static String BASE_URL = "http://api.themoviedb.org/";
     public final static String MOVIE_DB_URL = "http://api.themoviedb.org/3/tv";
     public final static String SEARCH_MOVIE_DB_URL = "http://api.themoviedb.org/3/search/tv";
     public final static String POSTER_PATH = "http://image.tmdb.org/t/p/w300/";

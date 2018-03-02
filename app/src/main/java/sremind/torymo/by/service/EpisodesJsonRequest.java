@@ -113,7 +113,7 @@ public class EpisodesJsonRequest{
                         String dateStr = episode.getString(AIR_DATE);
                         String nameStr = episode.getString(EPISODE_NAME);
                         if(!dateStr.equals("null"))
-                            addUpdateEpisode(context, dateStr,imdbId, episode.getInt(EPISODE_NUMBER), seasons,nameStr);
+                            addUpdateEpisode(context, dateStr, imdbId, episode.getInt(EPISODE_NUMBER), seasons,nameStr);
                     }
                     if(listener != null) listener.onEpisodesLoaded(tvResultsJson.length(), requestsCount);
                 }catch (Exception e){
