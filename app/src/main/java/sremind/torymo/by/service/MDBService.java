@@ -7,9 +7,10 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
+import sremind.torymo.by.response.MdbEpisodesResponse;
+import sremind.torymo.by.response.SeriesResponseResult;
 import sremind.torymo.by.data.Episode;
-import sremind.torymo.by.data.MdbSearchResultResponse;
-import sremind.torymo.by.data.SearchResult;
+import sremind.torymo.by.response.MdbSearchResultResponse;
 import sremind.torymo.by.data.Series;
 
 public interface MDBService {
@@ -20,7 +21,7 @@ public interface MDBService {
         http://api.themoviedb.org/3/tv/1403?api_key=6ad01c833dba757c5132002b79e99751 - to get season number
      */
     @GET("/3/tv/{mdbId}")
-    Call<List<Series>> getSeries(@Path("mdbId") String mdbId, @QueryMap Map<String, String> map);
+    Call<SeriesResponseResult> getSeries(@Path("mdbId") String mdbId, @QueryMap Map<String, String> map);
 
     /*
         http://api.themoviedb.org/3/tv/57243?api_key=6ad01c833dba757c5132002b79e99751&append_to_response=external_ids
@@ -29,13 +30,13 @@ public interface MDBService {
         http://api.themoviedb.org/3/tv/1403?api_key=6ad01c833dba757c5132002b79e99751 - to get season number
      */
     @GET("/3/tv/{mdbId}")
-    Call<MdbSearchResultResponse> getSeriesDetails(@Path("mdbId") String mdbId, @QueryMap Map<String, String> map);
+    Call<SeriesResponseResult> getSeriesDetails(@Path("mdbId") String mdbId, @QueryMap Map<String, String> map);
 
     /*
         http://api.themoviedb.org/3/tv/1403/season/5?api_key=6ad01c833dba757c5132002b79e99751&language=ru-en - episodes for a season
     */
     @GET("/3/tv/{mdbId}/season/{season_number}")
-    Call<List<Episode>> getEpisodes(@Path("mdbId") String mdbId, @Path("season_number") String season_number, @QueryMap Map<String, String> map);
+    Call<MdbEpisodesResponse> getEpisodes(@Path("mdbId") String mdbId, @Path("season_number") int season_number, @QueryMap Map<String, String> map);
 
     /*
         http://api.themoviedb.org/3/search/tv?query=%D0%B4%D0%BE%D0%BA%D1%82%D0%BE%D1%80&api_key=6ad01c833dba757c5132002b79e99751&language=ru-en

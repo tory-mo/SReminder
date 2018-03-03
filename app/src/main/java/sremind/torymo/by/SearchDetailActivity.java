@@ -3,31 +3,21 @@ package sremind.torymo.by;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.SearchResult;
+import sremind.torymo.by.response.SeriesResponseResult;
 
 public class SearchDetailActivity extends AppCompatActivity {
-
-    final String MOVIE_DB_URL = "http://api.themoviedb.org/3/tv";
-    final String POSTER_PATH = "http://image.tmdb.org/t/p/w300/";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,86 +51,35 @@ public class SearchDetailActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(0f);
     }
 
-    private void getElements(JSONObject obj){
-        try {
-            JSONArray genres = obj.getJSONArray("genres");
-            String genresStr = genres.getJSONObject(0).getString("name");
-            for(int i = 1; i<genres.length(); i++){
-                genresStr = genresStr.concat(", " + genres.getJSONObject(i).getString("name"));
-            }
-
-            String overview = obj.getString("overview");
-            if(overview == null)
-                overview = "";
-            String episodeTime = obj.getString("episode_run_time");
-            String[] times = episodeTime.split(",");
-            episodeTime = times[0].replaceAll("[^\\d.]", "");
-            for(int i = 1; i<times.length; i++){
-                episodeTime = episodeTime.concat(","+times[i].replaceAll("[^\\d.]", ""));
-            }
-
-            String firstDate = obj.getString("first_air_date");
-            Date date;
-            try {
-                if (firstDate.contains("."))
-                    date = new SimpleDateFormat("dd MMM. yyyy", Locale.ENGLISH).parse(firstDate);
-                else if (firstDate.contains("-")) {
-                    date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(firstDate);
-                } else
-                    date = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).parse(firstDate);
-            }catch(Exception ex){
-                date = null;
-            }
-
-            SearchResult sr = new SearchResult();
-            sr.setImdbId(obj.getJSONObject("external_ids").getString("imdb_id"));
-            sr.setHomepage(obj.getString("homepage"));
-            sr.setOngoing(obj.getBoolean("in_production"));
-            sr.setSeasons(obj.getInt("number_of_seasons"));
-            sr.setMdbId(obj.getString("id"));
-            sr.setPoster(POSTER_PATH+obj.getString("poster_path"));
-            sr.setName(obj.getString("name"));
-            sr.setPopularity((float) obj.getDouble("popularity"));
-            sr.setGenres(genresStr);
-            sr.setOverview(overview);
-            sr.setEpisodeTime(episodeTime);
-            sr.setFirstDate(date.getTime());
-
-            SReminderDatabase.getAppDatabase(this).searchResultDao().insert(sr);
-
-            SearchDetailFragment sdf = (SearchDetailFragment)getSupportFragmentManager().findFragmentById(R.id.search_detail_fragment);
-            sdf.refresh(sr.getMdbId());
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-    }
-
-
     public void getData(String mdbId){
-        final String APPKEY_PARAM = "api_key";
+        String currLanguage = Locale.getDefault().getLanguage();
+        String needLang = Utility.LANGUAGE_EN;
+        if(!currLanguage.equals(needLang)){
+            needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
+        }
 
-        Uri builtUri = Uri.parse(MOVIE_DB_URL).buildUpon()
-                .appendPath(mdbId)
-                .appendQueryParameter(APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
-                .appendQueryParameter(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM)
-                .build();
+        HashMap<String, String> params = new HashMap<>();
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, builtUri.toString(), null, new Response.Listener<JSONObject>() {
+        params.put(Utility.LANGUAGE_PARAM, needLang);
+        params.put(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY);
+        params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
 
-                    @Override
-                    public void onResponse(JSONObject response){
-                        getElements(response);
-                    }
-                }, new Response.ErrorListener() {
+        SRemindApp.getMdbService().getSeriesDetails(mdbId, params).enqueue(new Callback<SeriesResponseResult>() {
+            @Override
+            public void onResponse(Call<SeriesResponseResult> call, retrofit2.Response<SeriesResponseResult> response) {
+                SearchResult sr = SeriesResponseResult.seriesToSearchResult(response.body());
+                if(sr != null){
+                    SReminderDatabase.getAppDatabase(SearchDetailActivity.this).searchResultDao().insert(sr);
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
+                    SearchDetailFragment sdf = (SearchDetailFragment)getSupportFragmentManager().findFragmentById(R.id.search_detail_fragment);
+                    sdf.refresh(sr.getMdbId());
+                }
+            }
 
-                    }
-                });
-
-        RequestSingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+            @Override
+            public void onFailure(Call<SeriesResponseResult> call, Throwable t) {
+                Log.e(SearchDetailActivity.class.toString(), t.getMessage());
+            }
+        });
     }
 }

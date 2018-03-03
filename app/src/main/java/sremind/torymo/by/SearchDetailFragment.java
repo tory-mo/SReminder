@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,22 +16,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Locale;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import sremind.torymo.by.data.MdbSearchResultResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import sremind.torymo.by.data.Episode;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.SearchResult;
 import sremind.torymo.by.data.Series;
 import sremind.torymo.by.databinding.SearchDetailFragmentBinding;
-import sremind.torymo.by.service.EpisodesJsonRequest;
-import sremind.torymo.by.service.MDBService;
-import sremind.torymo.by.service.SeriesDetailsRequest;
-import sremind.torymo.by.service.SeriesRequest;
+import sremind.torymo.by.response.EpisodesResponseResult;
+import sremind.torymo.by.response.MdbEpisodesResponse;
+import sremind.torymo.by.response.SeriesResponseResult;
 import sremind.torymo.by.viewmodel.SearchDetailViewModel;
 
 public class SearchDetailFragment extends Fragment{
@@ -43,6 +45,7 @@ public class SearchDetailFragment extends Fragment{
     private String mImdbId = "";
     private String mPoster = "";
     private String mOriginalName = "";
+    private int mSeasons = 0;
 
     SearchDetailViewModel.Factory factory;
     SearchDetailViewModel model;
@@ -83,17 +86,56 @@ public class SearchDetailFragment extends Fragment{
         params.put(Utility.LANGUAGE_PARAM, needLang);
         params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
         params.put(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY);
-        try {
             if (getActivity().getClass().equals(SearchActivity.class)) {
-                //SeriesRequest.getSeries(getActivity(), mdbId);
-                List<Series> seriesList = SRemindApp.getMdbService().getSeries(mdbId, params).execute().body();
+               SRemindApp.getMdbService().getSeries(mdbId, params).enqueue(new Callback<SeriesResponseResult>() {
+                    @Override
+                    public void onResponse(Call<SeriesResponseResult> call, Response<SeriesResponseResult> response) {
+                        SeriesResponseResult series = response.body();
+                        String genresStr = "";
+                        for(int i = 1; i<series.getGenres().size(); i++){
+                            genresStr = genresStr.concat(", " + series.getGenres().get(i).name);
+                        }
+
+        //            String overview = series.getOverview();
+        //            if(overview == null)
+        //                overview = "";
+                        String episodeTime = "";
+                        for(int i = 1; i<series.getEpisodeTime().length; i++){
+                            episodeTime = episodeTime.concat("," + series.getEpisodeTime()[i]);
+                        }
+                        SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().update(Integer.parseInt(series.getMdbId()),
+                                series.getExternalIds().imdb_id,
+                                series.getHomepage(),
+                                genresStr,
+                                series.isOngoing(),
+                                series.getSeasons(),
+                                series.getOverview(),
+                                episodeTime);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<SeriesResponseResult> call, Throwable t) {
+                        Log.e(SearchDetailFragment.class.getName() + "from " + getActivity().getClass(), t.getMessage());
+                    }
+                });
             } else {
-                //SeriesDetailsRequest.getDetails(getActivity(), mdbId);
-                MdbSearchResultResponse seriesList = SRemindApp.getMdbService().getSeriesDetails(mdbId, params).execute().body();
+                SRemindApp.getMdbService().getSeriesDetails(mdbId, params).enqueue(new Callback<SeriesResponseResult>() {
+                    @Override
+                    public void onResponse(Call<SeriesResponseResult> call, Response<SeriesResponseResult> response) {
+                        SeriesResponseResult series = response.body();
+                        SearchResult sr = SeriesResponseResult.seriesToSearchResult(series);
+                        if(sr != null)
+                            SReminderDatabase.getAppDatabase(getActivity()).searchResultDao().insert(sr);
+                    }
+
+                    @Override
+                    public void onFailure(Call<SeriesResponseResult> call, Throwable t) {
+                        Log.e(SearchDetailFragment.class.getName() + "from " + getActivity().getClass(), t.getMessage());
+                    }
+                });
             }
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
+
         reQueryData(mdbId);
     }
 
@@ -114,6 +156,7 @@ public class SearchDetailFragment extends Fragment{
                     mName = searchResult.getName();
                     mOriginalName = searchResult.getOriginalName();
                     mImdbId = searchResult.getImdbId();
+                    mSeasons = searchResult.getSeasons();
                     mShowMenu = (mImdbId != null);
                     changeMenuTitle(miOnlySeen);
                 }
@@ -164,17 +207,54 @@ public class SearchDetailFragment extends Fragment{
                         Toast.makeText(getActivity(), "Can't be added", Toast.LENGTH_LONG).show();
                         return true;
                     }
-                    Series s = new Series(mName, mOriginalName, mImdbId, mdbId, mPoster, true);
+                    final Series s = new Series(mName, mOriginalName, mImdbId, mdbId, mPoster, true);
                     SReminderDatabase.getAppDatabase(getActivity()).seriesDao().insert(s);
 
-                    EpisodesJsonRequest request = new EpisodesJsonRequest(getActivity());
-                    request.setOnEpisodesLoadedListener(new EpisodesJsonRequest.OnEpisodesLoadedListener() {
+                    final HashMap<String, String> params = new HashMap<>();
+                    String currLanguage = Locale.getDefault().getLanguage();
+                    String needLang = Utility.LANGUAGE_EN;
+                    if(!currLanguage.equals(needLang)){
+                        needLang = currLanguage + "-" + Utility.LANGUAGE_EN;
+                    }
+
+                    params.put(Utility.LANGUAGE_PARAM, needLang);
+                    params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
+                    params.put(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY);
+
+                    SRemindApp.getMdbService().getEpisodes(s.getImdbId(), mSeasons, params).enqueue(new Callback<MdbEpisodesResponse>() {
                         @Override
-                        public void onEpisodesLoaded(int count, int activeRequests) {
-                            Toast.makeText(getActivity(), getString(R.string.are_updated_short, count), Toast.LENGTH_SHORT).show();
+                        public void onResponse(Call<MdbEpisodesResponse> call, Response<MdbEpisodesResponse> response) {
+                            MdbEpisodesResponse responseBody = response.body();
+                            if(responseBody == null || responseBody.episodes == null) {
+                                Toast.makeText(getActivity(), "No response", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            List<EpisodesResponseResult> episodesResponse = responseBody.episodes;
+
+                            for(int i = 0; i<episodesResponse.size(); i++){
+                                EpisodesResponseResult res = episodesResponse.get(i);
+
+                                if(res.getDate() == null) continue;
+                                List<Episode> episodesDb = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeriesAndNumber(s.getImdbId(), res.getNumber(), res.getSeasonNumber());
+                                try{
+                                    if(episodesDb != null && !episodesDb.isEmpty()){
+                                        SReminderDatabase.getAppDatabase(getActivity()).episodeDao().update(episodesDb.get(0).getId(),res.getName(), res.getNumber(), res.getSeasonNumber(), res.getDate().getTime());
+                                    }else {
+                                        Episode episode = new Episode(res.getName(), res.getDate().getTime(), s.getImdbId(), res.getNumber(), res.getSeasonNumber());
+                                        SReminderDatabase.getAppDatabase(getActivity()).episodeDao().insert(episode);
+                                    }
+                                }catch(Exception ex){
+                                    ex.printStackTrace();
+                                }
+                            }
+                            Toast.makeText(getActivity(), getString(R.string.are_updated_short, episodesResponse.size()), Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<MdbEpisodesResponse> call, Throwable t) {
+                            Log.e(SearchDetailFragment.class.getName(), t.getMessage());
                         }
                     });
-                    request.getEpisodes(mdbId, mImdbId);
                 }
                 mInList = !mInList;
                 changeMenuTitle(item);

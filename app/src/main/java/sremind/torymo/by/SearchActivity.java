@@ -17,9 +17,10 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sremind.torymo.by.data.MdbSearchResultResponse;
+import sremind.torymo.by.response.MdbSearchResultResponse;
 import sremind.torymo.by.data.SReminderDatabase;
 import sremind.torymo.by.data.SearchResult;
+import sremind.torymo.by.response.SearchResponseResult;
 
 public class SearchActivity extends AppCompatActivity implements SearchFragment.Callback {
 

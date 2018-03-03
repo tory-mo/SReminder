@@ -1,8 +1,10 @@
-package sremind.torymo.by;
+package sremind.torymo.by.response;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+
+import sremind.torymo.by.Utility;
 
 public class SearchResponseResult {
     @SerializedName("name")
@@ -43,7 +45,7 @@ public class SearchResponseResult {
     }
 
     public String getPoster() {
-        return mPoster;
+        return Utility.POSTER_PATH + mPoster;
     }
 
     public void setPoster(String mPoster) {
@@ -51,6 +53,7 @@ public class SearchResponseResult {
     }
 
     public String getOverview() {
+        if(mOverview == null) return "";
         return mOverview;
     }
 

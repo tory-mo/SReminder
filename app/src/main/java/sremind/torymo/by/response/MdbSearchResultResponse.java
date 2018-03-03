@@ -1,9 +1,9 @@
-package sremind.torymo.by.data;
+package sremind.torymo.by.response;
 
 
 import java.util.List;
 
-import sremind.torymo.by.SearchResponseResult;
+import sremind.torymo.by.response.SearchResponseResult;
 
 public class MdbSearchResultResponse {
     int page;

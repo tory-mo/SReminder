@@ -26,9 +26,9 @@ public class SRemindApp extends Application {
     private static MDBService mdbService;
 
     private static final String[] DATE_FORMATS = new String[]{
+            "yyyy-MM-dd",
             "yyyy-MM-dd'T'HH:mm:ss",
             "yyyy-MM-dd'T'HH:mm:ssZ",
-            "yyyy-MM-dd",
             "EEE MMM dd HH:mm:ss z yyyy",
             "HH:mm:ss",
             "MM/dd/yyyy HH:mm:ss aaa",
