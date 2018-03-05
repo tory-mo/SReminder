@@ -75,7 +75,6 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
 
                 params.put(Utility.LANGUAGE_PARAM, needLang);
                 params.put(Utility.QUERY, query);
-                params.put(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY);
 
                 SRemindApp.getMdbService().search(params).enqueue(new Callback<MdbSearchResultResponse>() {
                     @Override

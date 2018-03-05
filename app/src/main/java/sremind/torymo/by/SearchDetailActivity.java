@@ -61,7 +61,6 @@ public class SearchDetailActivity extends AppCompatActivity {
         HashMap<String, String> params = new HashMap<>();
 
         params.put(Utility.LANGUAGE_PARAM, needLang);
-        params.put(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY);
         params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
 
         SRemindApp.getMdbService().getSeriesDetails(mdbId, params).enqueue(new Callback<SeriesResponseResult>() {

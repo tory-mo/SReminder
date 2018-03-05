@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,7 +55,6 @@ public class CalendarFragment extends Fragment{
     private static final String BACKUP_FILE = "sreminder.backup";
     private static final String BACKUP_EPISODE = "-|-episode_list_item-|-";
     private static final String BACKUP_SEPAR = "-|-";
-
 
     Calendar month;
 
@@ -165,6 +166,7 @@ public class CalendarFragment extends Fragment{
                         pbSeriesUpdateProgress.setMax(seriesSize);
                         final Context ctx = getActivity();
                         final Counter activeRequests = new Counter(0);
+                        final Counter requests = new Counter(0);
                         new Thread() {
                             public void run() {
 
@@ -180,64 +182,80 @@ public class CalendarFragment extends Fragment{
 
                                         params.put(Utility.LANGUAGE_PARAM, needLang);
                                         params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
-                                        params.put(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY);
-                                        activeRequests.increase();
+                                        try {
+                                            //timeouts to avoid tmd API limit of 40 requests per second
+                                            TimeUnit.MILLISECONDS.sleep(500);
 
-                                        SRemindApp.getMdbService().getSeriesDetails(s.getMdbId(), params).enqueue(new Callback<SeriesResponseResult>() {
-                                            @Override
-                                            public void onResponse(Call<SeriesResponseResult> call, Response<SeriesResponseResult> response) {
-                                                final SeriesResponseResult responseResult = response.body();
-                                                if(responseResult == null) return;
-                                                SRemindApp.getMdbService().getEpisodes(responseResult.getMdbId(), responseResult.getSeasons(), params).enqueue(new Callback<MdbEpisodesResponse>() {
+                                                SRemindApp.getMdbService().getSeriesDetails(s.getMdbId(), params).enqueue(new Callback<SeriesResponseResult>() {
                                                     @Override
-                                                    public void onResponse(Call<MdbEpisodesResponse> call, Response<MdbEpisodesResponse> response) {
-                                                        MdbEpisodesResponse responseBody = response.body();
-                                                        if(responseBody == null) return;
-                                                        final List<EpisodesResponseResult> episodesResponse = responseBody.episodes;
-                                                        if(episodesResponse == null) return;
+                                                    public void onResponse(Call<SeriesResponseResult> call, Response<SeriesResponseResult> response) {
+                                                        final SeriesResponseResult responseResult = response.body();
+                                                        if (responseResult == null) return;
+                                                        try {
+                                                                TimeUnit.MILLISECONDS.sleep(500);
 
-                                                        for(int i = 0; i<episodesResponse.size(); i++){
-                                                            EpisodesResponseResult res = episodesResponse.get(i);
+                                                                SRemindApp.getMdbService().getEpisodes(responseResult.getMdbId(), responseResult.getSeasons(), params).enqueue(new Callback<MdbEpisodesResponse>() {
+                                                                    @Override
+                                                                    public void onResponse(Call<MdbEpisodesResponse> call, Response<MdbEpisodesResponse> response) {
+                                                                        if (response.code() != 200)
+                                                                            Toast.makeText(getActivity(), "code: " + response.code(), Toast.LENGTH_LONG).show();
+                                                                        MdbEpisodesResponse responseBody = response.body();
+                                                                        if (responseBody == null)
+                                                                            return;
+                                                                        final List<EpisodesResponseResult> episodesResponse = responseBody.episodes;
+                                                                        if (episodesResponse == null)
+                                                                            return;
 
-                                                            if(res.getDate() == null) continue;
-                                                            List<Episode> episodesDb = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeriesAndNumber(responseResult.getExternalIds().imdb_id, res.getNumber(), res.getSeasonNumber());
-                                                            try{
-                                                                if(episodesDb != null && !episodesDb.isEmpty()){
-                                                                    SReminderDatabase.getAppDatabase(getActivity()).episodeDao().update(episodesDb.get(0).getId(),res.getName(), res.getNumber(), res.getSeasonNumber(), res.getDate().getTime());
-                                                                }else {
-                                                                    Episode episode = new Episode(res.getName(), res.getDate().getTime(), responseResult.getExternalIds().imdb_id, res.getNumber(), res.getSeasonNumber());
-                                                                    SReminderDatabase.getAppDatabase(getActivity()).episodeDao().insert(episode);
-                                                                }
-                                                            }catch(Exception ex){
-                                                                ex.printStackTrace();
-                                                            }
 
+                                                                        for (int i = 0; i < episodesResponse.size(); i++) {
+                                                                            EpisodesResponseResult res = episodesResponse.get(i);
+
+                                                                            if (res.getDate() == null)
+                                                                                continue;
+                                                                            List<Episode> episodesDb = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeriesAndNumber(responseResult.getExternalIds().imdb_id, res.getNumber(), res.getSeasonNumber());
+                                                                            try {
+                                                                                if (episodesDb != null && !episodesDb.isEmpty()) {
+                                                                                    SReminderDatabase.getAppDatabase(getActivity()).episodeDao().update(episodesDb.get(0).getId(), res.getName(), res.getNumber(), res.getSeasonNumber(), res.getDate().getTime());
+                                                                                } else {
+                                                                                    Episode episode = new Episode(res.getName(), res.getDate().getTime(), responseResult.getExternalIds().imdb_id, res.getNumber(), res.getSeasonNumber());
+                                                                                    SReminderDatabase.getAppDatabase(getActivity()).episodeDao().insert(episode);
+                                                                                }
+                                                                            } catch (Exception ex) {
+                                                                                ex.printStackTrace();
+                                                                            }
+
+                                                                        }
+                                                                        activeRequests.increase();
+
+                                                                        ((Activity) ctx).runOnUiThread(new Runnable() {
+                                                                            public void run() {
+                                                                                tvProgress.setText(getString(R.string.are_updated, episodesResponse.size(), activeRequests.get(), seriesSize));
+                                                                                pbSeriesUpdateProgress.setProgress(activeRequests.get());
+                                                                            }
+
+                                                                        });
+
+                                                                        Log.d("progress111", getString(R.string.are_updated, episodesResponse.size(), activeRequests.get(), seriesSize) + " - " + new Date().toString());
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onFailure(Call<MdbEpisodesResponse> call, Throwable t) {
+                                                                        Log.e(CalendarFragment.class.getName(), t.getMessage());
+                                                                    }
+                                                                });
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
                                                         }
-                                                        activeRequests.decrease();
-
-                                                        ((Activity) ctx).runOnUiThread(new Runnable() {
-                                                            public void run() {
-                                                                tvProgress.setText(getString(R.string.are_updated, episodesResponse.size(), activeRequests.get(), seriesSize));
-                                                                pbSeriesUpdateProgress.setProgress(seriesSize - activeRequests.get());
-                                                            }
-
-                                                        });
-
-                                                        Log.d("progress111", getString(R.string.are_updated, episodesResponse.size(), activeRequests.get(), seriesSize) + " - " + new Date().toString());
                                                     }
 
                                                     @Override
-                                                    public void onFailure(Call<MdbEpisodesResponse> call, Throwable t) {
+                                                    public void onFailure(Call<SeriesResponseResult> call, Throwable t) {
                                                         Log.e(CalendarFragment.class.getName(), t.getMessage());
                                                     }
                                                 });
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<SeriesResponseResult> call, Throwable t) {
-                                                Log.e(CalendarFragment.class.getName(), t.getMessage());
-                                            }
-                                        });
+                                        }catch (Exception e){
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
                             }

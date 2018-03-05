@@ -117,7 +117,6 @@ public class WatchlistFragment extends Fragment{
 			}
 
 			params.put(Utility.LANGUAGE_PARAM, needLang);
-			params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
 			params.put(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY);
 
 			SRemindApp.getMdbService().getSeriesDetails(mdbId, params).enqueue(new Callback<SeriesResponseResult>() {

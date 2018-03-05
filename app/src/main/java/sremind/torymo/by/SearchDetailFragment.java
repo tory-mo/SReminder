@@ -85,7 +85,6 @@ public class SearchDetailFragment extends Fragment{
 
         params.put(Utility.LANGUAGE_PARAM, needLang);
         params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
-        params.put(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY);
             if (getActivity().getClass().equals(SearchActivity.class)) {
                SRemindApp.getMdbService().getSeries(mdbId, params).enqueue(new Callback<SeriesResponseResult>() {
                     @Override
@@ -219,9 +218,8 @@ public class SearchDetailFragment extends Fragment{
 
                     params.put(Utility.LANGUAGE_PARAM, needLang);
                     params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
-                    params.put(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY);
 
-                    SRemindApp.getMdbService().getEpisodes(s.getImdbId(), mSeasons, params).enqueue(new Callback<MdbEpisodesResponse>() {
+                    SRemindApp.getMdbService().getEpisodes(s.getMdbId(), mSeasons, params).enqueue(new Callback<MdbEpisodesResponse>() {
                         @Override
                         public void onResponse(Call<MdbEpisodesResponse> call, Response<MdbEpisodesResponse> response) {
                             MdbEpisodesResponse responseBody = response.body();

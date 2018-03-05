@@ -9,13 +9,21 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import sremind.torymo.by.service.MDBService;
@@ -49,10 +57,21 @@ public class SRemindApp extends Application {
                 .registerTypeAdapter(Date.class, new DateTypeDeserializer())
                 .create();
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(Utility.BASE_URL) //Базовая часть адреса
-                .addConverterFactory(GsonConverterFactory.create(gson))
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+
+                .addInterceptor(httpLoggingInterceptor)
+                .addInterceptor(new ApiKeyInterceptor())
                 .build();
+
+        retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl(Utility.BASE_URL)
+                .client(client)
+                .build();
+
         mdbService = retrofit.create(MDBService.class); //Создаем объект, при помощи которого будем выполнять запросы
     }
 
@@ -68,8 +87,22 @@ public class SRemindApp extends Application {
                     e.printStackTrace();
                 }
             }
-            throw new JsonParseException("Unparseable date: \"" + jsonElement.getAsString()
-                    + "\". Supported formats: \n" + Arrays.toString(DATE_FORMATS));
+            throw new JsonParseException("Unparseable date: \"" + jsonElement.getAsString());
+        }
+    }
+
+    private class ApiKeyInterceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request originalRequest = chain.request();
+            HttpUrl originalUrl = originalRequest.url();
+            HttpUrl url = originalUrl.newBuilder()
+                    .addQueryParameter(Utility.APPKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
+                    .build();
+
+            Request requestBuilder = originalRequest.newBuilder().url(url).build();
+            return chain.proceed(requestBuilder);
         }
     }
 

@@ -20,7 +20,7 @@
     <string name="action_search">Search</string>
 	<string name="slist_updated">Series list is updated</string>
 	<string name="episodes_deleted">Episodes are deleted</string>
-	<string name="are_updated">%1$d episodes are updated. %2$d out of %3$d series updating</string>
+	<string name="are_updated">%1$d episodes are updated. %2$d out of %3$d series updated</string>
 	<string name="are_updated_short">%1$d episodes are updated</string>
 
 	<string name="DELETE">Delete</string>

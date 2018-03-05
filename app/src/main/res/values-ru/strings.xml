@@ -19,7 +19,7 @@
     <string name="action_search">Поиск</string>
 	<string name="slist_updated">Список сериалов обновлен</string>
 	<string name="episodes_deleted">Серии удалены</string>
-	<string name="are_updated">%1$d серий обновлено. %2$d из %3$d сериалов осталось</string>
+	<string name="are_updated">%1$d серий обновлено. %2$d из %3$d сериалов обновлено</string>
 	<string name="are_updated_short">%1$d серий обновлено</string>
 
 	<string name="DELETE">Удалить</string>
