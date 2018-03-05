@@ -27,8 +27,8 @@ public interface SearchResultDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<SearchResult> searchResults);
 
-    @Query("Update search_result set imdbid = :imdbId, homepage = :homepage, genres = :genres, ongoing = :ongoing, seasons = :seasons, overview = :overview, episode_time = :episodeTime where mdbId = :id")
-    void update(int id, String imdbId, String homepage, String genres, boolean ongoing, int seasons, String overview, String episodeTime);
+    @Query("Update search_result set imdbid = :imdbId, homepage = :homepage, genres = :genres, ongoing = :ongoing, seasons = :seasons, overview = :overview, episode_time = :episodeTime, status = :mStatus where mdbId = :id")
+    void update(int id, String imdbId, String homepage, String genres, boolean ongoing, int seasons, String overview, String episodeTime, String mStatus);
 
     @Delete
     void delete(SearchResult searchResult);

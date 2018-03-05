@@ -140,9 +140,9 @@ public class WatchlistFragment extends Fragment{
 								List<Episode> episodesDb = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeriesAndNumber(responseResult.getExternalIds().imdb_id, res.getNumber(), res.getSeasonNumber());
 								try{
 									if(episodesDb != null && !episodesDb.isEmpty()){
-										SReminderDatabase.getAppDatabase(getActivity()).episodeDao().update(episodesDb.get(0).getId(),res.getName(), res.getNumber(), res.getSeasonNumber(), res.getDate().getTime());
+										SReminderDatabase.getAppDatabase(getActivity()).episodeDao().update(episodesDb.get(0).getId(),res.getName(), res.getNumber(), res.getSeasonNumber(), res.getDate().getTime(), res.getPoster(), res.getOverview());
 									}else {
-										Episode episode = new Episode(res.getName(), res.getDate().getTime(), responseResult.getExternalIds().imdb_id, res.getNumber(), res.getSeasonNumber());
+										Episode episode = new Episode(res.getName(), res.getDate().getTime(), responseResult.getExternalIds().imdb_id, res.getNumber(), res.getSeasonNumber(), res.getPoster(), res.getOverview());
 										SReminderDatabase.getAppDatabase(getActivity()).episodeDao().insert(episode);
 									}
 								}catch(Exception ex){

@@ -35,22 +35,49 @@ public class Episode {
     @ColumnInfo(name = "seen")
     private boolean mSeen = false;
 
-    public Episode(String mName, long mDate, String mSeries, long mNumber, long mSeasonNumber, boolean mSeen) {
+    @ColumnInfo(name = "overview")
+    private String mOverview;
+
+    @ColumnInfo(name = "poster")
+    private String mPoster;
+
+    public String getOverview() {
+        return mOverview;
+    }
+
+    public void setOverview(String mOverview) {
+        this.mOverview = mOverview;
+    }
+
+    public String getPoster() {
+        return mPoster;
+    }
+
+    public void setPoster(String mPoster) {
+        this.mPoster = mPoster;
+    }
+
+
+    public Episode(String mName, long mDate, String mSeries, long mNumber, long mSeasonNumber, String mPoster, String mOverview, boolean mSeen) {
         this.mName = mName;
         this.mDate = mDate;
         this.mSeries = mSeries;
         this.mNumber = mNumber;
         this.mSeasonNumber = mSeasonNumber;
         this.mSeen = mSeen;
+        this.mPoster = mPoster;
+        this.mOverview = mOverview;
     }
 
     @Ignore
-    public Episode(String mName, long mDate, String mSeries, long mNumber, long mSeasonNumber) {
+    public Episode(String mName, long mDate, String mSeries, long mNumber, long mSeasonNumber, String mPoster, String mOverview) {
         this.mName = mName;
         this.mDate = mDate;
         this.mSeries = mSeries;
         this.mNumber = mNumber;
         this.mSeasonNumber = mSeasonNumber;
+        this.mPoster = mPoster;
+        this.mOverview = mOverview;
     }
 
     public int getId(){return id;};

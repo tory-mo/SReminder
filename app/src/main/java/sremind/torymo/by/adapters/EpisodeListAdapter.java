@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,7 +104,7 @@ public class EpisodeListAdapter extends RecyclerView.Adapter<EpisodeListAdapter.
     @Override
     public EpisodesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mContext)
-                .inflate(R.layout.episode_list_item, parent, false);
+                .inflate(R.layout.episode_item, parent, false);
         itemView.setOnClickListener(this);
         return new EpisodesViewHolder(itemView);
     }
@@ -121,25 +123,36 @@ public class EpisodeListAdapter extends RecyclerView.Adapter<EpisodeListAdapter.
         }
 
         viewHolder.tvEpisodeInfo.setText(mContext.getString(R.string.format_episode_number, ep.getNumber(), ep.getSeasonNumber()));
+        if(ep.getOverview().length() != 0) {
+            viewHolder.tvOverview.setText(ep.getOverview());
+            viewHolder.tvOverview.setVisibility(View.VISIBLE);
+        }else
+            viewHolder.tvOverview.setVisibility(View.GONE);
 
         if(date != null){
             String dateStr = dateListFormat.format(date);
             viewHolder.tvDate.setText(dateStr);
         }
+
+        Picasso.with(viewHolder.ivPoster.getContext()).load(ep.getPoster()).error(R.drawable.no_photo).into(viewHolder.ivPoster);
     }
 
     class EpisodesViewHolder extends RecyclerView.ViewHolder{
         TextView tvEpisodeName;
         TextView tvDate;
         TextView tvEpisodeInfo;
+        TextView tvOverview;
         ImageView ivSeen;
+        ImageView ivPoster;
 
         EpisodesViewHolder(View view){
             super(view);
             tvEpisodeName = view.findViewById(R.id.tvName);
             tvDate = view.findViewById(R.id.tvDate);
             tvEpisodeInfo = view.findViewById(R.id.tvEpisodeInfo);
+            tvOverview = view.findViewById(R.id.tvOverview);
             ivSeen = view.findViewById(R.id.ivSeenIcon);
+            ivPoster = view.findViewById(R.id.ivPoster);
         }
     }
 }

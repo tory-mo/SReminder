@@ -41,11 +41,7 @@ public class SearchDetailFragment extends Fragment{
     boolean mInList = false;
     boolean mShowMenu = false;
     String mdbId;
-    private String mName = "";
-    private String mImdbId = "";
-    private String mPoster = "";
-    private String mOriginalName = "";
-    private int mSeasons = 0;
+    private Series series;
 
     SearchDetailViewModel.Factory factory;
     SearchDetailViewModel model;
@@ -109,7 +105,8 @@ public class SearchDetailFragment extends Fragment{
                                 series.isOngoing(),
                                 series.getSeasons(),
                                 series.getOverview(),
-                                episodeTime);
+                                episodeTime,
+                                series.getStatus());
 
                     }
 
@@ -138,7 +135,7 @@ public class SearchDetailFragment extends Fragment{
         reQueryData(mdbId);
     }
 
-    private void  reQueryData(String mdbId){
+    private void  reQueryData(final String mdbId){
         if(model == null) return;
         model.getSeries(mdbId).observe(this, new Observer<Series>() {
             @Override
@@ -151,12 +148,18 @@ public class SearchDetailFragment extends Fragment{
             @Override
             public void onChanged(@Nullable SearchResult searchResult) {
                 if(searchResult != null) {
-                    mPoster = searchResult.getPoster();
-                    mName = searchResult.getName();
-                    mOriginalName = searchResult.getOriginalName();
-                    mImdbId = searchResult.getImdbId();
-                    mSeasons = searchResult.getSeasons();
-                    mShowMenu = (mImdbId != null);
+                    series = new Series(searchResult.getName(),
+                            searchResult.getOriginalName(),
+                            searchResult.getImdbId(),
+                            searchResult.getImdbId(),
+                            searchResult.getPoster(),
+                            searchResult.getSeasons(),
+                            searchResult.isOngoing(),
+                            searchResult.getStatus(),
+                            searchResult.getGenres(),
+                            searchResult.getOverview(),
+                            searchResult.getPopularity());
+                    mShowMenu = (series.getImdbId() != null);
                     changeMenuTitle(miOnlySeen);
                 }
                 mBinding.setSearchResult(searchResult);
@@ -202,12 +205,11 @@ public class SearchDetailFragment extends Fragment{
                 if(mInList){
                     SReminderDatabase.getAppDatabase(getActivity()).seriesDao().deleteByMdbId(mdbId);
                 }else {
-                    if(mImdbId == null || mdbId == null){
+                    if(series == null || series.getImdbId() == null || series.getMdbId() == null){
                         Toast.makeText(getActivity(), "Can't be added", Toast.LENGTH_LONG).show();
                         return true;
                     }
-                    final Series s = new Series(mName, mOriginalName, mImdbId, mdbId, mPoster, true);
-                    SReminderDatabase.getAppDatabase(getActivity()).seriesDao().insert(s);
+                    SReminderDatabase.getAppDatabase(getActivity()).seriesDao().insert(series);
 
                     final HashMap<String, String> params = new HashMap<>();
                     String currLanguage = Locale.getDefault().getLanguage();
@@ -219,7 +221,7 @@ public class SearchDetailFragment extends Fragment{
                     params.put(Utility.LANGUAGE_PARAM, needLang);
                     params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
 
-                    SRemindApp.getMdbService().getEpisodes(s.getMdbId(), mSeasons, params).enqueue(new Callback<MdbEpisodesResponse>() {
+                    SRemindApp.getMdbService().getEpisodes(series.getMdbId(), series.getSeasons(), params).enqueue(new Callback<MdbEpisodesResponse>() {
                         @Override
                         public void onResponse(Call<MdbEpisodesResponse> call, Response<MdbEpisodesResponse> response) {
                             MdbEpisodesResponse responseBody = response.body();
@@ -233,12 +235,12 @@ public class SearchDetailFragment extends Fragment{
                                 EpisodesResponseResult res = episodesResponse.get(i);
 
                                 if(res.getDate() == null) continue;
-                                List<Episode> episodesDb = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeriesAndNumber(s.getImdbId(), res.getNumber(), res.getSeasonNumber());
+                                List<Episode> episodesDb = SReminderDatabase.getAppDatabase(getActivity()).episodeDao().getEpisodesBySeriesAndNumber(series.getImdbId(), res.getNumber(), res.getSeasonNumber());
                                 try{
                                     if(episodesDb != null && !episodesDb.isEmpty()){
-                                        SReminderDatabase.getAppDatabase(getActivity()).episodeDao().update(episodesDb.get(0).getId(),res.getName(), res.getNumber(), res.getSeasonNumber(), res.getDate().getTime());
+                                        SReminderDatabase.getAppDatabase(getActivity()).episodeDao().update(episodesDb.get(0).getId(),res.getName(), res.getNumber(), res.getSeasonNumber(), res.getDate().getTime(), res.getPoster(), res.getOverview());
                                     }else {
-                                        Episode episode = new Episode(res.getName(), res.getDate().getTime(), s.getImdbId(), res.getNumber(), res.getSeasonNumber());
+                                        Episode episode = new Episode(res.getName(), res.getDate().getTime(), series.getImdbId(), res.getNumber(), res.getSeasonNumber(), res.getPoster(), res.getOverview());
                                         SReminderDatabase.getAppDatabase(getActivity()).episodeDao().insert(episode);
                                     }
                                 }catch(Exception ex){

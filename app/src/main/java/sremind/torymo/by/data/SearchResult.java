@@ -38,7 +38,7 @@ public class SearchResult {
     private String mHomepage;
 
     @ColumnInfo(name = "seasons")
-    private int mSeasons = 0;
+    private long mSeasons = 0;
 
     @ColumnInfo(name = "episode_time")
     private String mEpisodeTime;
@@ -52,6 +52,16 @@ public class SearchResult {
     @ColumnInfo(name = "popularity")
     private float mPopularity = 0;
 
+    @ColumnInfo(name = "status")
+    private String mStatus;
+
+    public String getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(String mStatus) {
+        this.mStatus = mStatus;
+    }
 
     public int getId() {
         return id;
@@ -113,11 +123,11 @@ public class SearchResult {
         this.mHomepage = mHomepage;
     }
 
-    public int getSeasons() {
+    public long getSeasons() {
         return mSeasons;
     }
 
-    public void setSeasons(int mSeasons) {
+    public void setSeasons(long mSeasons) {
         this.mSeasons = mSeasons;
     }
 

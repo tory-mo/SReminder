@@ -39,6 +39,12 @@ public class SeriesResponseResult {
     @SerializedName("status")
     private String mStatus;
 
+    @SerializedName("homepage")
+    private String mHomepage;
+
+    @SerializedName("popularity")
+    private float mPopularity;
+
     public float getPopularity() {
         return mPopularity;
     }
@@ -47,8 +53,7 @@ public class SeriesResponseResult {
         this.mPopularity = mPopularity;
     }
 
-    @SerializedName("popularity")
-    private float mPopularity;
+
 
     public String getHomepage() {
         return mHomepage;
@@ -59,8 +64,7 @@ public class SeriesResponseResult {
         this.mHomepage = mHomepage;
     }
 
-    @SerializedName("homepage")
-    private String mHomepage;
+
 
     public Date getFirstEpisodeDate() {
         return firstEpisodeDate;

@@ -45,8 +45,8 @@ public interface EpisodeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<Episode> episodes);
 
-    @Query("Update episodes set name = :name, ep_number = :epNumber, s_number = :sNumber, date = :date where id = :id")
-    void update(int id, String name, long epNumber, long sNumber, long date);
+    @Query("Update episodes set name = :name, ep_number = :epNumber, s_number = :sNumber, date = :date, poster = :mPoster, overview = :mOverview where id = :id")
+    void update(int id, String name, long epNumber, long sNumber, long date, String mPoster, String mOverview);
 
     @Query("Delete from episodes where series like :series")
     void delete(String series);

@@ -32,22 +32,52 @@ public class Series {
     @ColumnInfo(name = "watchlist")
     private boolean mWatchlist = true;
 
-    public Series(String mName, String mOriginalName, String mImdbId, String mMdbId, String mPoster, boolean mWatchlist) {
+    @ColumnInfo(name = "genres")
+    private String mGenres;
+
+    @ColumnInfo(name = "ongoing")
+    private boolean mOngoing = false;
+
+    @ColumnInfo(name = "seasons")
+    private long mSeasons = 0;
+
+    @ColumnInfo(name = "overview")
+    private String mOverview;
+
+    @ColumnInfo(name = "popularity")
+    private float mPopularity = 0;
+
+    @ColumnInfo(name = "status")
+    private String mStatus;
+
+    public Series(String mName, String mOriginalName, String mImdbId, String mMdbId, String mPoster, long mSeasons, boolean mOngoing, String mStatus, String mGenres, String mOverview, float mPopularity, boolean mWatchlist) {
         this.mName = mName;
         this.mOriginalName = mOriginalName;
         this.mImdbId = mImdbId;
         this.mWatchlist = mWatchlist;
         this.mMdbId = mMdbId;
         this.mPoster = mPoster;
+        this.mSeasons = mSeasons;
+        this.mOngoing = mOngoing;
+        this.mStatus = mStatus;
+        this.mGenres = mGenres;
+        this.mOverview = mOverview;
+        this.mPopularity = mPopularity;
     }
 
     @Ignore
-    public Series(String mName, String mOriginalName, String mImdbId, String mMdbId, String mPoster) {
+    public Series(String mName, String mOriginalName, String mImdbId, String mMdbId, String mPoster, long mSeasons, boolean mOngoing, String mStatus, String mGenres, String mOverview, float mPopularity) {
         this.mName = mName;
         this.mOriginalName = mOriginalName;
         this.mImdbId = mImdbId;
         this.mMdbId = mMdbId;
         this.mPoster = mPoster;
+        this.mSeasons = mSeasons;
+        this.mOngoing = mOngoing;
+        this.mStatus = mStatus;
+        this.mGenres = mGenres;
+        this.mOverview = mOverview;
+        this.mPopularity = mPopularity;
     }
 
     public int getId() {
@@ -104,5 +134,53 @@ public class Series {
 
     public void setOriginalName(String mOriginalName) {
         this.mOriginalName = mOriginalName;
+    }
+
+    public String getGenres() {
+        return mGenres;
+    }
+
+    public void setGenres(String mGenres) {
+        this.mGenres = mGenres;
+    }
+
+    public boolean isOngoing() {
+        return mOngoing;
+    }
+
+    public void setOngoing(boolean mOngoing) {
+        this.mOngoing = mOngoing;
+    }
+
+    public long getSeasons() {
+        return mSeasons;
+    }
+
+    public void setSeasons(long mSeasons) {
+        this.mSeasons = mSeasons;
+    }
+
+    public String getOverview() {
+        return mOverview;
+    }
+
+    public void setOverview(String mOverview) {
+        this.mOverview = mOverview;
+    }
+
+    public float getPopularity() {
+        return mPopularity;
+    }
+
+    public void setPopularity(float mPopularity) {
+        this.mPopularity = mPopularity;
+    }
+
+    public String getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(String mStatus) {
+        this.mStatus = mStatus;
     }
 }

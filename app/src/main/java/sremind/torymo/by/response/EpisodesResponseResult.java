@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+import sremind.torymo.by.Utility;
+
 public class EpisodesResponseResult {
 
     @SerializedName("name")
@@ -65,7 +67,7 @@ public class EpisodesResponseResult {
     }
 
     public String getPoster() {
-        return mPoster;
+        return Utility.POSTER_PATH + mPoster;
     }
 
     public void setPoster(String mPoster) {

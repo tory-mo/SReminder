@@ -36,7 +36,7 @@ public interface MDBService {
         http://api.themoviedb.org/3/tv/1403/season/5?api_key=6ad01c833dba757c5132002b79e99751&language=ru-en - episodes for a season
     */
     @GET("/3/tv/{mdbId}/season/{season_number}")
-    Call<MdbEpisodesResponse> getEpisodes(@Path("mdbId") String mdbId, @Path("season_number") int season_number, @QueryMap Map<String, String> map);
+    Call<MdbEpisodesResponse> getEpisodes(@Path("mdbId") String mdbId, @Path("season_number") long season_number, @QueryMap Map<String, String> map);
 
     /*
         http://api.themoviedb.org/3/search/tv?query=%D0%B4%D0%BE%D0%BA%D1%82%D0%BE%D1%80&api_key=6ad01c833dba757c5132002b79e99751&language=ru-en
