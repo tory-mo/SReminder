@@ -123,6 +123,7 @@ public class WatchlistFragment extends Fragment{
 				@Override
 				public void onResponse(Call<SeriesResponseResult> call, Response<SeriesResponseResult> response) {
 					final SeriesResponseResult responseResult = response.body();
+					if (responseResult == null) return;
 					SRemindApp.getMdbService().getEpisodes(responseResult.getMdbId(), responseResult.getSeasons(), params).enqueue(new Callback<MdbEpisodesResponse>() {
 						@Override
 						public void onResponse(Call<MdbEpisodesResponse> call, Response<MdbEpisodesResponse> response) {

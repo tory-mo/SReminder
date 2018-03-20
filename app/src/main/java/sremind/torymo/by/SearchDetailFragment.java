@@ -81,7 +81,7 @@ public class SearchDetailFragment extends Fragment{
 
         params.put(Utility.LANGUAGE_PARAM, needLang);
         params.put(Utility.APPEND_TO_RESPONSE, Utility.EXTERNAL_IDS_PARAM);
-            if (getActivity().getClass().equals(SearchActivity.class)) {
+            if (getActivity().getClass().equals(SearchDetailActivity.class)) {
                SRemindApp.getMdbService().getSeries(mdbId, params).enqueue(new Callback<SeriesResponseResult>() {
                     @Override
                     public void onResponse(Call<SeriesResponseResult> call, Response<SeriesResponseResult> response) {
@@ -107,9 +107,7 @@ public class SearchDetailFragment extends Fragment{
                                 series.getOverview(),
                                 episodeTime,
                                 series.getStatus());
-
                     }
-
                     @Override
                     public void onFailure(Call<SeriesResponseResult> call, Throwable t) {
                         Log.e(SearchDetailFragment.class.getName() + "from " + getActivity().getClass(), t.getMessage());
@@ -151,7 +149,7 @@ public class SearchDetailFragment extends Fragment{
                     series = new Series(searchResult.getName(),
                             searchResult.getOriginalName(),
                             searchResult.getImdbId(),
-                            searchResult.getImdbId(),
+                            searchResult.getMdbId(),
                             searchResult.getPoster(),
                             searchResult.getSeasons(),
                             searchResult.isOngoing(),
