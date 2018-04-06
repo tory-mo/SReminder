@@ -136,6 +136,9 @@ public class CalendarView extends LinearLayout {
 
         calendar.set(Calendar.DATE, 1);
         int firstDay = calendar.get(Calendar.DAY_OF_WEEK) - 1 - FIRST_DAY_OF_WEEK; //convert to start with zero
+        if(firstDay < 0){
+            firstDay += 7;
+        }
         final int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
 
